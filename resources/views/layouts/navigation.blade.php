@@ -42,7 +42,7 @@
                 </style>
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex items-center">
                     @if(Auth::user()->tipo === 'restaurante')
-                    <x-responsive-nav-link :href="route('menu')" :active="request()->routeIs('menu.index')"
+                    <x-responsive-nav-link :href="route('menu.index')" :active="request()->routeIs('menu.index')"
                         class="btn btn-warning">
                         {{ __('Mi Menú') }}
                     </x-responsive-nav-link>
@@ -104,7 +104,7 @@
 
 
         @if(Auth::user()->tipo === 'restaurante')
-        <x-responsive-nav-link :href="route('menu')" :active="request()->routeIs('menu.index')" class="btn btn-warning">
+        <x-responsive-nav-link :href="route('menu.index')" :active="request()->routeIs('menu.index')" class="btn btn-warning">
             {{ __('Mi Menú') }}
         </x-responsive-nav-link>
         @endif

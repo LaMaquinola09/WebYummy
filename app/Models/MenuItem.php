@@ -9,6 +9,9 @@ class MenuItem extends Model
 {
     use HasFactory;
 
+      // Desactivar timestamps
+      public $timestamps = false;
+
     protected $fillable = [
         'restaurante_id', 
         'nombre_producto', 

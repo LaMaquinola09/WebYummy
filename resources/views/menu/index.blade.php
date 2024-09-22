@@ -78,11 +78,11 @@
         }
 
         .btn-edit {
-            background-color: #007bff; /* Azul */
+            background-color: #ec860a; /* Azul */
         }
 
         .btn-edit:hover {
-            background-color: #0056b3;
+            background-color: #bd4c00;
         }
 
         .btn-delete {
@@ -100,6 +100,8 @@
         .btn-view:hover {
             background-color: #218838;
         }
+
+     
     </style>
 
     <div class="py-12">
@@ -119,7 +121,7 @@
                                 <th scope="col" class="py-3 px-6 text-left">Nombre</th>
                                 <th scope="col" class="py-3 px-6 text-left">Descripción</th>
                                 <th scope="col" class="py-3 px-6 text-left">Precio</th>
-                                <th scope="col" class="py-3 px-6 text-left">Acciones</th>
+                                <th scope="col" class="py-3 px-6 text-center" id="accion">Acciones</th>
                             </tr>
                         </thead>
                         <tbody class="text-gray-600 text-sm font-light">
@@ -136,8 +138,8 @@
                                     <td class="py-3 px-6">{{ $item->nombre_producto }}</td>
                                     <td class="py-3 px-6">{{ $item->descripcion }}</td>
                                     <td class="py-3 px-6">${{ number_format($item->precio, 2) }}</td>
-                                    <td class="py-3 px-6">
-                                        <a href="{{ route('menu.edit', $item->id) }}" class="btn-action btn-edit">Editar</a>
+                                    <td class="py-3 px-6 text-center">
+                                        <a href="{{ route('menu.edit', $item->id) }}" class="btn-action btn-edit" id="btEliminar">Editar</a>
                                         <form action="{{ route('menu.destroy', $item->id) }}" method="POST" style="display:inline;">
                                             @csrf
                                             @method('DELETE')

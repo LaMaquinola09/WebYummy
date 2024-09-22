@@ -31,9 +31,7 @@ Route::post('/solicitudes', [SolicitudController::class, 'store'])->name('solici
 
 
 // Ruta para almacenar los menus
-
-
-route::get('/menu', [MenuController::class, 'index'])->name('menu');
+route::get('/menu', [MenuItemController::class, 'index'])->name('menu');
 
 
 

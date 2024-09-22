@@ -13,13 +13,40 @@
                     </a>
                 </div>
                 <!-- Navigation Links -->
+                <style>
+                .btn-warning {
+                    display: inline-flex;
+                    align-items: center;
+                    padding: 12px 24px;
+                    font-size: 16px;
+                    font-weight: bold;
+                    text-decoration: none;
+                    color: white;
+                    background-color: rgb(249 115 22);
+                    border: none;
+                    border-radius: 2px;
+                    transition: background-color 0.3s, transform 0.2s;
+                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+                    white-space: nowrap;
+                    /* Evitar que el texto se divida en varias líneas */
+                }
 
+                .btn-warning:hover {
+                    background-color: rgb(249 115 22);
+                    transform: translateY(-2px);
+                }
+
+                .btn-warning:active {
+                    transform: translateY(1px);
+                }
+                </style>
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex items-center">
                     @if(Auth::user()->tipo === 'restaurante')
-                    <x-nav-link :href="route('menu')" :active="request()->routeIs('menu.index')"
-                        class="text-white hover:text-yellow-400">
+                    <x-responsive-nav-link :href="route('menu')" :active="request()->routeIs('menu.index')"
+                        class="btn btn-warning">
                         {{ __('Mi Menú') }}
-                    </x-nav-link>
+                    </x-responsive-nav-link>
+
                     @endif
                 </div>
             </div>
@@ -75,9 +102,9 @@
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
 
 
+
         @if(Auth::user()->tipo === 'restaurante')
-        <x-responsive-nav-link :href="route('menu')" :active="request()->routeIs('menu.index')"
-            class="text-white">
+        <x-responsive-nav-link :href="route('menu')" :active="request()->routeIs('menu.index')" class="btn btn-warning">
             {{ __('Mi Menú') }}
         </x-responsive-nav-link>
         @endif

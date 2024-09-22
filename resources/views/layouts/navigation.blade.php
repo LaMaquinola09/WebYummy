@@ -16,7 +16,7 @@
 
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex items-center">
                     @if(Auth::user()->tipo === 'restaurante')
-                    <x-nav-link :href="route('restaurants')" :active="request()->routeIs('restaurante.menu')"
+                    <x-nav-link :href="route('menu')" :active="request()->routeIs('menu.index')"
                         class="text-white hover:text-yellow-400">
                         {{ __('Mi Menú') }}
                     </x-nav-link>
@@ -76,7 +76,7 @@
 
 
         @if(Auth::user()->tipo === 'restaurante')
-        <x-responsive-nav-link :href="route('restaurants')" :active="request()->routeIs('menu.index')"
+        <x-responsive-nav-link :href="route('menu')" :active="request()->routeIs('menu.index')"
             class="text-white">
             {{ __('Mi Menú') }}
         </x-responsive-nav-link>

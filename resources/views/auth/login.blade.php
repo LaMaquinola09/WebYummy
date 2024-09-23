@@ -10,7 +10,8 @@
     <body>
         <div class="contenedor">
             <div class="contenedor-formulario">
-                <div class="imagen-formulario" style="background-image: url('{{ asset('images/comida_banner.jpg') }}');">
+                <div class="imagen-formulario"
+                    style="background-image: url('{{ asset('images/comida_banner.jpg') }}');">
                     <!-- Aquí puedes agregar contenido si es necesario -->
                 </div>
 
@@ -22,6 +23,8 @@
                     <div class="texto-formulario">
                         <h2>Bienvenido de nuevo</h2>
                         <p>Inicia sesión con tu cuenta</p>
+     
+
                     </div>
                     <div class="input">
                         <label for="email">Email</label>

@@ -25,92 +25,36 @@ class AuthenticatedSessionController extends Controller
     /**
      * Handle an incoming authentication request.
      */
-    // public function store(LoginRequest $request): RedirectResponse
-    // {
-    //     $request->authenticate();
-
-    //     $request->session()->regenerate();
-
-    //     $user = User::find($request->user()->id);
-        
-    //     if($user->tipo == 'admin'){
-    //         $pendingRestaurants = Restaurante::where('estado', 'Pendiente')->with('user')->get();
-    //         return redirect()->intended(RouteServiceProvider::HOME_ADMIN)->with([
-    //             'user' => $user,
-    //             'pendingRestaurants' => $pendingRestaurants,
-    //         ]);
-            
-    //     } else if($user->tipo == 'restaurante'){
-    //         $restaurant = $user->restaurant;
-    //         if($restaurant->estado == 'Pendiente'){
-    //             Auth::guard('web')->logout();
-
-    //             $request->session()->invalidate();
-
-    //             $request->session()->regenerateToken();
-
-    //             return redirect('/');
-    //         } else if($restaurant->estado == 'Activo'){
-    //             return redirect()->intended(RouteServiceProvider::HOME);
-    //         }
-    //     }
-    // }
-
-
     public function store(LoginRequest $request): RedirectResponse
-{
-    $request->authenticate();
-    $request->session()->regenerate();
+    {
+        $request->authenticate();
 
-    $user = User::find($request->user()->id);
+        $request->session()->regenerate();
 
-    if ($user) {
-        if ($user->tipo == 'admin') {
+        $user = User::find($request->user()->id);
+        
+        if($user->tipo == 'admin'){
             $pendingRestaurants = Restaurante::where('estado', 'Pendiente')->with('user')->get();
             return redirect()->intended(RouteServiceProvider::HOME_ADMIN)->with([
                 'user' => $user,
                 'pendingRestaurants' => $pendingRestaurants,
             ]);
-        } else if ($user->tipo == 'restaurante') {
+            
+        } else if($user->tipo == 'restaurante'){
             $restaurant = $user->restaurant;
+            if($restaurant->estado == 'Pendiente'){
+                Auth::guard('web')->logout();
 
-            if ($restaurant) { // Verifica si el restaurante existe
-                if ($restaurant->estado == 'Pendiente') {
-                    Auth::guard('web')->logout();
-                    $request->session()->invalidate();
-                    $request->session()->regenerateToken();
-                    return redirect('/')->withErrors(['error' => 'Su restaurante está pendiente de aprobación.']);
-                } else if ($restaurant->estado == 'Activo') {
-                    return redirect()->intended(RouteServiceProvider::HOME); // Redirige a la vista correspondiente
-                }
-            } else {
-                // Manejar el caso donde no hay restaurante asociado
-                return redirect('/')->withErrors(['error' => 'No se encontró el restaurante asociado.']);
+                $request->session()->invalidate();
+
+                $request->session()->regenerateToken();
+
+                return redirect('/');
+            } else if($restaurant->estado == 'Activo'){
+                return redirect()->intended(RouteServiceProvider::HOME);
             }
         }
-    } else {
-        return redirect('/')->withErrors(['error' => 'Usuario no encontrado.']);
     }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     /**
      * Destroy an authenticated session.

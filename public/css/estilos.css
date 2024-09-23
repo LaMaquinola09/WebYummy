@@ -1,0 +1,129 @@
+:root {
+    --azul: #ff6f00;
+    --azulOscuro: #c2630a;
+    --azulGris: #8da9c4;
+    --blanco: #fff;
+    --fuente: "Quicksand", sans-serif;
+}
+
+html {
+    box-sizing: border-box;
+}
+
+.contenedor {
+    margin: 0 auto;
+    max-width: 1200px;
+    width: 95%;
+}
+
+.contenedor-formulario {
+    display: flex;
+    flex-direction: column; /* Cambiado para que se adapte en móviles */
+    min-height: 80vh; /* Altura mínima para el contenedor */
+}
+
+.imagen-formulario {
+  
+    background-position: center; /* Centra la imagen */
+    background-size: cover; /* Asegura que la imagen cubra todo el contenedor */
+    height: 130px; /* Ajusta la altura según tus necesidades */
+    width: 100%; /* Ancho completo del contenedor padre */
+    flex: 1; /* Permite que el contenedor sea flexible si es necesario */
+    position: relative; /* Para contenido adicional */
+    overflow: hidden; /* Evita que el contenido se desborde */
+}
+
+/* Hacer que la imagen sea responsiva */
+@media (max-width: 768px) {
+    .imagen-formulario {
+        height: 150px; /* Ajusta la altura para pantallas más pequeñas */
+    }
+}
+
+
+
+
+.imagen-formulario::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(
+        to right,
+        rgba(141, 169, 196, 0.5),
+        rgba(19, 64, 116, 0.5)
+    );
+}
+
+@media (min-width: 768px) {
+    .contenedor-formulario {
+        flex-direction: row; /* Cambia a fila en pantallas grandes */
+    }
+    .imagen-formulario {
+        height: auto; /* Mantén esta propiedad si deseas que la imagen se ajuste */
+        background-position: right;
+    }
+}
+
+.formulario {
+    padding: 60px; /* Aumentado para más espacio */
+    background-color: var(--azul);
+    flex: 1; /* Para que el formulario ocupe espacio disponible */
+    min-height: 350px; /* Ajusta este valor según lo necesites */
+    /* o utiliza height: 100%; para que ocupe todo el espacio disponible */
+}
+
+.texto-formulario h2,
+.input label,
+.password-olvidada a,
+.texto-formulario p {
+    color: var(--blanco);
+    padding: 4px;
+}
+
+.texto-formulario h2 {
+    font-size: 40px;
+    text-align: center;
+}
+
+.texto-formulario p {
+    font-size: 22px;
+    text-align: center;
+}
+
+.input label {
+    display: block;
+    font-size: 22px;
+    font-weight: bold;
+    margin: 20px 0;
+}
+
+.password-olvidada a {
+    display: inline-block;
+    margin-top: 20px;
+    font-size: 22px;
+}
+
+.input input {
+    width: 100%;
+    padding: 10px 16px;
+    border-radius: 5px;
+    outline: none;
+}
+
+.input input[type="submit"] {
+    background-color: var(--azulGris);
+    color: var(--blanco);
+    font-size: 22px;
+    font-weight: bold;
+    border: none;
+    margin-top: 20px;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.input input[type="submit"]:hover {
+    cursor: pointer;
+    background-color: var(--azulOscuro);
+}

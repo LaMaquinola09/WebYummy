@@ -1,185 +1,286 @@
 <x-guest-layout>
     <style>
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-        }
+    body.solicitud-body {
+        font-family: Arial, Helvetica, sans-serif;
+        background-color: #f4f4f4;
+    }
 
-        * {
-            box-sizing: border-box;
-        }
+    /* Aseguramos que el formulario no quede pegado al header o footer */
+    .solicitud-form-container {
+        max-width: 1200px;
+        /* Aumenta el ancho máximo */
+        margin: 80px auto;
+        /* Mantiene el margen superior */
+        background: white;
+        padding: 30px;
+        /* Aumenta el padding interno */
+        border-radius: 15px;
+        box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+        /* Opcional: aumenta el tamaño de la sombra */
+    }
 
-        .form-container {
-            width: 60%;
-            margin: auto;
+
+
+    element.style {
+        margin-top: 20px;
+    }
+
+
+
+    .solicitud-header {
+        text-align: center;
+        color: #333;
+        font-size: 24px;
+        margin-bottom: 30px;
+        font-weight: 500;
+    }
+
+    .solicitud-subtext {
+        color: #666;
+        text-align: center;
+        font-size: 14px;
+        margin-bottom: 20px;
+    }
+
+    .solicitud-divider {
+        border: 0;
+        border-top: 1px solid #eaeaea;
+        margin: 20px 0;
+    }
+
+    .solicitud-input,
+    .solicitud-select {
+        width: 100%;
+        padding: 12px 15px;
+        margin: 10px 0;
+        display: inline-block;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        background-color: #f9f9f9;
+        font-size: 14px;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .solicitud-input:focus,
+    .solicitud-select:focus {
+        background-color: #fff;
+        border-color: #007bff;
+        outline: none;
+    }
+
+    .solicitud-label {
+        font-weight: bold;
+        color: #333;
+        display: inline-block;
+        margin-bottom: 5px;
+        font-size: 14px;
+    }
+
+    .solicitud-button {
+        background-color: #ec860a;
+        color: white;
+        padding: 12px;
+        border: none;
+        border-radius: 8px;
+        width: 100%;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        margin-top: 20px;
+    }
+
+    .solicitud-button:hover {
+        background-color: #a65c00;
+
+    }
+
+    .solicitud-cancel-button {
+        background-color: #e11e00;
+        color: white;
+        padding: 12px;
+        border-radius: 8px;
+        width: 100%;
+        font-size: 16px;
+        cursor: pointer;
+        margin-top: 10px;
+        transition: background-color 0.3s ease;
+    }
+
+    .solicitud-cancel-button:hover {
+        background-color: #b30e00;
+    }
+
+    .solicitud-row {
+        display: flex;
+        flex-direction: row;
+        gap: 20px;
+    }
+
+    .solicitud-col-6 {
+        flex: 1;
+    }
+
+    .solicitud-clearfix {
+        display: flex;
+        flex-direction: column;
+        margin-top: 20px;
+    }
+
+    /* Media queries para ajustar a dispositivos móviles */
+    @media screen and (max-width: 600px) {
+        .solicitud-form-container {
             padding: 20px;
-            background-color: #f9f9f9;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            margin: 50px auto;
+            /* Margen reducido para pantallas pequeñas */
         }
 
-        input[type=text],
-        input[type=email],
-        input[type=time],
-        input[type=password],
-        input[type=tel],
-        select {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            background-color: #f1f1f1;
+        .solicitud-header {
+            font-size: 20px;
         }
 
-        input:focus,
-        select:focus {
-            background-color: #ddd;
-            outline: none;
+        .solicitud-row {
+            flex-direction: column;
         }
+    }
 
-        .form-row {
-            display: flex;
-            gap: 20px;
-        }
 
-        .form-col {
-            flex: 1;
-        }
+    .accion-row {
+        display: flex;
+        justify-content: center;
+        /* Centra los botones */
+        margin-top: 20px;
+        /* Espacio superior */
+    }
 
-        hr {
-            border: 1px solid #f1f1f1;
-            margin: 25px 0;
-        }
+    .accion-col-6 {
+        flex: 1;
+        /* Asegura que ambas columnas ocupen el mismo ancho */
+        padding: 0 10px;
+        /* Espaciado horizontal entre columnas */
+    }
 
-        button {
-            background-color: #04AA6D;
-            color: white;
-            padding: 14px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            width: 100%;
-            margin-top: 15px;
-        }
+    .boton-cancelar {
+        /* Estilos específicos para el botón de cancelar */
+        font-size: 16px;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+    }
 
-        button:hover {
-            background-color: #039f64;
-        }
-
-        .cancelbtn {
-            background-color: #e11e00;
-        }
-
-        .signupbtn {
-            background-color: #e18f00;
-        }
-
-        .clearfix {
-            display: flex;
-            justify-content: space-between;
-        }
-
-        @media screen and (max-width: 768px) {
-            .form-row {
-                flex-direction: column;
-            }
-
-            .clearfix {
-                flex-direction: column;
-            }
-
-            .cancelbtn, .signupbtn {
-                width: 100%;
-            }
-        }
+    .boton-registrar {
+        /* Estilos específicos para el botón de registrar */
+        font-size: 16px;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+    }
     </style>
 
-    <form action="{{ route('solicitudes.store') }}" method="POST">
-        @csrf
-        <div class="form-container">
-            <center><h1>Solicitud de Restaurante</h1></center>
+    <div class="solicitud-form-container">
+        <h1 class="solicitud-header">Solicitud de Restaurante</h1>
 
-            @if ($errors->any())
-                <div>
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
+        @if ($errors->any())
+        <div class="solicitud-error-container">
+            <ul>
+                @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+        @endif
 
-            @if (session('success'))
-                <div style="color: green; margin-bottom: 20px;">
-                    {{ session('success') }}
-                </div>
-            @endif
+        @if (session('success'))
+        <div class="solicitud-success-message" style="color: green; margin-bottom: 20px;">
+            {{ session('success') }}
+        </div>
+        @endif
 
-            <p>Ingresa tus datos personales.</p>
-            <hr>
+        <form action="{{ route('solicitudes.store') }}" method="POST">
+            @csrf
+            <p class="solicitud-subtext">Ingresa tus datos personales</p>
+            <hr class="solicitud-divider">
 
-            <div class="form-row">
-                <div class="form-col">
-                    <label for="nombre"><b>Nombre</b></label>
-                    <input type="text" placeholder="Ingresa tu nombre" name="nombre" id="nombre" required>
+            <div class="solicitud-row">
+                <div class="solicitud-col-6">
+                    <label for="solicitud-nombre" class="solicitud-label">Nombre</label>
+                    <input type="text" placeholder="Ingresa tu nombre" name="nombre" id="solicitud-nombre"
+                        class="solicitud-input" required>
                 </div>
-                <div class="form-col">
-                    <label for="email"><b>Email</b></label>
-                    <input type="email" placeholder="Ingresa tu Email" name="email" id="email" required>
-                </div>
-            </div>
-
-            <div class="form-row">
-                <div class="form-col">
-                    <label for="direccion"><b>Dirección</b></label>
-                    <input type="text" placeholder="Ingresa tu dirección" name="direccion" id="direccion" required>
-                </div>
-                <div class="form-col">
-                    <label for="telefono"><b>Teléfono</b></label>
-                    <input type="tel" placeholder="Ingresa tu número de teléfono" name="telefono" id="telefono" required>
+                <div class="solicitud-col-6">
+                    <label for="solicitud-email" class="solicitud-label">Email</label>
+                    <input type="email" placeholder="Ingresa tu Email" name="email" id="solicitud-email"
+                        class="solicitud-input" required>
                 </div>
             </div>
 
-            <div class="form-row">
-                <div class="form-col">
-                    <label for="password"><b>Contraseña</b></label>
-                    <input type="password" placeholder="Ingresa tu contraseña" name="password" id="password" required>
+            <label for="solicitud-direccion" class="solicitud-label">Dirección</label>
+            <input type="text" placeholder="Ingresa tu dirección" name="direccion" id="solicitud-direccion"
+                class="solicitud-input" required>
+
+            <label for="solicitud-telefono" class="solicitud-label">Teléfono</label>
+            <input type="tel" placeholder="Ingresa tu número de teléfono" name="telefono" id="solicitud-telefono"
+                class="solicitud-input" required>
+
+            <div class="solicitud-row">
+                <div class="solicitud-col-6">
+                    <label for="solicitud-password" class="solicitud-label">Contraseña</label>
+                    <input type="password" placeholder="Ingresa tu contraseña" name="password" id="solicitud-password"
+                        class="solicitud-input" required>
                 </div>
-                <div class="form-col">
-                    <label for="password_confirmation"><b>Repite la contraseña</b></label>
-                    <input type="password" placeholder="Repite la contraseña" name="password_confirmation" id="password_confirmation" required>
+                <div class="solicitud-col-6">
+                    <label for="solicitud-password-confirmation" class="solicitud-label">Repite la contraseña</label>
+                    <input type="password" placeholder="Repite la contraseña" name="password_confirmation"
+                        id="solicitud-password-confirmation" class="solicitud-input" required>
                 </div>
             </div>
 
-            <p>Ingresa los datos de tu negocio.</p>
-            <hr>
+            <p class="solicitud-subtext">Ingresa los datos de tu negocio</p>
+            <hr class="solicitud-divider">
 
-            <label for="nombre_negocio"><b>Nombre del negocio</b></label>
-            <input type="text" placeholder="Nombre del negocio" name="nombre_negocio" id="nombre_negocio" required>
+            <label for="solicitud-nombre-negocio" class="solicitud-label">Nombre del negocio</label>
+            <input type="text" placeholder="Nombre del negocio" name="nombre_negocio" id="solicitud-nombre-negocio"
+                class="solicitud-input" required>
 
-            <label for="categoria"><b>Categoría de su negocio</b></label>
-            <select name="categoria" id="categoria" required>
+            <label for="solicitud-categoria" class="solicitud-label">Categoría de su negocio</label>
+            <select name="categoria" id="solicitud-categoria" class="solicitud-select" required>
                 <option value="pizza">Pizza</option>
                 <option value="sushi">Sushi</option>
                 <option value="pasteleria">Pastelería</option>
                 <option value="cafe">Cafetería</option>
             </select>
 
-            <div class="form-row">
-                <div class="form-col">
-                    <label for="hora_apertura"><b>Horario de apertura</b></label>
-                    <input type="time" name="hora_apertura" id="hora_apertura" required>
+            <div class="solicitud-row">
+                <div class="solicitud-col-6">
+                    <label for="solicitud-hora-apertura" class="solicitud-label">Horario de apertura</label>
+                    <input type="time" name="hora_apertura" id="solicitud-hora-apertura" class="solicitud-input"
+                        required>
                 </div>
-                <div class="form-col">
-                    <label for="hora_cierre"><b>Horario de cierre</b></label>
-                    <input type="time" name="hora_cierre" id="hora_cierre" required>
+                <div class="solicitud-col-6">
+                    <label for="solicitud-hora-cierre" class="solicitud-label">Horario de cierre</label>
+                    <input type="time" name="hora_cierre" id="solicitud-hora-cierre" class="solicitud-input" required>
                 </div>
             </div>
 
-            <div class="clearfix">
-                <a href="/"><button type="button" class="cancelbtn">Cancelar</button></a>
-                <button type="submit" class="signupbtn">Registrar</button>
+            <div class="accion-row justify-center">
+                <div class="accion-col-6">
+                    <button type="button"
+                        class="boton-cancelar bg-red-600 text-white w-full h-12 rounded-md shadow-md hover:bg-red-700 transition"
+                        onclick="window.location.href='/'">Cancelar Solicitud</button>
+                </div>
+                <div class="accion-col-6">
+                    <button type="submit"
+                        class="boton-registrar bg-orange-500 text-white w-full h-12 rounded-md shadow-md hover:bg-orange-600 transition">Registrar
+                        Restaurante</button>
+                </div>
             </div>
-        </div>
-    </form>
+
+
+
+
+
+
+
+
+
+
+        </form>
+    </div>
 </x-guest-layout>

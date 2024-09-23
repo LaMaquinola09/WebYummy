@@ -9,6 +9,8 @@
     <link href="https://fonts.bunny.net/css?family=poppins:400,600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/Inicio.css') }}">
     <link rel="stylesheet" href="https://unpkg.com/swiper@9/swiper-bundle.min.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
     <style>
     html,
@@ -56,36 +58,13 @@
         font-size: 1.75rem;
         font-weight: 700;
         color: #fff;
-        margin-left: 10px;
-        position: relative;
-        transition: color 0.3s, transform 0.3s;
-    }
-
-    .logo-text::before {
-        content: '';
-        position: absolute;
-        bottom: -5px;
-        left: 0;
-        width: 100%;
-        height: 3px;
-        background: #fff;
-        transform: scaleX(0);
-        transition: transform 0.3s;
-        transform-origin: bottom right;
-    }
-
-    .logo-text:hover {
-        color: #ffe0b2;
-        transform: scale(1.05);
-    }
-
-    .logo-text:hover::before {
-        transform: scaleX(1);
     }
 
     .auth-links {
         display: flex;
         gap: 10px;
+        margin-left: auto;
+        /* Alinear a la derecha */
     }
 
     .auth-link {
@@ -104,60 +83,9 @@
         transform: translateY(-2px);
     }
 
-    .hamburger-menu {
-        background: none;
+    .dropdown-menu {
         border: none;
-        font-size: 24px;
-        color: white;
-        cursor: pointer;
-        display: none;
-        transition: color 0.3s ease;
-    }
-
-    .hamburger-menu:hover {
-        color: #ffe0b2;
-    }
-
-    .menu {
-        display: none;
-        flex-direction: column;
-        gap: 10px;
-        position: absolute;
-        top: 60px;
-        right: 0;
-        background-color: #F87013;
-        padding: 20px;
-        width: 250px;
-        height: calc(100vh - 60px);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        z-index: 1001;
-        transform: translateX(100%);
-        transition: transform 0.3s ease;
-    }
-
-    .menu.open {
-        display: flex;
-        transform: translateX(0);
-    }
-
-    @media (max-width: 768px) {
-        .hamburger-menu {
-            display: block;
-        }
-
-        .auth-links {
-            display: none;
-        }
-    }
-
-    @media (min-width: 769px) {
-        .hamburger-menu {
-            display: none;
-        }
-
-        .menu {
-            display: flex;
-        }
+        /* Sin borde */
     }
 
     .footer {
@@ -176,6 +104,10 @@
     .promotions {
         padding: 20px;
     }
+
+    .no-border {
+        border: none;
+    }
     </style>
 </head>
 
@@ -186,21 +118,25 @@
             <a href="#" class="logo-text">Yummy</a>
         </div>
 
-        <nav class="auth-links">
+        <nav class="auth-links" x-data="{ open: false }">
             <a href="{{ route('login') }}" class="auth-link">Iniciar Sesion</a>
             <a href="{{ route('Registrosolicitud') }}"
-                class="text-white auth-link">{{ __('Solicitud de registro de restaurantes') }}</a>
+                class="auth-link">{{ __('Solicitud de registro de restaurantes') }}</a>
+
+            <div class="dropdown">
+                <button class="auth-link dropdown-toggle no-border" id="dropdownMenuButton" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                    Registrar como
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <li><a class="dropdown-item" href="#">Usuario</a></li>
+                    <li><a class="dropdown-item" href="#">Repartidor</a></li>
+                </ul>
+            </div>
         </nav>
-
-        <button class="hamburger-menu">&#9776;</button>
-
-        <div class="menu">
-            <!-- Menú lateral con enlaces adicionales si es necesario -->
-        </div>
     </header>
 
     <main class="content">
-        <!-- Banner principal -->
         <section class="hero-banner">
             <div class="swiper-container">
                 <div class="swiper-wrapper">
@@ -228,7 +164,7 @@
                                     <a href="/promo" class="cta-button">Aprovecha</a>
                                 </div>
                                 <div class="promo-image">
-                                    <img src="{{ asset('images/promotion2.jpeg') }}" alt="Promo 2" />
+                                    <img src="{{ asset('images/promotion2.png') }}" alt="Promo 2" />
                                 </div>
                             </div>
                         </div>
@@ -306,6 +242,10 @@
     <script>
     var swiper = new Swiper('.swiper-container', {
         loop: true,
+        autoplay: {
+            delay: 2500,
+            disableOnInteraction: false,
+        },
         pagination: {
             el: '.swiper-pagination',
         },

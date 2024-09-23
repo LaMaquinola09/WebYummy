@@ -1,48 +1,52 @@
 <x-guest-layout>
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
+    <!DOCTYPE html>
+    <html lang="es">
 
-    <h2 style="text-align:center;">Iniciar Sesión</h2>
+    <head>
+        <link rel="stylesheet" href="css/normalize.css">
+        <link rel="stylesheet" href="css/estilos.css">
+    </head>
 
-    <form method="POST" action="{{ route('login') }}" style="border: 3px solid #f1f1f1; padding: 20px; border-radius: 10px;" class="py-3">
-        @csrf
+    <body>
+        <div class="contenedor">
+            <div class="contenedor-formulario">
+                <div class="imagen-formulario" style="background-image: url('{{ asset('images/comida_banner.jpg') }}');">
+                    <!-- Aquí puedes agregar contenido si es necesario -->
+                </div>
 
-        <div class="imgcontainer" style="text-align: center; margin: 24px 0 12px 0;">
-            <img src="{{ asset('images/img_avatar2.png') }}" alt="Avatar" class="avatar"
-                style="width: 40%; border-radius: 50%; margin: 0 auto;">
+
+
+                <form class="formulario" aria-label="Formulario de Inicio de Sesión" method="POST"
+                    action="{{ route('login') }}">
+                    @csrf
+                    <div class="texto-formulario">
+                        <h2>Bienvenido de nuevo</h2>
+                        <p>Inicia sesión con tu cuenta</p>
+                    </div>
+                    <div class="input">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" placeholder="Ingresa tu correo" required autofocus>
+                        <x-input-error :messages="$errors->get('email')" class="mt-2" />
+                    </div>
+                    <div class="input">
+                        <label for="password">Contraseña</label>
+                        <input type="password" id="password" name="password" placeholder="Ingresa tu contraseña"
+                            required>
+                        <x-input-error :messages="$errors->get('password')" class="mt-2" />
+                    </div>
+                    <div class="password-olvidada">
+                        @if (Route::has('password.request'))
+                        <a href="{{ route('password.request') }}">¿Olvidaste tu contraseña?</a>
+                        @endif
+                    </div>
+                    <div class="input">
+                        <input type="submit" value="Iniciar Sesión"
+                            style="background-color: #04AA6D; color: white; padding: 14px 20px; border: none; cursor: pointer; width: 100%;">
+                    </div>
+                </form>
+            </div>
         </div>
+    </body>
 
-        <!-- Email Address -->
-        <div>
-            <label for="email"><b>Email</b></label>
-            <input type="email" id="email" class="block mt-1 w-full" name="email" :value="old('email')" required autofocus autocomplete="username"
-                style="width: 100%; padding: 12px 20px; margin: 8px 0; border: 1px solid #ccc; box-sizing: border-box;">
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-        </div>
-
-        <!-- Password -->
-        <div class="mt-4">
-            <label for="password"><b>Contraseña</b></label>
-            <input type="password" id="password" class="block mt-1 w-full" name="password" required autocomplete="current-password"
-                style="width: 100%; padding: 12px 20px; margin: 8px 0; border: 1px solid #ccc; box-sizing: border-box;">
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
-
-        <!-- Remember Me -->
-        <div class="block mt-4">
-            <label for="remember_me" class="inline-flex items-center">
-                <input id="remember_me" type="checkbox" name="remember" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" />
-                <span class="ml-2 text-sm text-gray-600">{{ __('Recordarme') }}</span>
-            </label>
-        </div>
-
-        <div class="container" style="padding: 16px; background-color: #f1f1f1; margin-top: 16px;">
-            <button type="submit" style="background-color: #04AA6D; color: white; padding: 14px 20px; border: none; cursor: pointer; width: 100%; margin: 8px 0;">Iniciar Sesión</button>
-            @if (Route::has('password.request'))
-                <span class="psw" style="float: right; padding-top: 16px;">
-                    <a href="{{ route('password.request') }}">¿Olvidaste tu contraseña?</a>
-                </span>
-            @endif
-        </div>
-    </form>
+    </html>
 </x-guest-layout>

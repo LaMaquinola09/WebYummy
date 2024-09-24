@@ -15,8 +15,6 @@
                     <!-- Aquí puedes agregar contenido si es necesario -->
                 </div>
 
-
-
                 <form class="formulario" aria-label="Formulario de Inicio de Sesión" method="POST"
                     action="{{ route('login') }}">
                     @csrf

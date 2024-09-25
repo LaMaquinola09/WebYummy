@@ -11,6 +11,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use Illuminate\Validation\ValidationException; // Importar la excepción
 
 class AuthenticatedSessionController extends Controller
 {
@@ -27,8 +28,15 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
-        // Autenticar al usuario
-        $request->authenticate();
+        try {
+            // Autenticar al usuario
+            $request->authenticate();
+        } catch (ValidationException $e) {
+            // Redirigir de nuevo al login con un mensaje de error personalizado
+            return redirect()->route('login')->withErrors([
+                'credentials' => 'Las credenciales ingresadas son incorrectas. Por favor, verifica tu correo y contraseña.',
+            ]);
+        }
 
         // Obtener el usuario autenticado
         $user = User::find($request->user()->id);

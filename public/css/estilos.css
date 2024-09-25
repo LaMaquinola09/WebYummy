@@ -10,69 +10,54 @@ html {
     box-sizing: border-box;
 }
 
+body {
+    margin: 0;
+    font-family: var(--fuente);
+}
+
 .contenedor {
-    margin: 0 auto;
+    display: flex;
+    flex-direction: column; /* Por defecto en columna */
     max-width: 1200px;
     width: 95%;
+    margin: 0 auto;
+    height: 100vh; /* Para que ocupe la altura completa */
 }
 
 .contenedor-formulario {
     display: flex;
-    flex-direction: column; /* Cambiado para que se adapte en móviles */
-    min-height: 80vh; /* Altura mínima para el contenedor */
+    flex: 1;
 }
 
 .imagen-formulario {
-  
     background-position: center; /* Centra la imagen */
     background-size: cover; /* Asegura que la imagen cubra todo el contenedor */
-    height: 130px; /* Ajusta la altura según tus necesidades */
-    width: 100%; /* Ancho completo del contenedor padre */
-    flex: 1; /* Permite que el contenedor sea flexible si es necesario */
-    position: relative; /* Para contenido adicional */
-    overflow: hidden; /* Evita que el contenido se desborde */
-}
-
-/* Hacer que la imagen sea responsiva */
-@media (max-width: 768px) {
-    .imagen-formulario {
-        height: 150px; /* Ajusta la altura para pantallas más pequeñas */
-    }
-}
-
-
-
-
-.imagen-formulario::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: linear-gradient(
-        to right,
-        rgba(141, 169, 196, 0.5),
-        rgba(19, 64, 116, 0.5)
-    );
-}
-
-@media (min-width: 768px) {
-    .contenedor-formulario {
-        flex-direction: row; /* Cambia a fila en pantallas grandes */
-    }
-    .imagen-formulario {
-        height: auto; /* Mantén esta propiedad si deseas que la imagen se ajuste */
-        background-position: right;
-    }
+    width: 50%; /* Ancho de la imagen en pantallas grandes */
+    height: 80%; /* Altura dinámica */
 }
 
 .formulario {
     padding: 60px; /* Aumentado para más espacio */
     background-color: var(--azul);
-    flex: 1; /* Para que el formulario ocupe espacio disponible */
-    min-height: 350px; /* Ajusta este valor según lo necesites */
-    /* o utiliza height: 100%; para que ocupe todo el espacio disponible */
+    width: 50%; /* Ancho del formulario en pantallas grandes */
+    display: flex;
+    flex-direction: column; /* Para alinear los elementos verticalmente */
+    height: 80%; /* Altura dinámica */
+}
+
+@media (max-width: 768px) {
+    .contenedor-formulario {
+        flex-direction: column; /* Cambiar a columna en pantallas pequeñas */
+    }
+
+    .imagen-formulario,
+    .formulario {
+        width: 100%; /* Ancho completo en pantallas pequeñas */
+    }
+
+    .imagen-formulario {
+        height: 150px; /* Ajusta la altura para pantallas más pequeñas */
+    }
 }
 
 .texto-formulario h2,

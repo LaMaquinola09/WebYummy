@@ -15,8 +15,7 @@
                     <!-- Aquí puedes agregar contenido si es necesario -->
                 </div>
 
-                <form class="formulario" aria-label="Formulario de Inicio de Sesión" method="POST"
-                    action="{{ route('login') }}">
+                <form class="formulario" aria-label="Formulario de Inicio de Sesión" method="POST" action="{{ route('login') }}">
                     @csrf
                     <div class="texto-formulario">
                         <h2>Bienvenido de nuevo</h2>
@@ -47,8 +46,7 @@
                     </div>
                     <div class="input">
                         <label for="password">Contraseña</label>
-                        <input type="password" id="password" name="password" placeholder="Ingresa tu contraseña"
-                            required>
+                        <input type="password" id="password" name="password" placeholder="Ingresa tu contraseña" required>
                         <x-input-error :messages="$errors->get('password')" class="mt-2" />
                     </div>
                     <div class="password-olvidada">
@@ -57,8 +55,7 @@
                         @endif
                     </div>
                     <div class="input">
-                        <input type="submit" value="Iniciar Sesión"
-                            style="background-color: #04AA6D; color: white; padding: 14px 20px; border: none; cursor: pointer; width: 100%;">
+                        <input type="submit" value="Iniciar Sesión" style="background-color: #04AA6D; color: white; padding: 14px 20px; border: none; cursor: pointer; width: 100%;">
                     </div>
                 </form>
             </div>

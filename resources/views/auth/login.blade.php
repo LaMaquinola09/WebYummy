@@ -21,8 +21,24 @@
                     <div class="texto-formulario">
                         <h2>Bienvenido de nuevo</h2>
                         <p>Inicia sesión con tu cuenta</p>
-     
 
+                        <!-- Mostrar mensajes de error -->
+                        @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                        @endif
+
+                        <!-- Mostrar mensajes de sesión -->
+                        @if (session('estado'))
+                        <div class="alert alert-danger">
+                            {{ session('estado') }}
+                        </div>
+                        @endif
                     </div>
                     <div class="input">
                         <label for="email">Email</label>

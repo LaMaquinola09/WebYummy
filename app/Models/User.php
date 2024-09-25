@@ -27,9 +27,9 @@ class User extends Authenticatable
 
 
     public function restaurante()
-{
-    return $this->hasOne(Restaurante::class);
-}
+    {
+        return $this->hasOne(Restaurante::class);
+    }
 
 
 
@@ -52,15 +52,4 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-
-
-
-
-    public function user()
-{
-    return $this->belongsTo(User::class);
-}
-
-
-
 }

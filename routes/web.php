@@ -31,20 +31,21 @@ Route::post('/solicitudes', [SolicitudController::class, 'store'])->name('solici
 
 
 // Ruta para almacenar los menus
-
-
-
 Route::get('/menu', [MenuItemController::class, 'index'])->name('menu.index');
-
 route::get('/nuevoplato', [MenuItemController::class, 'create'])->name('menu.nuevoplato');
-
 route::post('store', [MenuItemController::class, 'store'])->name('menu.store');
-
-
 route::get('menu/{id}', [MenuItemController::class, 'show'])->name('menu.show');
 route::get('menu/{id}/edit', [MenuItemController::class, 'edit'])->name('menu.edit');
 Route::put('menu/{id}', [MenuItemController::class, 'update'])->name('menu.update');
 route::delete('menu/{id}', [MenuItemController::class, 'destroy'])->name('menu.destroy');
+
+
+
+
+
+
+
+
 
 
 

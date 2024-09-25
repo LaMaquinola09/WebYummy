@@ -47,6 +47,14 @@
                         {{ __('Mi Menú') }}
                     </x-responsive-nav-link>
 
+
+
+                    <x-responsive-nav-link :href="route('menu.index')" :active="request()->routeIs('menu.index')"
+                        class="btn btn-warning">
+                        {{ __('Pedidos') }}
+                    </x-responsive-nav-link>
+
+
                     @endif
                 </div>
             </div>
@@ -104,8 +112,15 @@
 
 
         @if(Auth::user()->tipo === 'restaurante')
-        <x-responsive-nav-link :href="route('menu.index')" :active="request()->routeIs('menu.index')" class="btn btn-warning">
+        <x-responsive-nav-link :href="route('menu.index')" :active="request()->routeIs('menu.index')"
+            class="btn btn-warning">
             {{ __('Mi Menú') }}
+        </x-responsive-nav-link>
+
+
+        <x-responsive-nav-link :href="route('menu.index')" :active="request()->routeIs('menu.index')"
+            class="btn btn-warning">
+            {{ __('Pedidos') }}
         </x-responsive-nav-link>
         @endif
 

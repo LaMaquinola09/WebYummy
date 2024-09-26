@@ -19,7 +19,7 @@
 
         <div class="dropdown ms-3">
             <!-- Agregamos margen izquierdo -->
-            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+            <button class="btn  dropdown-toggle" type="button" data-bs-toggle="dropdown"
                 aria-expanded="false">
                 Reportes
             </button>
@@ -92,7 +92,7 @@
 
 /* Estilos para el menú desplegable */
 .dropdown-menu {
-    background-color: #495057;
+    background-color: #F87013;
 }
 
 .dropdown-item {
@@ -100,6 +100,6 @@
 }
 
 .dropdown-item:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: #F87013;
 }
 </style>

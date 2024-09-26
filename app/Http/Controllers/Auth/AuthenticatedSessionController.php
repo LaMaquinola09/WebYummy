@@ -53,10 +53,10 @@ class AuthenticatedSessionController extends Controller
             $restaurant = $user->restaurante;
 
             if ($restaurant) {
-
-                $fecha_activo = new DateTime($restaurant->active_at);
-                $hoy = date('Y-m-d H:i:s');
-                $dias = $fecha_activo->diff($hoy);
+                // Usa \DateTime para referenciar la clase DateTime de PHP
+                $fecha_activo = new \DateTime($restaurant->active_at);
+                $hoy = new \DateTime(); // Crear un objeto DateTime para la fecha actual
+                $dias = $fecha_activo->diff($hoy)->days; // Calcular la diferencia en días
 
                 // Verificar si el restaurante está en estado pendiente
                 if ($restaurant->estado != 'Activo') {
@@ -69,11 +69,11 @@ class AuthenticatedSessionController extends Controller
                     return redirect()->route('login')->withErrors([
                         'estado' => 'Su restaurante no está activo en el sistema. Por favor, contacte al administrador.',
                     ]);
-                } else if($dias >= 15) {
-                    // Almacenar los restaurantes pendientes en la sesión
-                    session(['estado' => 'Su restaurante no está activo en el sistema. Por favor, contacte al administrador.']);
-                    // Redirigir al login con un mensaje de error
-                    return redirect()->route('pay-fee');
+                } else if ($dias >= 15) {
+                    // Redirigir a la ruta de pago si han pasado más de 15 días
+                    return redirect()->route('pay-fee')->withErrors([
+                        'estado' => 'Han pasado más de 15 días desde que su restaurante estuvo activo. Debe realizar un pago.',
+                    ]);
                 }
             } else {
                 // Manejar el caso donde no hay un restaurante asociado al usuario

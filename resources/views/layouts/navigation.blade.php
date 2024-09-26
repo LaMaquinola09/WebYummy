@@ -40,19 +40,6 @@
 
                 <!-- Navigation Links (Desktop) -->
                 <div class="hidden sm:flex space-x-8 sm:ml-10 items-center">
-                    @if(Auth::user()->tipo === 'restaurante')
-
-                    <x-responsive-nav-link :href="route('menu.index')" :active="request()->routeIs('menu.index')"
-                        class="btn btn-warning">
-                        <x-responsive-nav-link :href="route('menu.index')" :active="request()->routeIs('menu.index')"
-                            class="btn btn-warning">
-                            {{ __('Mi Menú') }}
-                        </x-responsive-nav-link>
-                        <x-responsive-nav-link :href="route('pedidos.index')"
-                            :active="request()->routeIs('pedidos.index')" class="btn btn-warning">
-                            {{ __('Pedidos') }}
-                        </x-responsive-nav-link>
-                        @endif
 
                         @if(Auth::user()->tipo === 'admin')
                         <x-responsive-nav-link :href="route('restaurantes.index')"
@@ -67,10 +54,7 @@
                             :active="request()->routeIs('repartidores.index')" class="btn btn-warning">
                             {{ __('Repartidores') }}
                         </x-responsive-nav-link>
-                    </x-responsive-nav-link>
-
-
-                    @endif
+                        @endif
                 </div>
 
                 <!-- User Profile Dropdown and Logout -->
@@ -127,17 +111,6 @@
 
     <!-- Responsive Menu (Mobile) -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
-        @if(Auth::user()->tipo === 'restaurante')
-        <x-responsive-nav-link :href="route('menu.index')" :active="request()->routeIs('menu.index')"
-            class="block text-white px-4 py-2">
-            <!-- <x-responsive-nav-link :href="route('menu.index')" :active="request()->routeIs('menu.index')"
-            class="btn btn-warning">
-            {{ __('Mi Menú') }}
-        </x-responsive-nav-link>
-        <x-responsive-nav-link :href="route('pedidos.index')" :active="request()->routeIs('pedidos.index')" class="block text-white px-4 py-2">
-            {{ __('Pedidos') }}
-        </x-responsive-nav-link>
-        @endif
 
         @if(Auth::user()->tipo === 'admin')
         <x-responsive-nav-link :href="route('restaurantes.index')" :active="request()->routeIs('restaurantes.index')" class="block text-white px-4 py-2">
@@ -149,7 +122,7 @@
         <x-responsive-nav-link :href="route('repartidores.index')" :active="request()->routeIs('repartidores.index')" class="block text-white px-4 py-2">
             {{ __('Repartidores') }}
         </x-responsive-nav-link>
-        @endif
+        @endif 
 
         <!-- Profile and Logout (Mobile) -->
             <div class="pt-4 pb-1 border-t border-gray-200">

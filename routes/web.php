@@ -6,6 +6,7 @@ use App\Http\Controllers\RepartidorDashboardController; // Asegúrate de crear e
 use App\Http\Controllers\RestauranteDashboardController; // Asegúrate de crear este controlador
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PedidoController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\RestauranteController;
 use App\Http\Controllers\RepartidorController;
 use App\Http\Controllers\LegalController;
@@ -37,7 +38,6 @@ Route::put('menu/{id}', [MenuItemController::class, 'update'])->name('menu.updat
 route::delete('menu/{id}', [MenuItemController::class, 'destroy'])->name('menu.destroy');
 
 //Rutas para el pedidos
-
 Route::get('/pedidos', [PedidoController::class, 'index'])->name('pedidos.index');
 Route::put('/restaurant/{id}/update-status', [RestauranteController::class, 'updateStatus'])->name('restaurant.update.status');
 
@@ -63,9 +63,10 @@ Route::middleware('auth')->group(function () {
     
     
     // Rutas para Restaurantes
-    
+    Route::get('/restaurantes', [RestauranteController::class, 'index'])->name('restaurantes.index');
+    Route::get('/usuarios', [UserController::class, 'index'])->name('usuarios.index');
     // Rutas para Repartidores
-    Route::get('/repartidores', [RepartidorController::class, 'index'])->name('drivers');
+    Route::get('/repartidores', [RepartidorController::class, 'index'])->name('repartidores.index');
 });
 
 //Rutas para aviso de privacidad y términos y condiciones

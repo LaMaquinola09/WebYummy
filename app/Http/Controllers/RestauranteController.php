@@ -11,10 +11,13 @@ class RestauranteController extends Controller
 {
     public function index()
     {
-        // Retorna la vista para los restaurantes
-        return view('restaurantes.index');
+        // Obtener todos los restaurantes independientemente de su estado
+        $restaurants = Restaurante::all();
+    
+        // Retorna la vista para los restaurantes y pasa los datos
+        return view('restaurantes.index', compact('restaurants'));
     }
-
+    
     public function updateStatus(Request $request, $id)
     {
         // Obtener el usuario autenticado

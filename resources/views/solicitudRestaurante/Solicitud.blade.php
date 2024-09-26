@@ -231,7 +231,7 @@
                         id="solicitud-password-confirmation" class="solicitud-input" required>
                 </div>
             </div>
-
+            <br><br>
             <p class="solicitud-subtext">Ingresa los datos de tu negocio</p>
             <hr class="solicitud-divider">
 

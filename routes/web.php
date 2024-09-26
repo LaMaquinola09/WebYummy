@@ -43,15 +43,7 @@ route::delete('menu/{id}', [MenuItemController::class, 'destroy'])->name('menu.d
 
 
 //Rutas para el pedidos
-
 Route::get('/pedidos', [PedidoController::class, 'index'])->name('pedidos.index');
-
-
-
-
-
-
-
 
 
 

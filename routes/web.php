@@ -14,13 +14,12 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SolicitudController;
 use App\Http\Controllers\MenuItemController;
 
-
-
 Route::get('/', function () {
     return view('welcome');
 });
 
-
+Route::get('/notificacion', [SolicitudController::class, 'index'])->name('solicitudRestaurante.notificacion');
+Route::get('/restaurantes/pay-fee', [RestauranteController::class, 'pay_fee'])->name('restaurantes.pay-fee');
 Route::get('/notificacion', [SolicitudController::class, 'index'])->name('solicitudRestaurante.notificacion');
 
 // Ruta para mostrar el formulario de registro de solicitud
@@ -28,8 +27,6 @@ Route::get('/registrosolicitud', [SolicitudController::class, 'create'])->name('
 
 // Ruta para almacenar la solicitud
 Route::post('/solicitudes', [SolicitudController::class, 'store'])->name('solicitudes.store');
-
-
 
 // Ruta para almacenar los menus
 Route::get('/menu', [MenuItemController::class, 'index'])->name('menu.index');
@@ -40,16 +37,8 @@ route::get('menu/{id}/edit', [MenuItemController::class, 'edit'])->name('menu.ed
 Route::put('menu/{id}', [MenuItemController::class, 'update'])->name('menu.update');
 route::delete('menu/{id}', [MenuItemController::class, 'destroy'])->name('menu.destroy');
 
-
-
-
 //Rutas para el pedidos
 Route::get('/pedidos', [PedidoController::class, 'index'])->name('pedidos.index');
-
-
-
-
-
 Route::put('/restaurant/{id}/update-status', [RestauranteController::class, 'updateStatus'])->name('restaurant.update.status');
 
 // Ruta general del dashboard

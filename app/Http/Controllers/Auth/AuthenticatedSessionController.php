@@ -53,6 +53,11 @@ class AuthenticatedSessionController extends Controller
             $restaurant = $user->restaurante;
 
             if ($restaurant) {
+
+                $fecha_activo = new DateTime($restaurant->active_at);
+                $hoy = date('Y-m-d H:i:s');
+                $dias = $fecha_activo->diff($hoy);
+
                 // Verificar si el restaurante está en estado pendiente
                 if ($restaurant->estado != 'Activo') {
                     // Cerrar la sesión si el restaurante no está activo
@@ -64,6 +69,11 @@ class AuthenticatedSessionController extends Controller
                     return redirect()->route('login')->withErrors([
                         'estado' => 'Su restaurante no está activo en el sistema. Por favor, contacte al administrador.',
                     ]);
+                } else if($dias >= 15) {
+                    // Almacenar los restaurantes pendientes en la sesión
+                    session(['estado' => 'Su restaurante no está activo en el sistema. Por favor, contacte al administrador.']);
+                    // Redirigir al login con un mensaje de error
+                    return redirect()->route('pay-fee');
                 }
             } else {
                 // Manejar el caso donde no hay un restaurante asociado al usuario
@@ -80,10 +90,12 @@ class AuthenticatedSessionController extends Controller
         if ($user->tipo == 'admin') {
             // Obtener los restaurantes pendientes
             $pendingRestaurants = Restaurante::where('estado', 'Pendiente')->with('user')->get();
-
+        
+            // Almacenar los restaurantes pendientes en la sesión
+            session(['pendingRestaurants' => $pendingRestaurants]);
+        
             return redirect()->intended(RouteServiceProvider::HOME_ADMIN)->with([
                 'user' => $user,
-                'pendingRestaurants' => $pendingRestaurants,
             ]);
         }
 

@@ -38,6 +38,10 @@
         <main>
             {{ $slot }}
         </main>
+
+        <footer class="footer">
+            @include('footer.footer')
+        </footer>
     </div>
 </body>
 

@@ -65,7 +65,7 @@ class SolicitudController extends Controller
             'telefono' => $request->telefono,
             'horario' => $request->hora_apertura . ' - ' . $request->hora_cierre,
             'estado' => 'Pendiente',
-            'categoria' => $request->categoria,
+            'categoria' => $request->categoria
         ]);
 
         return view('solicitudRestaurante.Solicitud')->with('success', 'Restaurante registrado con éxito');

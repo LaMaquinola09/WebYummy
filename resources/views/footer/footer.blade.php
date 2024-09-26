@@ -113,10 +113,10 @@ body {
         </div>
         <div class="footer-section">
             <h4>Contacto</h4>
-            <p>YUMMY Delivery</p>
+            <p>Yummy Inc.</p>
             <p>Ocosingo, Chiapas, México</p>
-            <p>Teléfono: +52 961 123 4567</p>
-            <p>Email: contacto@yummy.com</p>
+            <p>Teléfono: +52 919 228 1355</p>
+            <p>Email: teamsoudev@gmail.com</p>
         </div>
         <div class="footer-section">
             <h4>Síguenos</h4>

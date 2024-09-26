@@ -49,7 +49,7 @@
 
 
 
-                    <x-responsive-nav-link :href="route('menu.index')" :active="request()->routeIs('menu.index')"
+                    <x-responsive-nav-link :href="route('pedidos.index')" :active="request()->routeIs('pedidos.index')"
                         class="btn btn-warning">
                         {{ __('Pedidos') }}
                     </x-responsive-nav-link>
@@ -118,7 +118,7 @@
         </x-responsive-nav-link>
 
 
-        <x-responsive-nav-link :href="route('menu.index')" :active="request()->routeIs('menu.index')"
+        <x-responsive-nav-link :href="route('pedidos.index')" :active="request()->routeIs('pedidos.index')"
             class="btn btn-warning">
             {{ __('Pedidos') }}
         </x-responsive-nav-link>

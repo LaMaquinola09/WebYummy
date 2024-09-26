@@ -10,7 +10,7 @@ use App\Providers\RouteServiceProvider;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\ValidationException; // Importar excepción
+use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
 class AuthenticatedSessionController extends Controller
@@ -39,11 +39,17 @@ class AuthenticatedSessionController extends Controller
         }
 
         // Obtener el usuario autenticado
-        $user = User::find($request->user()->id);
+        $user = Auth::user(); // Asegúrate de usar el método Auth::user() para obtener al usuario autenticado
+
+        if (!$user) {
+            return redirect()->route('login')->withErrors([
+                'error' => 'No se ha iniciado sesión correctamente. Intente nuevamente.',
+            ]);
+        }
 
         // Si el usuario es un restaurante, verificar el estado de su restaurante
         if ($user->tipo == 'restaurante') {
-            // Obtener el restaurante asociado al usuario
+            // Verificar si el usuario tiene un restaurante asociado
             $restaurant = $user->restaurante;
 
             if ($restaurant) {

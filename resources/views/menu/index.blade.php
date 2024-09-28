@@ -2,141 +2,155 @@
     @include('header.header')
 
     <style>
-        /* Sección para personalizar los colores */
-        :root {
-            --color-encabezado-tabla: transparent; /* Sin color por defecto */
-            --color-texto-encabezado: inherit;     /* Hereda el color de texto general */
-            --color-resaltado-fila: #edf2f7;       /* Color de resaltado al pasar el ratón */
+    /* Sección para personalizar los colores */
+    :root {
+        --color-encabezado-tabla: transparent;
+        /* Sin color por defecto */
+        --color-texto-encabezado: inherit;
+        /* Hereda el color de texto general */
+        --color-resaltado-fila: #edf2f7;
+        /* Color de resaltado al pasar el ratón */
+    }
+
+    body {
+        background-color: #f7fafc;
+        /* Fondo suave */
+    }
+
+    .table {
+        border-collapse: collapse;
+        width: 100%;
+        table-layout: auto;
+        /* Permitir que las columnas se ajusten automáticamente */
+    }
+
+    .table th,
+    .table td {
+        padding: 1rem;
+        text-align: center;
+        /* Centrar contenido */
+    }
+
+    .table th {
+        background-color: rgba(0, 0, 0, 0.1);
+        /* Usa el color personalizado o transparente */
+        color: var(--color-texto-encabezado);
+        /* Usa el color de texto personalizado */
+    }
+
+    .table tr:hover {
+        background-color: var(--color-resaltado-fila);
+        /* Color de resaltado al pasar el ratón */
+    }
+
+    .bg-white {
+        box-shadow: 0 2px 4px c;
+        /* Sombra sutil */
+    }
+
+    .btn-custom {
+        display: inline-flex;
+        align-items: center;
+        padding: 12px 24px;
+        font-size: 16px;
+        font-weight: bold;
+        text-decoration: none;
+        color: white;
+        background-color: #f0ad4e;
+        /* Color de fondo amarillo */
+        border: none;
+        border-radius: 4px;
+        transition: background-color 0.3s, transform 0.2s;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        margin-bottom: 20px;
+    }
+
+    .btn-custom:hover {
+        background-color: #ec971f;
+        /* Color más oscuro al pasar el ratón */
+        transform: translateY(-2px);
+        /* Efecto de elevación */
+    }
+
+    .header-container {
+        display: flex;
+        justify-content: space-between;
+        /* Espacio entre título y botón */
+        align-items: center;
+        /* Alinear verticalmente */
+        margin-bottom: 20px;
+    }
+
+    .image-thumbnail {
+        width: 50px;
+        height: auto;
+    }
+
+    .btn-action {
+        padding: 8px 12px;
+        font-size: 14px;
+        font-weight: bold;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        transition: background-color 0.3s;
+        margin: 0 2px;
+    }
+
+    .btn-edit {
+        background-color: #ec860a;
+        /* Color para editar */
+    }
+
+    .btn-edit:hover {
+        background-color: #bd4c00;
+    }
+
+    .btn-delete {
+        background-color: #dc3545;
+        /* Color rojo */
+    }
+
+    .btn-delete:hover {
+        background-color: #c82333;
+    }
+
+    .btn-view {
+        background-color: #28a745;
+        /* Verde */
+    }
+
+    .btn-view:hover {
+        background-color: #218838;
+    }
+
+    /* Botón de habilitar/deshabilitar */
+    .btn-toggle[data-habilitado="true"] {
+        background-color: #dc3545;
+        /* Rojo para deshabilitar */
+    }
+
+    .btn-toggle[data-habilitado="false"] {
+        background-color: #28a745;
+        /* Verde para habilitar */
+    }
+
+    @media (max-width: 768px) {
+        .image-thumbnail {
+            width: 30px;
         }
 
-        body {
-            background-color: #f7fafc;
-            /* Fondo suave */
-        }
-
-        .table {
-            border-collapse: collapse;
-            width: 100%;
-            table-layout: auto;
-            /* Permitir que las columnas se ajusten automáticamente */
+        .btn-custom,
+        .btn-action {
+            padding: 8px 16px;
+            font-size: 14px;
         }
 
         .table th,
         .table td {
-            padding: 1rem;
-            text-align: center;
-            /* Centrar contenido */
+            padding: 0.5rem;
         }
-
-        .table th {
-            background-color: rgba(0, 0, 0, 0.1);
-            /* Usa el color personalizado o transparente */
-            color: var(--color-texto-encabezado);
-            /* Usa el color de texto personalizado */
-        }
-
-        .table tr:hover {
-            background-color: var(--color-resaltado-fila);
-            /* Color de resaltado al pasar el ratón */
-        }
-
-        .bg-white {
-            box-shadow: 0 2px 4px c;
-            /* Sombra sutil */
-        }
-
-        .btn-custom {
-            display: inline-flex;
-            align-items: center;
-            padding: 12px 24px;
-            font-size: 16px;
-            font-weight: bold;
-            text-decoration: none;
-            color: white;
-            background-color: #f0ad4e;
-            /* Color de fondo amarillo */
-            border: none;
-            border-radius: 4px;
-            transition: background-color 0.3s, transform 0.2s;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            margin-bottom: 20px;
-        }
-
-        .btn-custom:hover {
-            background-color: #ec971f;
-            /* Color más oscuro al pasar el ratón */
-            transform: translateY(-2px);
-            /* Efecto de elevación */
-        }
-
-        .header-container {
-            display: flex;
-            justify-content: space-between;
-            /* Espacio entre título y botón */
-            align-items: center;
-            /* Alinear verticalmente */
-            margin-bottom: 20px;
-        }
-
-        .image-thumbnail {
-            width: 50px;
-            height: auto;
-        }
-
-        .btn-action {
-            padding: 8px 12px;
-            font-size: 14px;
-            font-weight: bold;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            transition: background-color 0.3s;
-            margin: 0 2px;
-        }
-
-        .btn-edit {
-            background-color: #ec860a;
-            /* Color para editar */
-        }
-
-        .btn-edit:hover {
-            background-color: #bd4c00;
-        }
-
-        .btn-delete {
-            background-color: #dc3545;
-            /* Color rojo */
-        }
-
-        .btn-delete:hover {
-            background-color: #c82333;
-        }
-
-        .btn-view {
-            background-color: #28a745;
-            /* Verde */
-        }
-
-        .btn-view:hover {
-            background-color: #218838;
-        }
-
-        @media (max-width: 768px) {
-            .image-thumbnail {
-                width: 30px;
-            }
-
-            .btn-custom,
-            .btn-action {
-                padding: 8px 16px;
-                font-size: 14px;
-            }
-
-            .table th,
-            .table td {
-                padding: 0.5rem;
-            }
-        }
+    }
     </style>
 
     <div class="flex flex-col min-h-screen">
@@ -188,7 +202,13 @@
                                         <button type="submit" class="btn-action btn-delete"
                                             onclick="return confirm('¿Estás seguro de que deseas eliminar este plato?');">Eliminar</button>
                                     </form>
-                                    <a href="{{ route('menu.show', $item->id) }}" class="btn-action btn-view">Ver más</a>
+                                    <a href="{{ route('menu.show', $item->id) }}" class="btn-action btn-view">Ver
+                                        más</a>
+                                    <!-- Botón para habilitar/deshabilitar -->
+                                    <button class="btn-action btn-toggle"
+                                        data-habilitado="{{ $item->habilitado ? 'true' : 'false' }}">
+                                        {{ $item->habilitado ? 'Deshabilitar' : 'Habilitar' }}
+                                    </button>
                                 </td>
                             </tr>
                             @empty
@@ -203,6 +223,30 @@
         </main>
 
         <!-- Footer -->
-
     </div>
+
+    <!-- Script para habilitar/deshabilitar platos en el frontend -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const toggleButtons = document.querySelectorAll('.btn-toggle');
+
+        toggleButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const habilitado = button.getAttribute('data-habilitado') === 'true';
+
+                // Alternar estado
+                const nuevoEstado = !habilitado;
+                button.setAttribute('data-habilitado', nuevoEstado);
+                button.textContent = nuevoEstado ? 'Deshabilitar' : 'Habilitar';
+
+                // Cambiar el color del botón según el estado
+                if (nuevoEstado) {
+                    button.style.backgroundColor = '#dc3545'; // Rojo para deshabilitar
+                } else {
+                    button.style.backgroundColor = '#28a745'; // Verde para habilitar
+                }
+            });
+        });
+    });
+    </script>
 </x-app-layout>

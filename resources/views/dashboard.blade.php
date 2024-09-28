@@ -10,7 +10,7 @@
                     {{ __('Bienvenido al Dashboard de Comida') }}
                 </h1>
                 <p class="mt-2 text-gray-600 text-center">
-                    {{ __("Aquí puedes gestionar tu aplicación de comida, revisar tus configuraciones y ver las estadísticas.") }}
+                    {{ __("configuraciones y ver las estadísticas.") }}
                 </p>
 
                 <!-- Contenido adicional del Dashboard -->
@@ -120,7 +120,7 @@
                                             <div class="col-8">
                                                 <div class="numbers">
                                                     <p class="text-sm mb-0 text-uppercase font-bold text-gray-500">
-                                                        Órdenes Pendientes
+                                                        Pedidos Entregados
                                                     </p>
                                                     <h5 class="font-bold text-2xl text-orange-600">24</h5>
                                                     <p class="mb-0">
@@ -184,7 +184,7 @@
                                             <div class="col-8">
                                                 <div class="numbers">
                                                     <p class="text-sm mb-0 text-uppercase font-bold text-gray-500">
-                                                        Ingredientes Disponibles
+                                                        Pedidos Pendientes
                                                     </p>
                                                     <h5 class="font-bold text-2xl text-orange-600">24</h5>
                                                     <p class="mb-0">

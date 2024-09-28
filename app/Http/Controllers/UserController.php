@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+// use App\Models\User;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -14,7 +15,7 @@ class UserController extends Controller
     public function index()
     {
         // Obtener todos los usuarios desde la base de datos
-        $usuarios = \App\Models\User::all();
+        $usuarios = \App\Models\User::where('tipo', 'usuario')->get();
 
         // Pasar los usuarios a la vista
         return view('usuarios.index', compact('usuarios'));

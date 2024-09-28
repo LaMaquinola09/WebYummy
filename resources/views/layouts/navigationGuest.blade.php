@@ -10,7 +10,7 @@
                         <span class="yummy-brand">YUMMY</span>
                     </a>
                     <!-- Navigation Links -->
-                    <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex" style="cursor: pointer;">
                         <x-nav-link :href="route('Registrosolicitud')" :active="request()->routeIs('restaurants')" class="btn-custom">
                             {{ __('Solicitud de registro de restaurantes') }}
                         </x-nav-link>

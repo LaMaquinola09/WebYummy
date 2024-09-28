@@ -10,11 +10,11 @@
                 <div class="p-6 text-gray-900">
                     {{ __("Lista de restaurantes existentes") }}
                 </div>
-                @if(session('success'))
+                <!-- @if(session('success'))
                     <div class="bg-green-500 text-white p-4 rounded mb-4">
                         {{ session('success') }}
                     </div>
-                @endif
+                @endif -->
                 @if(isset($restaurants) && count($restaurants) > 0)
                     <div class="overflow-x-auto">
                         <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
@@ -26,7 +26,6 @@
                                     <th class="text-left py-3 px-4 uppercase font-semibold text-sm text-gray-600">Horario</th>
                                     <th class="text-left py-3 px-4 uppercase font-semibold text-sm text-gray-600">Categoría</th>
                                     <th class="text-left py-3 px-4 uppercase font-semibold text-sm text-gray-600">Estado</th>
-                                    <th class="text-left py-3 px-4 uppercase font-semibold text-sm text-gray-600">Administrador</th>
                                     <th class="text-left py-3 px-4 uppercase font-semibold text-sm text-gray-600">Email</th>
                                     <th class="text-left py-3 px-4 uppercase font-semibold text-sm text-gray-600">Editar</th>
                                 </tr>
@@ -40,10 +39,9 @@
                                         <td class="py-3 px-4">{{ $restaurante->horario }}</td>
                                         <td class="py-3 px-4">{{ $restaurante->categoria }}</td>
                                         <td class="py-3 px-4">{{ $restaurante->estado }}</td>
-                                        <td class="py-3 px-4">{{ $restaurante->user->name ?? 'Sin asignar' }}</td>
                                         <td class="py-3 px-4">{{ $restaurante->user->email ?? 'Sin asignar' }}</td>
                                         <td class="py-3 px-4">
-                                            <a href="#" class="text-blue-500">Editar</a>
+                                            <a href="{{ route('restaurantes.edit', $restaurante->id) }}" class="text-blue-500">Editar</a>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -58,4 +56,26 @@
             </div>
         </div>
     </div>
+
+    <!-- Mostrar alertas de éxito o error -->
+    <script>
+        @if(session('success'))
+            Swal.fire({
+                title: '¡Éxito!',
+                text: "{{ session('success') }}",
+                icon: 'success',
+                confirmButtonText: 'Aceptar'
+            });
+        @endif
+
+        @if(session('error'))
+            Swal.fire({
+                title: '¡Error!',
+                text: "{{ session('error') }}",
+                icon: 'error',
+                confirmButtonText: 'Aceptar'
+            });
+        @endif
+    </script>
+
 </x-app-layout>

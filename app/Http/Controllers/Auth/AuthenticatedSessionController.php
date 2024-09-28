@@ -53,6 +53,11 @@ class AuthenticatedSessionController extends Controller
             $restaurant = $user->restaurante;
 
             if ($restaurant) {
+                // Usa \DateTime para referenciar la clase DateTime de PHP
+                $fecha_activo = new \DateTime($restaurant->active_at);
+                $hoy = new \DateTime(); // Crear un objeto DateTime para la fecha actual
+                $dias = $fecha_activo->diff($hoy)->days; // Calcular la diferencia en días
+
                 // Verificar si el restaurante está en estado pendiente
                 if ($restaurant->estado != 'Activo') {
                     // Cerrar la sesión si el restaurante no está activo
@@ -63,6 +68,11 @@ class AuthenticatedSessionController extends Controller
                     // Redirigir al login con un mensaje de error
                     return redirect()->route('login')->withErrors([
                         'estado' => 'Su restaurante no está activo en el sistema. Por favor, contacte al administrador.',
+                    ]);
+                } else if ($dias >= 15) {
+                    // Redirigir a la ruta de pago si han pasado más de 15 días
+                    return redirect()->route('pay-fee')->withErrors([
+                        'estado' => 'Han pasado más de 15 días desde que su restaurante estuvo activo. Debe realizar un pago.',
                     ]);
                 }
             } else {
@@ -80,10 +90,12 @@ class AuthenticatedSessionController extends Controller
         if ($user->tipo == 'admin') {
             // Obtener los restaurantes pendientes
             $pendingRestaurants = Restaurante::where('estado', 'Pendiente')->with('user')->get();
-
+        
+            // Almacenar los restaurantes pendientes en la sesión
+            session(['pendingRestaurants' => $pendingRestaurants]);
+        
             return redirect()->intended(RouteServiceProvider::HOME_ADMIN)->with([
                 'user' => $user,
-                'pendingRestaurants' => $pendingRestaurants,
             ]);
         }
 

@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Repartidores') }}
+            {{ __('repartidores') }}
         </h2>
     </x-slot>
 
@@ -34,22 +34,22 @@
                                 <th class="py-3 px-6 text-left">#</th>
                                 <th class="py-3 px-6 text-left">Nombre</th>
                                 <th class="py-3 px-6 text-left">Email</th>
-                                <th class="py-3 px-6 text-left">Teléfono</th>
-                                <th class="py-3 px-6 text-left">Placa Vehículo</th>
-                                <th class="py-3 px-6 text-center">Acciones</th>
+                                <th class="py-3 px-6 text-left">Dirección</th>
+                                <th class="py-3 px-6 text-left">Telefono</th>
+                                <th class="py-3 px-6 text-center"></th>
                             </tr>
                         </thead>
                         <tbody class="text-gray-600 text-sm font-light">
-                            
+                            @foreach($repartidores as $repartidor)
                                 <tr class="border-b border-gray-200 hover:bg-gray-100">
-                                    <th class="py-3 px-6"></th>
-                                    <td class="py-3 px-6"></td>
-                                    <td class="py-3 px-6"></td>
-                                    <td class="py-3 px-6"></td>
-                                    <td class="py-3 px-6"></td>
+                                    <th class="py-3 px-6">{{ $repartidor->id }}</th>
+                                    <td class="py-3 px-6">{{ $repartidor->nombre }}</td>
+                                    <td class="py-3 px-6">{{ $repartidor->email }}</td>
+                                    <td class="py-3 px-6">{{ $repartidor->direccion }}</td>
+                                    <td class="py-3 px-6">{{ $repartidor->telefono }}</td>
                                     
                                 </tr>
-                            
+                            @endforeach
                         </tbody>
                     </table>
                 </div>

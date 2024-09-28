@@ -23,13 +23,14 @@
 
                         <!-- Mostrar mensajes de error -->
                         @if ($errors->any())
-                        <div class="alert alert-danger">
-                            <ul>
+                        <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4" role="alert">
+                            <ul class="list-disc list-inside">
                                 @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
+                                    <li>{{ $error }}</li>
                                 @endforeach
                             </ul>
                         </div>
+
                         @endif
 
                         <!-- Mostrar mensajes de sesión -->

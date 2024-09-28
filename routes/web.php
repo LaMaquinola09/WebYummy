@@ -67,6 +67,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/usuarios', [UserController::class, 'index'])->name('usuarios.index');
     // Rutas para Repartidores
     Route::get('/repartidores', [RepartidorController::class, 'index'])->name('repartidores.index');
+
+    //Rutas para editar restaurantes
+    Route::get('/restaurantes/{id}/edit', [RestauranteController::class, 'edit'])->name('restaurantes.edit');
+    Route::put('/restaurantes/{id}', [RestauranteController::class, 'update'])->name('restaurantes.update');
 });
 
 //Rutas para aviso de privacidad y términos y condiciones

@@ -2,33 +2,47 @@
     @include('header.header')
 
     <style>
+        /* Sección para personalizar los colores */
+        :root {
+            --color-encabezado-tabla: transparent; /* Sin color por defecto */
+            --color-texto-encabezado: inherit;     /* Hereda el color de texto general */
+            --color-resaltado-fila: #edf2f7;       /* Color de resaltado al pasar el ratón */
+        }
+
         body {
-            background-color: #f7fafc; /* Fondo suave */
+            background-color: #f7fafc;
+            /* Fondo suave */
         }
 
         .table {
             border-collapse: collapse;
             width: 100%;
-            table-layout: auto; /* Permitir que las columnas se ajusten automáticamente */
+            table-layout: auto;
+            /* Permitir que las columnas se ajusten automáticamente */
         }
 
         .table th,
         .table td {
             padding: 1rem;
-            text-align: center; /* Centrar contenido */
+            text-align: center;
+            /* Centrar contenido */
         }
 
         .table th {
-            background-color: #4a5568; /* Color de encabezado */
-            color: white;
+            background-color: rgba(0, 0, 0, 0.1);
+            /* Usa el color personalizado o transparente */
+            color: var(--color-texto-encabezado);
+            /* Usa el color de texto personalizado */
         }
 
         .table tr:hover {
-            background-color: #edf2f7; /* Color de resaltado al pasar el ratón */
+            background-color: var(--color-resaltado-fila);
+            /* Color de resaltado al pasar el ratón */
         }
 
         .bg-white {
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+            box-shadow: 0 2px 4px c;
+            /* Sombra sutil */
         }
 
         .btn-custom {
@@ -39,28 +53,33 @@
             font-weight: bold;
             text-decoration: none;
             color: white;
-            background-color: #f0ad4e; /* Color de fondo amarillo */
+            background-color: #f0ad4e;
+            /* Color de fondo amarillo */
             border: none;
             border-radius: 4px;
             transition: background-color 0.3s, transform 0.2s;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            margin-bottom: 20px; /* Espacio debajo del botón */
+            margin-bottom: 20px;
         }
 
         .btn-custom:hover {
-            background-color: #ec971f; /* Color más oscuro al pasar el ratón */
-            transform: translateY(-2px); /* Efecto de elevación */
+            background-color: #ec971f;
+            /* Color más oscuro al pasar el ratón */
+            transform: translateY(-2px);
+            /* Efecto de elevación */
         }
 
         .header-container {
             display: flex;
-            justify-content: space-between; /* Espacio entre título y botón */
-            align-items: center; /* Alinear verticalmente */
-            margin-bottom: 20px; /* Espaciado superior */
+            justify-content: space-between;
+            /* Espacio entre título y botón */
+            align-items: center;
+            /* Alinear verticalmente */
+            margin-bottom: 20px;
         }
 
         .image-thumbnail {
-            width: 50px; /* Ajusta el tamaño de la imagen según lo necesites */
+            width: 50px;
             height: auto;
         }
 
@@ -72,11 +91,12 @@
             border: none;
             border-radius: 4px;
             transition: background-color 0.3s;
-            margin: 0 2px; /* Espaciado entre los botones de acción */
+            margin: 0 2px;
         }
 
         .btn-edit {
-            background-color: #ec860a; /* Azul */
+            background-color: #ec860a;
+            /* Color para editar */
         }
 
         .btn-edit:hover {
@@ -84,7 +104,8 @@
         }
 
         .btn-delete {
-            background-color: #dc3545; /* Rojo */
+            background-color: #dc3545;
+            /* Color rojo */
         }
 
         .btn-delete:hover {
@@ -92,7 +113,8 @@
         }
 
         .btn-view {
-            background-color: #28a745; /* Verde */
+            background-color: #28a745;
+            /* Verde */
         }
 
         .btn-view:hover {
@@ -101,23 +123,24 @@
 
         @media (max-width: 768px) {
             .image-thumbnail {
-                width: 30px; /* Reduzca el tamaño de la imagen en pantallas pequeñas */
+                width: 30px;
             }
 
             .btn-custom,
             .btn-action {
-                padding: 8px 16px; /* Ajusta el padding para botones en pantallas pequeñas */
-                font-size: 14px; /* Ajusta el tamaño de la fuente */
+                padding: 8px 16px;
+                font-size: 14px;
             }
 
             .table th,
             .table td {
-                padding: 0.5rem; /* Ajusta el padding para celdas en pantallas pequeñas */
+                padding: 0.5rem;
             }
         }
     </style>
 
-    <div class="flex flex-col min-h-screen"> <!-- Flexbox para toda la pantalla -->
+    <div class="flex flex-col min-h-screen">
+        <!-- Flexbox para toda la pantalla -->
         <main class="flex-grow p-6 flex justify-center bg-gray-100">
             <div class="bg-white rounded-lg shadow-lg p-4 w-full mb-20">
                 <h3 class="text-3xl font-bold text-gray-800 text-center">
@@ -128,10 +151,11 @@
                     <a href="{{ route('menu.nuevoplato') }}" class="btn-custom">Registrar Nuevo Plato</a>
                 </div>
 
-                <div class="table-responsive"> <!-- Contenedor responsivo para la tabla -->
+                <div class="table-responsive">
+                    <!-- Contenedor responsivo para la tabla -->
                     <table class="table">
                         <thead>
-                            <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+                            <tr class="uppercase text-sm leading-normal">
                                 <th scope="col" class="py-3 px-6 text-left">#</th>
                                 <th scope="col" class="py-3 px-6 text-left">Imagen</th>
                                 <th scope="col" class="py-3 px-6 text-left">Nombre</th>
@@ -146,7 +170,8 @@
                                 <th scope="row" class="py-3 px-6">{{ $loop->iteration }}</th>
                                 <td class="py-3 px-6">
                                     @if($item->imagen_url)
-                                    <img src="{{ asset($item->imagen_url) }}" alt="{{ $item->nombre_producto }}" class="image-thumbnail">
+                                    <img src="{{ asset($item->imagen_url) }}" alt="{{ $item->nombre_producto }}"
+                                        class="image-thumbnail">
                                     @else
                                     Sin imagen
                                     @endif
@@ -156,10 +181,12 @@
                                 <td class="py-3 px-6">${{ number_format($item->precio, 2) }}</td>
                                 <td class="py-3 px-6 text-center">
                                     <a href="{{ route('menu.edit', $item->id) }}" class="btn-action btn-edit">Editar</a>
-                                    <form action="{{ route('menu.destroy', $item->id) }}" method="POST" style="display:inline;">
+                                    <form action="{{ route('menu.destroy', $item->id) }}" method="POST"
+                                        style="display:inline;">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn-action btn-delete" onclick="return confirm('¿Estás seguro de que deseas eliminar este plato?');">Eliminar</button>
+                                        <button type="submit" class="btn-action btn-delete"
+                                            onclick="return confirm('¿Estás seguro de que deseas eliminar este plato?');">Eliminar</button>
                                     </form>
                                     <a href="{{ route('menu.show', $item->id) }}" class="btn-action btn-view">Ver más</a>
                                 </td>
@@ -176,6 +203,6 @@
         </main>
 
         <!-- Footer -->
-       
+
     </div>
 </x-app-layout>

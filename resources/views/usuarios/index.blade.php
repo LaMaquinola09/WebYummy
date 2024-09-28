@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Usuarios') }}
+            {{ __('Lista de Usuarios') }}
         </h2>
     </x-slot>
 
@@ -57,8 +57,8 @@
                                 <th class="py-3 px-6 text-left">#</th>
                                 <th class="py-3 px-6 text-left">Nombre</th>
                                 <th class="py-3 px-6 text-left">Email</th>
-                                <th class="py-3 px-6 text-left">Rol</th>
-                                <th class="py-3 px-6 text-center">Acciones</th>
+                                <th class="py-3 px-6 text-left">Dirección</th>
+                                <th class="py-3 px-6 text-center">Telefono</th>
                             </tr>
                         </thead>
                         <tbody class="text-gray-600 text-sm font-light">

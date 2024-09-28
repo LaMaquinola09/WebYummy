@@ -112,7 +112,7 @@
 </head>
 
 <body>
-    @if(isset(Auth::user()->nombre))
+    @if(Auth::check())
 
         @if(Auth::user()->tipo === 'restaurante')
             <script>

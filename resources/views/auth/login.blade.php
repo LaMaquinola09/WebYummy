@@ -20,24 +20,6 @@
                     <div class="texto-formulario">
                         <h2>Bienvenido de nuevo</h2>
                         <p>Inicia sesión con tu cuenta</p>
-
-                        <!-- Mostrar mensajes de error -->
-                        @if ($errors->any())
-                        <div class="alert alert-danger">
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                        @endif
-
-                        <!-- Mostrar mensajes de sesión -->
-                        @if (session('estado'))
-                        <div class="alert alert-danger">
-                            {{ session('estado') }}
-                        </div>
-                        @endif
                     </div>
                     <div class="input">
                         <label for="email">Email</label>
@@ -60,6 +42,37 @@
                 </form>
             </div>
         </div>
+
+        <script>
+            @if(session('success'))
+                Swal.fire({
+                    title: '¡Éxito!',
+                    text: "{{ session('success') }}",
+                    icon: 'success',
+                    confirmButtonText: 'Aceptar'
+                });
+            @endif
+
+            @if(session('errors'))
+                Swal.fire({
+                    title: '¡Error!',
+                    text: `@foreach ($errors->all() as $error)
+                                    {{ $error }}
+                                @endforeach`,
+                    icon: 'error',
+                    confirmButtonText: 'Aceptar'
+                });
+            @endif
+
+            @if(session('estado'))
+                Swal.fire({
+                    title: '¡Error!',
+                    text: "{{ session('estado') }}",
+                    icon: 'error',
+                    confirmButtonText: 'Aceptar'
+                });
+            @endif
+        </script>
     </body>
 
     </html>

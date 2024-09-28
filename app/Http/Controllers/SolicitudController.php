@@ -68,6 +68,6 @@ class SolicitudController extends Controller
             'categoria' => $request->categoria
         ]);
 
-        return view('solicitudRestaurante.Solicitud')->with('success', 'Restaurante registrado con éxito');
+        return redirect()->route('Registrosolicitud')->with('success', 'Restaurante registrado con éxito');
     }
 }

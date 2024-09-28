@@ -29,7 +29,7 @@ class CheckRestaurantActive
 
                 // Si han pasado más de 15 días, redirigir a la página de pago
                 if ($dias >= 15) {
-                    return redirect()->route('pay-fee')->withErrors([
+                    return redirect()->route('restaurantes.pay-fee')->withErrors([
                         'estado' => 'Han pasado más de 15 días desde que su restaurante estuvo activo. Debe realizar un pago.',
                     ]);
                 }

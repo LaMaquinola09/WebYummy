@@ -83,27 +83,33 @@ class RestauranteController extends Controller
 
     public function update(Request $request, $id)
     {
-        try {
-            // Validar los datos del formulario
-            $request->validate([
-                'nombre' => 'required|string|max:255',
-                'direccion' => 'required|string|max:255',
-                'telefono' => 'required|string|max:20',
-                'horario' => 'required|string|max:255',
-                'categoria' => 'required|string|max:255',
-                'estado' => 'required|string|max:50',
-            ]);
+        // Validar los campos de entrada
+        $request->validate([
+            'nombre' => 'required|string|max:255|regex:/^[\p{L}\s]+$/u',
+            'direccion' => 'required|string|min:15|max:255|regex:/^[\p{L}0-9\s#,.]+$/u',
+            'telefono' => 'required|numeric|digits_between:10,10',
+            'horario_apertura' => 'required|date_format:H:i',
+            'horario_cierre' => 'required|date_format:H:i|after:horario_apertura',
+            'categoria' => 'required|string|max:100',
+            'estado' => 'required|string|max:50',
+        ], [
+            'nombre.required' => 'El nombre del restaurante es obligatorio.',
+            'nombre.regex' => 'Coloca solo letras y espacios',
+            'direccion.regex' => 'Coloca solo letras, espacios y números',
+            'direccion.min' => 'Coloca al menos 15 caracteres',
+            'horario_apertura.date_format' => 'Seleccione horarios válidos',
+            'horario_cierre.after' => 'El cierre del horario debe ser una hora posterior a la apertura del horario.',
+            'telefono.numeric' => 'El teléfono debe ser un número válido.',
+            'telefono.digits_between' => 'El teléfono debe tener 10 dígitos.',
+            // Mensajes personalizados por campo
+        ]);
     
-            // Obtener el restaurante y actualizar sus datos
-            $restaurante = Restaurante::findOrFail($id);
-            $restaurante->update($request->all());
+        // Obtener el restaurante
+        $restaurante = Restaurante::findOrFail($id);
     
-            // Redirigir con un mensaje de éxito
-            return redirect()->route('restaurantes.index')->with('success', 'Restaurante actualizado correctamente.');
-    
-        } catch (\Exception $e) {
-            // Redirigir con un mensaje de error
-            return redirect()->route('restaurantes.index')->with('error', 'Ocurrió un error al actualizar el restaurante.');
-        }
+        // Actualizar el restaurante con los datos validados
+        $restaurante->update($request->all());
+        return redirect()->route('restaurantes.index')->with('success', 'Restaurante actualizado correctamente.');
     }
+    
 }

@@ -177,22 +177,6 @@
     <div class="solicitud-form-container">
         <h1 class="solicitud-header">Solicitud de Restaurante</h1>
 
-        @if ($errors->any())
-        <div class="solicitud-error-container">
-            <ul>
-                @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-        @endif
-
-        @if (session('success'))
-        <div class="solicitud-success-message" style="color: green; margin-bottom: 20px;">
-            {{ session('success') }}
-        </div>
-        @endif
-
         <form action="{{ route('solicitudes.store') }}" method="POST">
             @csrf
             <p class="solicitud-subtext">Ingresa tus datos personales</p>
@@ -271,16 +255,27 @@
                         Restaurante</button>
                 </div>
             </div>
-
-
-
-
-
-
-
-
-
-
         </form>
+        <script>
+        @if(session('success'))
+            Swal.fire({
+                title: '¡Éxito!',
+                text: "{{ session('success') }}",
+                icon: 'success',
+                confirmButtonText: 'Aceptar'
+            });
+        @endif
+
+        @if(session('errors'))
+            Swal.fire({
+                title: '¡Error!',
+                text: `@foreach ($errors->all() as $error)
+                                {{ $error }}
+                            @endforeach`,
+                icon: 'error',
+                confirmButtonText: 'Aceptar'
+            });
+        @endif
+    </script>
     </div>
 </x-guest-layout>

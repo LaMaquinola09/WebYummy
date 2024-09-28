@@ -1,4 +1,9 @@
 <x-app-layout>
+        @if(Auth::user()->tipo === 'admin')
+            <script>
+                window.location.replace('{{ route("adminDash") }}')
+            </script>
+        @endif
     @include('header.header')
 
     <!-- Contenedor principal del Dashboard -->

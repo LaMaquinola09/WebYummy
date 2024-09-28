@@ -11,8 +11,7 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -21,17 +20,11 @@
 <body class="font-sans text-gray-900 antialiased">
     @include('layouts.navigationGuest')
 
-
     <div class="container-expand-lg min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
         <div class="bg-white shadow-md overflow-hidden rounded-lg mt-6 w-full max-w-[80rem] mx-auto p-6 mb-12">
             {{ $slot }}
         </div>
     </div>
-
-
-
-
-
 
     <footer class="footer">
         @include('footer.footer')

@@ -34,13 +34,14 @@ Route::put('/restaurant/{id}/update-status', [RestauranteController::class, 'upd
 
 
 
-Route::get('/admin/dashboard', function () {
-    return view('admin.dashboard');
-})->middleware(['auth', 'verified'])->name('adminDash');
+
 
 Route::group(['middleware' => ['auth', 'check.restaurant.active']], function () {
     // Rutas accesibles solo para restaurantes activos
         // Ruta general del dashboard
+        Route::get('/admin/dashboard', function () {
+            return view('admin.dashboard');
+        })->middleware(['auth', 'verified'])->name('adminDash');
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->middleware(['auth', 'verified'])->name('dashboard');

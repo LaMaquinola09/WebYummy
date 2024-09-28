@@ -31,11 +31,20 @@
             <div class="flex items-center justify-between w-full">
                 <!-- Logo -->
                 <div class="flex items-center">
+                @if(Auth::user()->tipo === 'admin')
+                    <a href="{{ route('adminDash') }}" class="flex items-center">
+                        <img src="{{ asset('img/Logo_Blanco__1.png') }}" alt="Delivery Logo"
+                            class="block w-auto h-10 mr-3" />
+                        <span class="text-white text-lg font-semibold">YUMMY</span>
+                    </a>
+                @elseif(Auth::user()->tipo === 'restaurante')
                     <a href="{{ route('dashboard') }}" class="flex items-center">
                         <img src="{{ asset('img/Logo_Blanco__1.png') }}" alt="Delivery Logo"
                             class="block w-auto h-10 mr-3" />
                         <span class="text-white text-lg font-semibold">YUMMY</span>
                     </a>
+                @endif    
+                    
                 </div>
 
                 <!-- Navigation Links (Desktop) -->

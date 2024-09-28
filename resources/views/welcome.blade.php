@@ -112,6 +112,18 @@
 </head>
 
 <body>
+    @if(isset(Auth::user()->nombre))
+
+        @if(Auth::user()->tipo === 'restaurante')
+            <script>
+                window.location.replace('{{ route("dashboard") }}')
+            </script>
+        @elseif(Auth::user()->tipo === 'admin')
+            <script>
+                window.location.replace('{{ route("adminDash") }}')
+            </script>
+        @endif
+    @else
     <header class="header">
         <div class="logo">
             <img src="{{ asset('images/Logo_Blanco__1.png') }}" alt="Logo" class="logo-img">
@@ -259,3 +271,5 @@
 </body>
 
 </html>
+    @endif
+    

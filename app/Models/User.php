@@ -31,8 +31,15 @@ class User extends Authenticatable
         return $this->hasOne(Restaurante::class);
     }
 
+    public function scopeRepartidores($query)
+    {
+        return $query->where('tipo', 'repartidor');
+    }
 
-
+    public function scopeUsuarios($query)
+    {
+        return $query->where('tipo', 'usuario');
+    }
 
     /**
      * Los atributos que deben ocultarse para la serialización.

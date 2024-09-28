@@ -38,12 +38,33 @@
                         </div>
 
                         <div class="mb-4">
-                            <label for="horario" class="block text-sm font-medium text-gray-700">Horario</label>
-                            <input type="text" name="horario" id="horario" value="{{ old('horario', $restaurante->horario) }}" class="block w-full mt-1 border-gray-300 rounded-md shadow-sm" required>
-                            @error('horario')
+                            <label for="horario_apertura" class="block text-sm font-medium text-gray-700">Hora de Apertura</label>
+                            <select name="horario_apertura" id="horario_apertura" class="block w-full mt-1 border-gray-300 rounded-md shadow-sm" required>
+                                @for ($i = 0; $i < 24; $i++)
+                                    <option value="{{ sprintf('%02d:00', $i) }}" {{ old('horario_apertura', $restaurante->horario_apertura) == sprintf('%02d:00', $i) ? 'selected' : '' }}>
+                                        {{ sprintf('%02d:00', $i) }} {{ $i < 12 ? 'AM' : 'PM' }}
+                                    </option>
+                                @endfor
+                            </select>
+                            @error('horario_apertura')
                                 <span class="text-red-500 text-sm">{{ $message }}</span>
                             @enderror
                         </div>
+
+                        <div class="mb-4">
+                            <label for="horario_cierre" class="block text-sm font-medium text-gray-700">Hora de Cierre</label>
+                            <select name="horario_cierre" id="horario_cierre" class="block w-full mt-1 border-gray-300 rounded-md shadow-sm" required>
+                                @for ($i = 0; $i < 24; $i++)
+                                    <option value="{{ sprintf('%02d:00', $i) }}" {{ old('horario_cierre', $restaurante->horario_cierre) == sprintf('%02d:00', $i) ? 'selected' : '' }}>
+                                        {{ sprintf('%02d:00', $i) }} {{ $i < 12 ? 'AM' : 'PM' }}
+                                    </option>
+                                @endfor
+                            </select>
+                            @error('horario_cierre')
+                                <span class="text-red-500 text-sm">{{ $message }}</span>
+                            @enderror
+                        </div>
+
 
                         <div class="mb-4">
                             <label for="categoria" class="block text-sm font-medium text-gray-700">Categoría</label>

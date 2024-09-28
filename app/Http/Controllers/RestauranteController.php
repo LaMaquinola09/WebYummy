@@ -70,4 +70,40 @@ class RestauranteController extends Controller
         // Retorna la vista para los restaurantes
         return view('restaurantes.pay_fee');
     }
+
+    //Para editar los datos de un restaurante
+    public function edit($id)
+    {
+        // Obtener el restaurante por su ID
+        $restaurante = Restaurante::findOrFail($id);
+
+        // Retornar la vista de edición con los datos del restaurante
+        return view('restaurantes.edit', compact('restaurante'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        try {
+            // Validar los datos del formulario
+            $request->validate([
+                'nombre' => 'required|string|max:255',
+                'direccion' => 'required|string|max:255',
+                'telefono' => 'required|string|max:20',
+                'horario' => 'required|string|max:255',
+                'categoria' => 'required|string|max:255',
+                'estado' => 'required|string|max:50',
+            ]);
+    
+            // Obtener el restaurante y actualizar sus datos
+            $restaurante = Restaurante::findOrFail($id);
+            $restaurante->update($request->all());
+    
+            // Redirigir con un mensaje de éxito
+            return redirect()->route('restaurantes.index')->with('success', 'Restaurante actualizado correctamente.');
+    
+        } catch (\Exception $e) {
+            // Redirigir con un mensaje de error
+            return redirect()->route('restaurantes.index')->with('error', 'Ocurrió un error al actualizar el restaurante.');
+        }
+    }
 }

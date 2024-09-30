@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-class Restaurante extends Model
+    class Restaurante extends Model
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -33,13 +33,15 @@ class Restaurante extends Model
     }
 
 
-
     public function menuItems()
 {
     return $this->hasMany(MenuItem::class);
 }
 
-
+public function categoria()
+    {
+        return $this->belongsTo(Categoria::class);
+    }
 
 
 }

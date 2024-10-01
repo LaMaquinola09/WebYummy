@@ -11,11 +11,6 @@
                 <div class="p-6 text-gray-900">
                     {{ __("Bienvenido Administrador") }}
                 </div>
-                @if(session('success'))
-                    <div class="bg-green-500 text-white p-4 rounded mb-4">
-                        {{ session('success') }}
-                    </div>
-                @endif
                 @if(session('pendingRestaurants') && count(session('pendingRestaurants')) > 0)
                     <div class="overflow-x-auto">
                         <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
@@ -65,4 +60,25 @@
             </div>
         </div>
     </div>
+    <script>
+        @if(session('success'))
+            Swal.fire({
+                title: '¡Éxito!',
+                text: "{{ session('success') }}",
+                icon: 'success',
+                confirmButtonText: 'Aceptar'
+            });
+        @endif
+
+        @if(session('errors'))
+            Swal.fire({
+                title: '¡Error!',
+                text: `@foreach ($errors->all() as $error)
+                                {{ $error }}
+                            @endforeach`,
+                icon: 'error',
+                confirmButtonText: 'Aceptar'
+            });
+        @endif
+    </script>
 </x-app-layout>

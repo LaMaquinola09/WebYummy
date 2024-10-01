@@ -49,10 +49,10 @@
                 <!-- Stripe JS -->
                 <script src="https://js.stripe.com/v3/"></script>
                 <script>
-                    var stripe = Stripe('{{ env('STRIPE_KEY') }}');
+                    var stripe = Stripe('{{ env("STRIPE_KEY") }}');
 
                     document.getElementById('checkout-button').addEventListener('click', function () {
-                        fetch('{{ route('checkout.create') }}', {
+                        fetch('{{ route("checkout.create") }}', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',

@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use Stripe\Stripe;
 use Stripe\Checkout\Session;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Restaurante;
 
 class CheckoutController extends Controller
 {
@@ -60,17 +61,17 @@ class CheckoutController extends Controller
                     ]);
 
                     // Mostrar un mensaje de éxito
-                    return view('restaurante.success')->with('message', 'Pago realizado con éxito. Tu membresía ha sido activada.');
+                    return view('restaurantes.success')->with('message', 'Pago realizado con éxito. Tu membresía ha sido activada.');
                 }
             }
         }
 
         // Si algo falla, mostrar un error
-        return view('restaurante.error')->withErrors('Error al procesar el pago.');
+        return view('restaurantes.error', ['error' => 'Error al procesar el pago.']);
     }
 
     public function cancel()
     {
-        return view('restaurante.cancel');
+        return view('restaurantes.cancel');
     }
 }

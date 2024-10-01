@@ -63,6 +63,40 @@
                             :active="request()->routeIs('repartidores.index')" class="btn btn-warning">
                             {{ __('Repartidores') }}
                         </x-responsive-nav-link>
+                        <div x-data="{ open: false }">
+                            <!-- Botón para abrir el modal -->
+                            <x-responsive-nav-link @click="open = true" class="btn btn-warning">
+                              Registrar Categoría
+                            </x-responsive-nav-link>
+                          
+                            <!-- Modal -->
+                            <div x-show="open" class="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-gray-500 bg-opacity-75 transition-opacity" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+                              <!-- Contenido del modal -->
+                              <div class="bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:max-w-lg sm:w-full p-6 z-50">
+                                <div class="text-left">
+                                  <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">Registrar Categoría</h3>
+                                  <div class="mt-2">
+                                    <!-- Formulario para registrar la categoría -->
+                                    <form action="{{ route('categorias.store') }}" method="POST">
+                                      @csrf
+                                      <div class="mb-4">
+                                        <label for="category_name" class="block text-gray-700 text-sm font-bold mb-2">Nombre de la Categoría:</label>
+                                        <input type="text" id="category_name" name="name" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Ingresa el nombre de la categoría" required>
+                                      </div>
+                                      <div class="flex justify-end">
+                                        <button @click="open = false" type="button" class="bg-red-500 hover:bg-red-700 hover:text-white text-black font-bold py-2 px-4 rounded mr-2">
+                                          Cancelar
+                                        </button>
+                                        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                          Guardar Categoría
+                                        </button>
+                                      </div>
+                                    </form>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
                         @endif
                 </div>
 
@@ -99,7 +133,8 @@
                         </x-slot>
                     </x-dropdown>
                 </div>
-
+                
+  
                 <!-- Hamburger Menu (For Mobile) -->
                 <div class="-mr-2 flex items-center sm:hidden">
                     <button @click="open = ! open"
@@ -131,6 +166,40 @@
         <x-responsive-nav-link :href="route('repartidores.index')" :active="request()->routeIs('repartidores.index')" class="block text-white px-4 py-2">
             {{ __('Repartidores') }}
         </x-responsive-nav-link>
+        <div x-data="{ open: false }">
+            <!-- Botón para abrir el modal -->
+            <button @click="open = true" class="bg-orange-500 text-white font-bold py-2 px-4 rounded hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-300">
+              Registrar Categoría
+            </button>
+          
+            <!-- Modal -->
+            <div x-show="open" class="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-gray-500 bg-opacity-75 transition-opacity" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+              <!-- Contenido del modal -->
+              <div class="bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:max-w-lg sm:w-full p-6 z-50">
+                <div class="text-left">
+                  <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">Registrar Categoría</h3>
+                  <div class="mt-2">
+                    <!-- Formulario para registrar la categoría -->
+                    <form action="{{ route('categorias.store') }}" method="POST">
+                      @csrf
+                      <div class="mb-4">
+                        <label for="category_name" class="block text-gray-700 text-sm font-bold mb-2">Nombre de la Categoría:</label>
+                        <input type="text" id="category_name" name="name" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Ingresa el nombre de la categoría" required>
+                      </div>
+                      <div class="flex justify-end">
+                        <button @click="open = false" type="button" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mr-2">
+                          Cancelar
+                        </button>
+                        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                          Guardar Categoría
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         @endif 
 
         <!-- Profile and Logout (Mobile) -->
@@ -154,4 +223,6 @@
                 </div>
             </div>
     </div>
+    
+      
 </nav>

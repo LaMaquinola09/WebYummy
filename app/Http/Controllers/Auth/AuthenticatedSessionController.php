@@ -70,12 +70,14 @@ class AuthenticatedSessionController extends Controller
                         'estado' => 'Su restaurante no está activo en el sistema. Por favor, contacte al administrador.',
                     ]);
                 } else if ($dias >= 15) {
-                    if($restaurant->estado_membresia == 'N'){
+                    if($restaurant->estado_membresia === 'Y'){
+                        
+                    } else {
                         // Redirigir a la ruta de pago si han pasado más de 15 días
                         return redirect()->route('restaurantes.pay-fee')->withErrors([
                             'estado' => 'Han pasado más de 15 días desde que su restaurante estuvo activo. Debe realizar un pago.',
                         ]);
-                    } 
+                    }
                 }
             } else {
                 // Manejar el caso donde no hay un restaurante asociado al usuario

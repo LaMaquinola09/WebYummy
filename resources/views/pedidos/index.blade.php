@@ -1,5 +1,6 @@
 <x-app-layout>
-    @include('header.header')
+    @include('header.header', ['notificaciones' => $notificaciones, 'pedidos' => $pedidos])
+
     <!doctype html>
     <html lang="es">
 
@@ -175,6 +176,8 @@
                 </div>
 
                 <div id="reportes-container">
+                    <!-- Contenedor para notificaciones -->
+                    <div id="notifications" class="alert alert-info" style="display: none;"></div>
                     <table class="sales-report-table">
                         <thead>
                             <tr>
@@ -346,9 +349,9 @@
                     tabs.forEach(tab => {
                         tab.addEventListener("click", () => {
                             tabs.forEach(t => t.classList.remove(
-                            "active")); // Elimina la clase activa de todas las pestañas
+                                "active")); // Elimina la clase activa de todas las pestañas
                             tab.classList.add(
-                            "active"); // Agrega la clase activa a la pestaña actual
+                                "active"); // Agrega la clase activa a la pestaña actual
                             updateTable(tab.id);
                         });
                     });
@@ -361,6 +364,8 @@
         </main>
     </div>
 </x-app-layout>
+
+
 <x-app-layout>
     @include('header.header')
     <!doctype html>
@@ -709,9 +714,9 @@
                     tabs.forEach(tab => {
                         tab.addEventListener("click", () => {
                             tabs.forEach(t => t.classList.remove(
-                            "active")); // Elimina la clase activa de todas las pestañas
+                                "active")); // Elimina la clase activa de todas las pestañas
                             tab.classList.add(
-                            "active"); // Agrega la clase activa a la pestaña actual
+                                "active"); // Agrega la clase activa a la pestaña actual
                             updateTable(tab.id);
                         });
                     });

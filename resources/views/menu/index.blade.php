@@ -1,5 +1,5 @@
 <x-app-layout>
-    @include('header.header')
+@include('header.header', ['notificaciones' => $notificaciones, 'pedidos' => $pedidos])
 
     <style>
     /* Sección para personalizar los colores */

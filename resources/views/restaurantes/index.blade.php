@@ -37,7 +37,7 @@
                                         <td class="py-3 px-4">{{ $restaurante->direccion }}</td>
                                         <td class="py-3 px-4">{{ $restaurante->telefono }}</td>
                                         <td class="py-3 px-4">{{ $restaurante->horario }}</td>
-                                        <td class="py-3 px-4">{{ $restaurante->categoria }}</td>
+                                        <td class="py-3 px-4">{{ $restaurante->categoria->nombre ?? 'Sin categoría' }}</td>
                                         <td class="py-3 px-4">{{ $restaurante->estado }}</td>
                                         <td class="py-3 px-4">{{ $restaurante->user->email ?? 'Sin asignar' }}</td>
                                         <td class="py-3 px-4">

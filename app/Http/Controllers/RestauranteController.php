@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Restaurante;
+use App\Models\Categoria;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Auth;
 
@@ -12,7 +13,7 @@ class RestauranteController extends Controller
     public function index()
     {
         // Obtener todos los restaurantes independientemente de su estado
-        $restaurants = Restaurante::all();
+        $restaurants = Restaurante::with('categoria')->get();
     
         // Retorna la vista para los restaurantes y pasa los datos
         return view('restaurantes.index', compact('restaurants'));
@@ -76,9 +77,10 @@ class RestauranteController extends Controller
     {
         // Obtener el restaurante por su ID
         $restaurante = Restaurante::findOrFail($id);
+        $categorias = Categoria::all();
 
         // Retornar la vista de edición con los datos del restaurante
-        return view('restaurantes.edit', compact('restaurante'));
+        return view('restaurantes.edit', compact('restaurante', 'categorias'));
     }
 
     public function update(Request $request, $id)
@@ -90,7 +92,7 @@ class RestauranteController extends Controller
             'telefono' => 'required|numeric|digits_between:10,10',
             'horario_apertura' => 'required|date_format:H:i',
             'horario_cierre' => 'required|date_format:H:i|after:horario_apertura',
-            'categoria' => 'required|string|max:100',
+            'categoria_id' => 'required|exists:categorias,id',
             'estado' => 'required|string|max:50',
         ], [
             'nombre.required' => 'El nombre del restaurante es obligatorio.',
@@ -101,14 +103,33 @@ class RestauranteController extends Controller
             'horario_cierre.after' => 'El cierre del horario debe ser una hora posterior a la apertura del horario.',
             'telefono.numeric' => 'El teléfono debe ser un número válido.',
             'telefono.digits_between' => 'El teléfono debe tener 10 dígitos.',
-            // Mensajes personalizados por campo
+            'categoria_id.required' => 'La categoría es obligatoria.',
+            'categoria_id.exists' => 'La categoría seleccionada no es válida.',
         ]);
     
         // Obtener el restaurante
         $restaurante = Restaurante::findOrFail($id);
     
+        // Actualizar los datos del restaurante
+        $restaurante->nombre = $request->input('nombre');
+        $restaurante->direccion = $request->input('direccion');
+        $restaurante->telefono = $request->input('telefono');
+        
+        // Concatenar horario de apertura y cierre en la columna 'horario'
+        $horario_apertura = $request->input('horario_apertura');
+        $horario_cierre = $request->input('horario_cierre');
+        $restaurante->horario = $horario_apertura . ' - ' . $horario_cierre;
+        
+        $restaurante->estado = $request->input('estado');
+        
+        // Actualizar la relación con la categoría
+        $restaurante->categoria_id = $request->input('categoria_id');
+        
+        // Guardar los cambios en la base de datos
+        $restaurante->save();
+        
         // Actualizar el restaurante con los datos validados
-        $restaurante->update($request->all());
+        // $restaurante->update($request->all());
         return redirect()->route('restaurantes.index')->with('success', 'Restaurante actualizado correctamente.');
     }
     

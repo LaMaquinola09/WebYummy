@@ -257,25 +257,25 @@
             </div>
         </form>
         <script>
-        @if(session('success'))
-            Swal.fire({
-                title: '¡Éxito!',
-                text: "{{ session('success') }}",
-                icon: 'success',
-                confirmButtonText: 'Aceptar'
-            });
-        @endif
+            @if(session('success'))
+                Swal.fire({
+                    title: '¡Éxito!',
+                    text: "{{ session('success') }}",
+                    icon: 'success',
+                    confirmButtonText: 'Aceptar'
+                });
+            @endif
 
-        @if(session('errors'))
-            Swal.fire({
-                title: '¡Error!',
-                text: `@foreach ($errors->all() as $error)
-                                {{ $error }}
-                            @endforeach`,
-                icon: 'error',
-                confirmButtonText: 'Aceptar'
-            });
-        @endif
-    </script>
+            @if(session('errors'))
+                Swal.fire({
+                    title: '¡Error!',
+                    text: `@foreach ($errors->all() as $error)
+                                    {{ $error }}
+                                @endforeach`,
+                    icon: 'error',
+                    confirmButtonText: 'Aceptar'
+                });
+            @endif
+        </script>
     </div>
 </x-guest-layout>

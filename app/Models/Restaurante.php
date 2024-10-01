@@ -24,6 +24,7 @@ class Restaurante extends Model
         'horario',
         'estado',
         'categoria',
+        'estado_membresia',
     ];
 
 

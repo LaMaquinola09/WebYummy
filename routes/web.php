@@ -13,6 +13,8 @@ use App\Http\Controllers\LegalController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SolicitudController;
 use App\Http\Controllers\MenuItemController;
+use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\PaymentController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -20,7 +22,14 @@ Route::get('/', function () {
 
 Route::get('/notificacion', [SolicitudController::class, 'index'])->name('solicitudRestaurante.notificacion');
 Route::get('/restaurantes/pay-fee', [RestauranteController::class, 'pay_fee'])->name('restaurantes.pay-fee');
+Route::post('/restaurantes/handlePayment', [PaymentController::class, 'handlePayment'])->name('handle.payment');
 Route::get('/notificacion', [SolicitudController::class, 'index'])->name('solicitudRestaurante.notificacion');
+
+
+Route::post('/checkout', [CheckoutController::class, 'createCheckoutSession'])->name('checkout.create');
+Route::get('/success', [CheckoutController::class, 'success'])->name('checkout.success');
+Route::get('/cancel', [CheckoutController::class, 'cancel'])->name('checkout.cancel');
+
 
 // Ruta para mostrar el formulario de registro de solicitud
 Route::get('/registrosolicitud', [SolicitudController::class, 'create'])->name('Registrosolicitud');

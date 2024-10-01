@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\Categoria;
 
     class Restaurante extends Model
 {
@@ -23,7 +24,7 @@ use Laravel\Sanctum\HasApiTokens;
         'telefono',
         'horario',
         'estado',
-        'categoria',
+        'categoria_id',
         'estado_membresia',
     ];
 

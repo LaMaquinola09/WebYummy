@@ -6,6 +6,7 @@ use App\Models\User; // Importar el modelo User
 use App\Models\Restaurante; // Importar el modelo Restaurant
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use App\Models\Categoria;
 
 class SolicitudController extends Controller
 {
@@ -16,7 +17,8 @@ class SolicitudController extends Controller
 
     public function create()
     {
-        return view('solicitudRestaurante.Solicitud');
+        $categorias = Categoria::all(); // Cargar todas las categorías
+        return view('solicitudRestaurante.Solicitud', compact('categorias'));
     }
 
     public function store(Request $request)
@@ -28,7 +30,7 @@ class SolicitudController extends Controller
             'telefono' => 'required|string|max:10',
             'password' => 'required|string|confirmed|min:8',
             'nombre_negocio' => 'required|string|max:255',
-            'categoria' => 'required|string|max:50',
+            'categoria_id' => 'required|integer',
             'hora_apertura' => 'required',
             'hora_cierre' => 'required',
         ], [
@@ -43,10 +45,12 @@ class SolicitudController extends Controller
             'password.confirmed' => 'Las contraseñas no coinciden.',
             'password.min' => 'La contraseña debe tener al menos 8 caracteres.',
             'nombre_negocio.required' => 'El nombre del negocio es obligatorio.',
-            'categoria.required' => 'La categoría es obligatoria.',
+            'categoria_id.required' => 'La categoría es obligatoria.',
             'hora_apertura.required' => 'La hora de apertura es obligatoria.',
             'hora_cierre.required' => 'La hora de cierre es obligatoria.',
         ]);
+        
+        
 
         $user = User::create([
             'nombre' => $request->nombre,
@@ -56,18 +60,17 @@ class SolicitudController extends Controller
             'password' => Hash::make($request->password),
             'tipo' => 'restaurante',
         ]);
-    
         // Crear un nuevo restaurante relacionado con el usuario
         Restaurante::create([
             'user_id' => $user->id,
             'nombre' => $request->nombre_negocio,
             'direccion' => $request->direccion,
             'telefono' => $request->telefono,
+            'categoria_id' => $request->categoria_id,
             'horario' => $request->hora_apertura . ' - ' . $request->hora_cierre,
             'estado' => 'Pendiente',
-            'categoria' => $request->categoria
         ]);
-
+    
         return redirect()->route('Registrosolicitud')->with('success', 'Restaurante registrado con éxito');
     }
 }

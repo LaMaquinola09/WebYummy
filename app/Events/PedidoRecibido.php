@@ -2,19 +2,37 @@
 
 namespace App\Events;
 
+use App\Models\Pedido;
+use Illuminate\Broadcasting\Channel;
+use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Broadcasting\PresenceChannel;
+use Illuminate\Broadcasting\PrivateChannel;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class PedidoRecibido
+class PedidoRecibido implements ShouldBroadcast
 {
-    use Dispatchable, SerializesModels;
+    use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $detalle;
-    public $fecha;
+    public $pedido;
 
-    public function __construct($detalle, $fecha)
+    public function __construct(Pedido $pedido)
     {
-        $this->detalle = $detalle;
-        $this->fecha = $fecha;
+        $this->pedido = $pedido;
+    }
+
+    public function broadcastOn()
+    {
+        return new Channel('pedidos');
+    }
+
+    public function broadcastWith()
+    {
+        return [
+            'id' => $this->pedido->id,
+            'cliente_id' => $this->pedido->cliente_id,
+            'estado' => $this->pedido->estado,
+        ];
     }
 }

@@ -10,7 +10,6 @@ class Pedido extends Model
     use HasFactory;
 
 
-
     protected $fillable = [
         'cliente_id',
         'restaurante_id',
@@ -21,8 +20,9 @@ class Pedido extends Model
         'metodo_pago_id',
     ];
 
-            // Definir las columnas de fecha
-            protected $dates = ['fecha_pedido'];
+
+    // Definir las columnas de fecha
+     protected $dates = ['fecha_pedido'];
 
 
 

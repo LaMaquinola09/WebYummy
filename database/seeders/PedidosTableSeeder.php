@@ -4,29 +4,34 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use App\Events\PedidoRecibido;
 
 class PedidosTableSeeder extends Seeder
 {
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
     public function run()
     {
-        $pedidos = [
+        // Insertar múltiples registros de pedidos
+        DB::table('pedidos')->insert([
             [
-                'cliente_id' => 13,
-                'restaurante_id' => 1,
-                'repartidor_id' => 15,
-                'direccion_entrega_id' => 1,
+                'cliente_id' => 13, // ID de un cliente existente
+                'restaurante_id' => 1, // ID de un restaurante existente
+                'repartidor_id' => 15, // ID de un repartidor existente (puede ser nulo)
+                'direccion_entrega_id' => 1, // ID de una dirección existente
                 'estado' => 'pendiente',
-                'fecha_pedido' => now(),
-                'metodo_pago_id' => 1,
+                'fecha_pedido' => now(), // Fecha actual
+                'metodo_pago_id' => 1, // ID de un método de pago existente
             ],
             [
                 'cliente_id' => 13,
                 'restaurante_id' => 3,
-                'repartidor_id' => null,
+                'repartidor_id' => null, // Sin repartidor asignado
                 'direccion_entrega_id' => 1,
                 'estado' => 'en_camino',
-                'fecha_pedido' => now()->subDays(1),
+                'fecha_pedido' => now()->subDays(1), // Un día atrás
                 'metodo_pago_id' => 1,
             ],
             [
@@ -35,17 +40,9 @@ class PedidosTableSeeder extends Seeder
                 'repartidor_id' => 15,
                 'direccion_entrega_id' => 1,
                 'estado' => 'entregado',
-                'fecha_pedido' => now()->subDays(2),
+                'fecha_pedido' => now()->subDays(2), // Dos días atrás
                 'metodo_pago_id' => 1,
             ],
-        ];
-
-        foreach ($pedidos as $pedido) {
-            // Insertar el pedido
-            $nuevoPedido = DB::table('pedidos')->insertGetId($pedido);
-
-            // Emitir el evento
-            event(new PedidoRecibido($pedido, now())); // Puedes modificar los parámetros según necesites
-        }
+        ]);
     }
 }

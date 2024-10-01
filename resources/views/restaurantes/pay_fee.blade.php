@@ -30,7 +30,7 @@
                         <!-- Formulario para Stripe Checkout -->
                         <form id="checkout-form">
                             @csrf
-                            <input type="hidden" name="amount" value="210.57"> <!-- Monto en centavos -->
+                            <input type="hidden" name="amount" value="214"> <!-- Monto en centavos -->
 
                             <!-- Input de Monto -->
                             <div class="mb-4">
@@ -39,13 +39,30 @@
 
                             <!-- Botón de Pago -->
                             <button type="button" id="checkout-button" class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                                Pagar $210.57
+                                Pagar $214
                             </button>
                         </form>
                     </div>
                 </div>
 
                 <!-- Stripe JS -->
+                <script>
+                    Swal.fire({
+                        title: 'Procediendo con el pago...',
+                        html: "<p>Antes de proceder con el pago debemos aclarar algunas cosas:</p><br><p><b>-</b> Una vez realizado el pago no se podrán hacer devoluciones del monto cobrado.</p><br><p><b>-</b> El total del monto a pagar es la tarifa mensual estipulada más el cobro de impuestos hechos por la plataforma de cobro electrónico ($200.00  +  $14.00 de impuestos)</p>",
+                        icon: 'info',
+                        confirmButtonText: 'Aceptar',
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
+                        showCancelButton: true
+                    }).then((result) => {
+                        if(result.isDismissed){
+                            window.location.replace('{{ route("logout") }}');
+                        } else {
+                            Swal.close();
+                        }
+                    });
+                </script>
                 <script src="https://js.stripe.com/v3/"></script>
                 <script>
                     var stripe = Stripe('{{ env("STRIPE_KEY") }}');
@@ -58,7 +75,7 @@
                                 'X-CSRF-TOKEN': '{{ csrf_token() }}',
                             },
                             body: JSON.stringify({
-                                amount: 210.57 // Monto en centavos (5000 = 50.00 USD)
+                                amount: 214 // Monto en centavos (5000 = 50.00 USD)
                             }),
                         })
                         .then(function (response) {

@@ -133,4 +133,18 @@ class AuthenticatedSessionController extends Controller
 
         return redirect('/');
     }
+
+    public function destroy_get(Request $request): RedirectResponse
+    {
+        // Cerrar sesión del usuario
+        Auth::guard('web')->logout();
+
+        // Invalidar la sesión
+        $request->session()->invalidate();
+
+        // Regenerar el token de sesión
+        $request->session()->regenerateToken();
+
+        return redirect()->route('login');
+    }
 }

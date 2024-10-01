@@ -10,7 +10,8 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="container text-center">
                     <h1>¡Pago realizado con éxito!</h1>
-                    <p>Gracias por realizar el pago. Tu restaurante ha sido actualizado.</p>
+                    <p>Gracias por realizar el pago. Tu restaurante ha sido actualizado.</p><br>
+                    <p>En breve serás redirigido a la página principal.</p>
                 </div>
             </div>
         </div>

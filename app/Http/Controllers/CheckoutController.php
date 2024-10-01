@@ -57,7 +57,8 @@ class CheckoutController extends Controller
                 if ($restaurante) {
                     // Actualizar el campo estado_membresia del restaurante
                     $restaurante->update([
-                        'estado_membresia' => 'Y'
+                        'estado_membresia' => 'Y',
+                        'paid_at' => date('Y-m-d H:i:s')
                     ]);
 
                     // Mostrar un mensaje de éxito

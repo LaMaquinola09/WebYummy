@@ -30,17 +30,16 @@
                         <!-- Formulario para Stripe Checkout -->
                         <form id="checkout-form">
                             @csrf
-                            <input type="hidden" name="amount" value="10"> <!-- Monto en centavos -->
+                            <input type="hidden" name="amount" value="210.57"> <!-- Monto en centavos -->
 
                             <!-- Input de Monto -->
                             <div class="mb-4">
-                                <label for="amount" class="block text-gray-700 text-sm font-bold mb-2">Monto a Pagar (MXN)</label>
-                                <input type="number" name="amount" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Ingrese el monto a pagar" required>
+                                <label for="amount" class="block text-gray-700 text-sm font-bold mb-2">Proceder al pago. *Cifra calculada en Pesos Mexicanos (mxn)</label>
                             </div>
 
                             <!-- Botón de Pago -->
                             <button type="button" id="checkout-button" class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                                Pagar $10.00
+                                Pagar $210.57
                             </button>
                         </form>
                     </div>
@@ -59,7 +58,7 @@
                                 'X-CSRF-TOKEN': '{{ csrf_token() }}',
                             },
                             body: JSON.stringify({
-                                amount: 10 // Monto en centavos (5000 = 50.00 USD)
+                                amount: 210.57 // Monto en centavos (5000 = 50.00 USD)
                             }),
                         })
                         .then(function (response) {

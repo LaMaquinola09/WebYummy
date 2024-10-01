@@ -224,13 +224,12 @@
                 class="solicitud-input" required>
 
             <label for="solicitud-categoria" class="solicitud-label">Categoría de su negocio</label>
-            <select name="categoria" id="solicitud-categoria" class="solicitud-select" required>
-                <option value="pizza">Pizza</option>
-                <option value="sushi">Sushi</option>
-                <option value="pasteleria">Pastelería</option>
-                <option value="cafe">Cafetería</option>
+            <select name="categoria_id" id="solicitud-categoria" class="solicitud-select" required>
+                <option value="">Seleccione una categoría</option>
+                @foreach($categorias as $categoria)
+                    <option value="{{ $categoria->id }}">{{ $categoria->nombre }}</option>
+                @endforeach
             </select>
-
             <div class="solicitud-row">
                 <div class="solicitud-col-6">
                     <label for="solicitud-hora-apertura" class="solicitud-label">Horario de apertura</label>

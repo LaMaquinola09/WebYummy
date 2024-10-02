@@ -35,7 +35,8 @@
         <nav class="auth-links d-flex flex-nowrap overflow-auto">
             <a href="{{ route('menu.index') }}" class="auth-link">{{ __('Mi Menú') }}</a>
             <a href="{{ route('pedidos.index') }}" class="auth-link">{{ __('Pedidos') }}</a>
-        </nav>
+            <a href="{{ route('restaurantes.comentarios', ['id' => auth()->user()->restaurante->id]) }}" class="auth-link">{{ __('Comentarios') }}</a>
+            </nav>
 
         <div class="dropdown ms-3">
             <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">

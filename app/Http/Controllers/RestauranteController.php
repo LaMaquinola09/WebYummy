@@ -18,6 +18,19 @@ class RestauranteController extends Controller
         // Retorna la vista para los restaurantes y pasa los datos
         return view('restaurantes.index', compact('restaurants'));
     }
+
+    //para mostrar comentarios
+    public function showComentarios($id)
+    {
+        // Encontrar el restaurante por su ID
+        $restaurante = Restaurante::findOrFail($id);
+    
+        // Obtener los comentarios del restaurante con los datos del cliente
+        $comentarios = $restaurante->comentarios()->with('cliente')->get();
+    
+        // Retornar la vista con los comentarios
+        return view('restaurantes.comentarios', compact('restaurante', 'comentarios'));
+    }
     
     public function updateStatus(Request $request, $id)
     {

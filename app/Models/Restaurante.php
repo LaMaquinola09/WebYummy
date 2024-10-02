@@ -44,6 +44,11 @@ public function categoria()
     {
         return $this->belongsTo(Categoria::class);
     }
+    
+    public function comentarios()
+    {
+        return $this->hasMany(Comentario::class, 'restaurante_id');
+    }
 
 
 }

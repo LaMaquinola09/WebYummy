@@ -1,35 +1,24 @@
-<!-- resources/views/header.blade.php -->
-
 <!-- Enlace a Bootstrap CSS -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <!-- Enlace a Bootstrap Icons CSS -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css"
-    rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css" rel="stylesheet">
 <!-- Enlace a Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 <header class="header d-flex justify-content-between align-items-center p-2 text-white" id="idheader">
     <div class="logo-container d-none d-md-flex">
         <img src="{{ asset('images/Logo_Blanco__1.png') }}" alt="Logo" class="logo-img">
-        <a href="#"
-            class="logo-text">{{ auth()->user()->restaurante ? auth()->user()->restaurante->nombre : __('RESTAURANTE MENÚ') }}</a>
+        <a href="#" class="logo-text">{{ auth()->user()->restaurante ? auth()->user()->restaurante->nombre : __('RESTAURANTE MENÚ') }}</a>
     </div>
 
     <div class="d-flex justify-content-end align-items-center flex-nowrap">
-        <!-- Icono de notificación con campanita -->
-        <div class="d-flex justify-content-end align-items-center flex-nowrap">
-            <div class="notification ms-3 position-relative">
-                <button class="btn btn-notification p-0" title="Nuevas Notificaciones" data-bs-toggle="modal"
-                    data-bs-target="#notificationModal">
-                    <i class="bi bi-bell-fill text-white fs-4"></i>
-                    <span class="badge bg-danger position-absolute top-0 start-100 translate-middle p-1 rounded-circle">
-                        {{ $notificaciones ?? 0 }}
-                        <!-- Asegúrate de que $notificaciones sea un número -->
-                    </span>
-
-
-                </button>
-            </div>
+        <div class="notification ms-3 position-relative">
+            <button class="btn btn-notification p-0" title="Nuevas Notificaciones" data-bs-toggle="modal" data-bs-target="#notificationModal">
+                <i class="bi bi-bell-fill text-white fs-4"></i>
+                <span class="badge bg-danger position-absolute top-0 start-100 translate-middle p-1 rounded-circle">
+                    {{ $notificaciones ?? 0 }}
+                </span>
+            </button>
         </div>
 
         <nav class="auth-links d-flex flex-nowrap overflow-auto">
@@ -50,8 +39,7 @@
 </header>
 
 <!-- Modal de notificaciones -->
-<div class="modal fade" id="notificationModal" tabindex="-1" aria-labelledby="notificationModalLabel"
-    aria-hidden="true">
+<div class="modal fade" id="notificationModal" tabindex="-1" aria-labelledby="notificationModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -60,7 +48,7 @@
             </div>
 
             <div class="modal-body">
-                <ul class="list-group">
+                <ul class="list-group" id="lista-pedidos">
                     @foreach($pedidos as $pedido)
                     @if($pedido->estado == 'pendiente')
                     <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -71,15 +59,12 @@
                             </p>
                         </div>
                         <div>
-                            <button class="btn btn-success btn-sm me-2"
-                                onclick="aceptarPedido({{ $pedido->id }})">Confirmar Pedido</button>
-                            <button class="btn btn-danger btn-sm" onclick="rechazarPedido({{ $pedido->id }})">Producto
-                                Agotado</button>
+                            <button class="btn btn-success btn-sm me-2" onclick="cambiarEstadoPedido({{ $pedido->id }})">Confirmar Pedido</button>
+                            <button class="btn btn-danger btn-sm" onclick="rechazarPedido({{ $pedido->id }})">Producto Agotado</button>
                         </div>
                     </li>
                     @endif
                     @endforeach
-
                 </ul>
             </div>
 
@@ -90,37 +75,71 @@
     </div>
 </div>
 
+<!-- Div para mostrar mensajes de notificación -->
+<div id="notifications" style="display: none; position: absolute; top: 10px; right: 10px; z-index: 1000;"></div>
+
 <script>
-function aceptarPedido(pedidoId) {
-    alert('Pedido ' + pedidoId + ' aceptado.');
+// Mostrar notificación en pantalla
+function mostrarNotificacion(mensaje) {
+    const notificationsDiv = document.getElementById('notifications');
+    const notification = document.createElement('div');
+    notification.className = 'alert alert-success';
+    notification.innerText = mensaje;
+    notificationsDiv.appendChild(notification);
+    notificationsDiv.style.display = 'block';
+
+    // Ocultar la notificación después de 3 segundos
+    setTimeout(() => {
+        notificationsDiv.removeChild(notification);
+        if (notificationsDiv.childElementCount === 0) {
+            notificationsDiv.style.display = 'none';
+        }
+    }, 3000);
 }
 
-function rechazarPedido(pedidoId) {
-    alert('Pedido ' + pedidoId + ' rechazado.');
+// Cambiar el estado del pedido
+function cambiarEstadoPedido(id) {
+    fetch(`/api/pedidos/${id}/cambiar-estado`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.mensaje) {
+            alert(data.mensaje);
+            mostrarNotificacion('¡Su pedido fue aceptado!');
+            verificarNotificaciones(); 
+        }
+    })
+    .catch(error => console.error('Error al cambiar el estado del pedido:', error));
 }
 
-let notificacionesCount = {
-    {
-        $notificaciones ?? 0
-    }
-}; // Inicializa el contador de notificaciones
+let notificacionesCount = {{ $notificaciones ?? 0 }}; // Inicializa el contador de notificaciones
 
+// Verificar y actualizar el contador de notificaciones
+function verificarNotificaciones() {
+    fetch('/api/notificaciones')
+        .then(response => response.json())
+        .then(data => {
+            if (data.notificaciones !== notificacionesCount) {
+                let notisOld = document.querySelector('.badge.bg-danger').innerText;
+                notificacionesCount = data.notificaciones;
+                document.querySelector('.badge.bg-danger').innerText = notificacionesCount;
+                if(notisOld < notificacionesCount) {
+                    mostrarNotificacion('¡Has recibido un nuevo pedido!');
+                } else {
+                    
+                }
+            }
+        })
+        .catch(error => console.error('Error al verificar notificaciones:', error));
+}
+
+// Iniciar la verificación de notificaciones cada 5 segundos
 document.addEventListener('DOMContentLoaded', function() {
-    window.Echo.channel('pedidos')
-        .listen('App\\Events\\PedidoRecibido', (data) => {
-            notificacionesCount++; // Incrementa el contador de notificaciones
-            document.querySelector('.badge.bg-danger').innerText =
-            notificacionesCount; // Actualiza el badge
-
-            // Aquí puedes mostrar un mensaje de notificación si deseas
-            const notificationDiv = document.getElementById('notifications');
-            notificationDiv.innerHTML = 'Nuevo Pedido Recibido: ' + data.detalle + ' - ' + data.fecha;
-            notificationDiv.style.display = 'block';
-
-            setTimeout(() => {
-                notificationDiv.style.display = 'none';
-            }, 5000);
-        });
+    setInterval(verificarNotificaciones, 5000);
 });
 </script>
 
@@ -208,24 +227,7 @@ document.addEventListener('DOMContentLoaded', function() {
     outline: none;
 }
 
-.notification .bi-bell-fill {
-    transition: color 0.3s;
-}
-
-.notification .bi-bell-fill:hover {
-    color: #ffdd57;
-}
-
 .notification .badge {
-    font-size: 0.75rem;
-    line-height: 1;
-    min-width: 18px;
-    height: 18px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: white;
-    background-color: red;
     position: absolute;
     top: -5px;
     right: -5px;

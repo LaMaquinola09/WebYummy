@@ -45,8 +45,24 @@ Route::group(['middleware' => ['auth', 'check.restaurant.active']], function () 
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->middleware(['auth', 'verified'])->name('dashboard');
+
+    
     //Rutas para el pedidos
     Route::get('/pedidos', [PedidoController::class, 'index'])->name('pedidos.index');
+
+    // Ruta para obtener el número de notificaciones
+    Route::get('/api/notificaciones', [PedidoController::class, 'getNotificaciones']);
+
+    // Ruta para cambiar el estado del pedido
+    Route::put('/api/pedidos/{id}/cambiar-estado', [PedidoController::class, 'cambiarEstado']);
+
+
+
+
+
+
+
+
     // Ruta para almacenar los menus
     Route::get('/menu', [MenuItemController::class, 'index'])->name('menu.index');
     route::get('/nuevoplato', [MenuItemController::class, 'create'])->name('menu.nuevoplato');

@@ -33,4 +33,51 @@ class PedidoController extends Controller
         // Dispara el evento que notificará al restaurante
         event(new PedidoRecibido($pedido));
     }
+
+
+    public function cambiarEstado($id)
+    {
+        $pedido = Pedido::find($id);
+
+        if ($pedido) {
+            // Cambia el estado del pedido
+            $pedido->estado = 'en_camino'; // Cambia el estado según tu lógica de negocio
+            $pedido->save();
+
+            return response()->json(['mensaje' => 'El estado del pedido ha sido actualizado.']);
+        } else {
+            return response()->json(['mensaje' => 'Pedido no encontrado.'], 404);
+        }
+    }
+    
+
+
+        // Obtener la cantidad de notificaciones (pedidos pendientes)
+        public function obtenerPedidosPendientes()
+        {
+            $notificaciones = Pedido::where('estado', 'pendiente')->count(); // Ejemplo básico
+            return response()->json(['notificaciones' => $notificaciones]);
+        }
+        
+
+        public function getNotificaciones()
+        {
+            // Obtiene el número de pedidos con estado 'pendiente'
+            $notificaciones = Pedido::where('estado', 'pendiente')->count();
+            return response()->json(['notificaciones' => $notificaciones]);
+        }
+
+
+
+    
+
+  
+
+
+
+
+
+
+
+
 }

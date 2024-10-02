@@ -9,11 +9,11 @@ class HeaderComposer
 {
     public function compose(View $view)
     {
-        $notificaciones = $this->obtenerNotificaciones(); // Lógica para contar notificaciones
-        $pedidos = Pedido::all(); // Obtén todos los pedidos o ajusta según tu necesidad
+        $notificaciones = Pedido::where('estado', 'pendiente')->count();
+        $pedidos = Pedido::where('estado', 'pendiente')->get();
 
-        // Compartir variables con la vista
-        $view->with(compact('notificaciones', 'pedidos'));
+        $view->with('notificaciones', $notificaciones)
+             ->with('pedidos', $pedidos);
     }
 
     private function obtenerNotificaciones()

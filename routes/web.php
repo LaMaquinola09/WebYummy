@@ -101,6 +101,10 @@ Route::middleware('auth')->group(function () {
     //Rutas para editar restaurantes
     Route::get('/restaurantes/{id}/edit', [RestauranteController::class, 'edit'])->name('restaurantes.edit');
     Route::put('/restaurantes/{id}', [RestauranteController::class, 'update'])->name('restaurantes.update');
+
+    // Ruta para mostrar los comentarios de un restaurante
+    Route::get('/restaurantes/{id}/comentarios', [RestauranteController::class, 'showComentarios'])->name('restaurantes.comentarios');
+
 });
 
 //Rutas para aviso de privacidad y términos y condiciones

@@ -1,5 +1,5 @@
 <x-app-layout>
-    @include('header.header', ['notificaciones' => $notificaciones, 'pedidos' => $pedidos])
+    @include('header.header')
 
     <!doctype html>
     <html lang="es">

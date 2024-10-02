@@ -10,10 +10,8 @@ class PedidoController extends Controller
 {
     public function index()
     {
-        $pedidos = Pedido::all(); // O tu lógica para obtener pedidos
-        $notificaciones = Pedido::where('estado', 'pendiente')->count(); // Pedidos pendientes
-
-        return view('pedidos.index', compact('pedidos', 'notificaciones'));
+    
+        return view('pedidos.index');
     }
 
     // setInterval()

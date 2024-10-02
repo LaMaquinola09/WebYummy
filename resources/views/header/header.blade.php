@@ -3,14 +3,16 @@
 <!-- Enlace a Bootstrap CSS -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <!-- Enlace a Bootstrap Icons CSS -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css"
+    rel="stylesheet">
 <!-- Enlace a Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 <header class="header d-flex justify-content-between align-items-center p-2 text-white" id="idheader">
     <div class="logo-container d-none d-md-flex">
         <img src="{{ asset('images/Logo_Blanco__1.png') }}" alt="Logo" class="logo-img">
-        <a href="#" class="logo-text">{{ auth()->user()->restaurante ? auth()->user()->restaurante->nombre : __('RESTAURANTE MENÚ') }}</a>
+        <a href="#"
+            class="logo-text">{{ auth()->user()->restaurante ? auth()->user()->restaurante->nombre : __('RESTAURANTE MENÚ') }}</a>
     </div>
 
     <div class="d-flex justify-content-end align-items-center flex-nowrap">
@@ -21,13 +23,14 @@
                     data-bs-target="#notificationModal">
                     <i class="bi bi-bell-fill text-white fs-4"></i>
                     <span class="badge bg-danger position-absolute top-0 start-100 translate-middle p-1 rounded-circle">
-                        {{ $notificaciones }}
-                        <div id="notifications" class="alert alert-info" style="display: none;"></div>
+                        {{ $notificaciones ?? 0 }}
+                        <!-- Asegúrate de que $notificaciones sea un número -->
                     </span>
+
+
                 </button>
             </div>
         </div>
-      
 
         <nav class="auth-links d-flex flex-nowrap overflow-auto">
             <a href="{{ route('menu.index') }}" class="auth-link">{{ __('Mi Menú') }}</a>
@@ -62,8 +65,10 @@
                     @if($pedido->estado == 'pendiente')
                     <li class="list-group-item d-flex justify-content-between align-items-center">
                         <div>
-                            <strong>Pedido #{{ $pedido->id }}</strong> - {{ $pedido->descripcion }}
-                            <p class="mb-0 text-muted">{{ $pedido->fecha_pedido->format('d M Y, H:i') }}</p>
+                            <strong>Pedido #{{ $pedido->id }}</strong> - {{ $pedido->descripcion ?? 'Sin descripción' }}
+                            <p class="mb-0 text-muted">
+                                {{ $pedido->fecha_pedido ? $pedido->fecha_pedido->format('d M Y, H:i') : 'Fecha no disponible' }}
+                            </p>
                         </div>
                         <div>
                             <button class="btn btn-success btn-sm me-2"
@@ -74,6 +79,7 @@
                     </li>
                     @endif
                     @endforeach
+
                 </ul>
             </div>
 
@@ -86,24 +92,31 @@
 
 <script>
 function aceptarPedido(pedidoId) {
-    // Lógica para aceptar el pedido (ejemplo, podrías hacer una llamada AJAX aquí)
     alert('Pedido ' + pedidoId + ' aceptado.');
 }
 
 function rechazarPedido(pedidoId) {
-    // Lógica para rechazar el pedido (ejemplo, podrías hacer una llamada AJAX aquí)
     alert('Pedido ' + pedidoId + ' rechazado.');
 }
+
+let notificacionesCount = {
+    {
+        $notificaciones ?? 0
+    }
+}; // Inicializa el contador de notificaciones
 
 document.addEventListener('DOMContentLoaded', function() {
     window.Echo.channel('pedidos')
         .listen('App\\Events\\PedidoRecibido', (data) => {
-            // Muestra un mensaje de notificación en el frontend
+            notificacionesCount++; // Incrementa el contador de notificaciones
+            document.querySelector('.badge.bg-danger').innerText =
+            notificacionesCount; // Actualiza el badge
+
+            // Aquí puedes mostrar un mensaje de notificación si deseas
             const notificationDiv = document.getElementById('notifications');
             notificationDiv.innerHTML = 'Nuevo Pedido Recibido: ' + data.detalle + ' - ' + data.fecha;
             notificationDiv.style.display = 'block';
 
-            // Opcional: ocultar la notificación después de 5 segundos
             setTimeout(() => {
                 notificationDiv.style.display = 'none';
             }, 5000);

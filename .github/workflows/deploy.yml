@@ -27,5 +27,5 @@ jobs:
         port: 65002
         script: |
           pwd
-          cd /domains/soudevteam.com
+          cd /home/u691064313/domains/soudevteam.com
           git pull

@@ -26,5 +26,6 @@ jobs:
         key: ${{ secrets.HOSTINGER_SSH_KEY }}
         port: 65002
         script: |
+          pwd
           cd /domains/soudevteam.com
           git pull

@@ -7,7 +7,7 @@
 
 <header class="header d-flex justify-content-between align-items-center p-2 text-white" id="idheader">
     <div class="logo-container d-none d-md-flex">
-        <img src="{{ asset('images/Logo_Blanco__1.png') }}" alt="Logo" class="logo-img">
+        <img src="{{ asset(auth()->user()->restaurante->imagen) }}" alt="Logo" class="logo-img">
         <a href="#" class="logo-text">{{ auth()->user()->restaurante ? auth()->user()->restaurante->nombre : __('RESTAURANTE MENÚ') }}</a>
     </div>
 

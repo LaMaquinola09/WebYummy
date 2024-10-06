@@ -26,6 +26,7 @@ use App\Models\Categoria;
         'estado',
         'categoria_id',
         'estado_membresia',
+        'imagen',
     ];
 
 

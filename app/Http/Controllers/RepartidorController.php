@@ -14,7 +14,7 @@ class RepartidorController extends Controller
      */
     public function index()
     {
-        $repartidores = User::repartidores()->get();
+        $repartidores = User::repartidores()->paginate(5);
         //
         return view('repartidores.index', compact('repartidores'));
     }

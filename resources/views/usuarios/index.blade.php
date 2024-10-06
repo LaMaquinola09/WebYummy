@@ -62,15 +62,21 @@
                             </tr>
                         </thead>
                         <tbody class="text-gray-600 text-sm font-light">
-                           
+                            @foreach($usuarios as $usuario)
                                 <tr class="border-b border-gray-200 hover:bg-gray-100">
-                                    <th class="py-3 px-6"></th>
-                                    <td class="py-3 px-6"></td>
-                                    <td class="py-3 px-6"></td>
-                                    <td class="py-3 px-6"></td>
-                                    
+                                    <th class="py-3 px-6">{{ $usuario->id }}</th>
+                                    <td class="py-3 px-6">{{ $usuario->nombre }}</td>
+                                    <td class="py-3 px-6">{{ $usuario->email }}</td>
+                                    <td class="py-3 px-6">{{ $usuario->direccion }}</td>
+                                    <td class="py-3 px-6">{{ $usuario->telefono }}</td>
+                            @endforeach   
                         </tbody>
                     </table>
+
+                    <!-- Agrega los botones de paginación -->
+                    <div class="mt-4">
+                        {{ $usuarios->links() }}
+                    </div>
                 </div>
             </div>
         </div>

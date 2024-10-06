@@ -3,32 +3,28 @@ name: Deploy to Hostinger
 on:
   push:
     branches:
-      - main  # o la rama que deseas desplegar automáticamente
+      - main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout the code
+    - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Copy files via SSH
-      uses: appleboy/scp-action@v0.1.1
+    - name: Setup Node.js 16
+      uses: actions/setup-node@v3
       with:
-        host: ${{ secrets.HOSTINGER_HOST }}
-        username: ${{ secrets.HOSTINGER_USERNAME }}
-        key: ${{ secrets.HOSTINGER_SSH_KEY }}
-        source: "./"
-        target: "./domains/soudevteam.com/"
+        node-version: '16'
 
-    - name: Run SSH commands
+    - name: Deploy to Hostinger via SSH
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.HOSTINGER_HOST }}
-        username: ${{ secrets.HOSTINGER_USERNAME }}
+        username: ${{ secrets.HOSTINGER_USER }}
         key: ${{ secrets.HOSTINGER_SSH_KEY }}
+        port: 65002
         script: |
-          cd /domains/soudevteam.com/
-          # Aquí puedes ejecutar comandos para reiniciar servicios, instalar dependencias, etc.
-          npm run build
+          cd /domains/soudevyummy.com
+          git pull

@@ -95,7 +95,6 @@
 
                         <!-- Tarjeta Órdenes Pendientes -->
                         <div class="col-xl-3 col-sm-6 mb-4">
-<<<<<<< HEAD
                             <div class="card border-l-4 border-orange-500 shadow-md transition-transform transform hover:scale-105"
                                  onclick="this.classList.toggle('expanded')">
                                 <div class="card-body p-4">
@@ -110,24 +109,6 @@
                                                     <span class="text-danger font-bold">+15%</span>
                                                     Última Hora
                                                 </p>
-=======
-                            <a href="url-ordenes-pendientes" style="text-decoration: none;">
-                                <div
-                                    class="card border-l-4 border-orange-500 shadow-md transition-transform transform hover:scale-105">
-                                    <div class="card-body p-4">
-                                        <div class="row">
-                                            <div class="col-8">
-                                                <div class="numbers">
-                                                    <p class="text-sm mb-0 text-uppercase font-bold text-gray-500">
-                                                        Pedidos Entregados
-                                                    </p>
-                                                    <h5 class="font-bold text-2xl text-orange-600">24</h5>
-                                                    <p class="mb-0">
-                                                        <span class="text-danger font-bold">+15%</span>
-                                                        Última Hora
-                                                    </p>
-                                                </div>
->>>>>>> ec93b4689dc7e5de0ab761b3bbbee9ceeda7b7e4
                                             </div>
                                         </div>
                                         <div class="col-4 text-end">
@@ -173,43 +154,9 @@
                                         </div>
                                     </div>
                                 </div>
-<<<<<<< HEAD
                                 <!-- Contenedor colapsable con detalles adicionales -->
                                 <div class="card-details hidden p-4">
                                     <p>Detalles sobre los clientes activos...</p>
-=======
-                            </a>
-                        </div>
-
-                        <!-- Tarjeta Ingredientes Disponibles -->
-                        <div class="col-xl-3 col-sm-6 mb-4">
-                            <a href="url-ordenes-pendientes" style="text-decoration: none;">
-                                <div
-                                    class="card border-l-4 border-orange-500 shadow-md transition-transform transform hover:scale-105">
-                                    <div class="card-body p-4">
-                                        <div class="row">
-                                            <div class="col-8">
-                                                <div class="numbers">
-                                                    <p class="text-sm mb-0 text-uppercase font-bold text-gray-500">
-                                                        Pedidos Pendientes
-                                                    </p>
-                                                    <h5 class="font-bold text-2xl text-orange-600">24</h5>
-                                                    <p class="mb-0">
-                                                        <span class="text-danger font-bold">+15%</span>
-                                                        Última Hora
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            <div class="col-4 text-end">
-                                                <div
-                                                    class="icon icon-shape bg-gradient-warning shadow-warning text-center rounded-circle">
-                                                    <i class="ni ni-delivery-fast text-3xl text-white"
-                                                        aria-hidden="true"></i>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
->>>>>>> ec93b4689dc7e5de0ab761b3bbbee9ceeda7b7e4
                                 </div>
                             </div>
                         </div>

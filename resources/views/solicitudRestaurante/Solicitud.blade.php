@@ -177,7 +177,7 @@
     <div class="solicitud-form-container">
         <h1 class="solicitud-header">Solicitud de Restaurante</h1>
 
-        <form action="{{ route('solicitudes.store') }}" method="POST">
+        <form action="{{ route('solicitudes.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <p class="solicitud-subtext">Ingresa tus datos personales</p>
             <hr class="solicitud-divider">
@@ -206,12 +206,12 @@
             <div class="solicitud-row">
                 <div class="solicitud-col-6">
                     <label for="solicitud-password" class="solicitud-label">Contraseña</label>
-                    <input type="password" placeholder="Ingresa tu contraseña" name="password" id="solicitud-password"
+                    <input type="password" placeholder="La contraseña debe de contener al menos 8 caracteres" name="password" id="solicitud-password"
                         class="solicitud-input" required>
                 </div>
                 <div class="solicitud-col-6">
                     <label for="solicitud-password-confirmation" class="solicitud-label">Repite la contraseña</label>
-                    <input type="password" placeholder="Repite la contraseña" name="password_confirmation"
+                    <input type="password" placeholder="La contraseña debe de contener al menos 8 caracteres" name="password_confirmation"
                         id="solicitud-password-confirmation" class="solicitud-input" required>
                 </div>
             </div>
@@ -230,16 +230,21 @@
                     <option value="{{ $categoria->id }}">{{ $categoria->nombre }}</option>
                 @endforeach
             </select>
+
+            <label for="imagen" class="solicitud-label">Imagen del negocio</label>
+            <input type="file" name="imagen" id="imagen" class="solicitud-input" required>
+
             <div class="solicitud-row">
                 <div class="solicitud-col-6">
-                    <label for="solicitud-hora-apertura" class="solicitud-label">Horario de apertura</label>
-                    <input type="time" name="hora_apertura" id="solicitud-hora-apertura" class="solicitud-input"
-                        required>
+                    <label for="horario_apertura" class="block text-sm font-medium text-gray-700">Horario de apertura</label>
+                    <input type="time" name="horario_apertura" id="horario_apertura" class="block w-full mt-1 border-gray-300 rounded-md shadow-sm" required>
                 </div>
+
                 <div class="solicitud-col-6">
-                    <label for="solicitud-hora-cierre" class="solicitud-label">Horario de cierre</label>
-                    <input type="time" name="hora_cierre" id="solicitud-hora-cierre" class="solicitud-input" required>
+                    <label for="horario_cierre" class="block text-sm font-medium text-gray-700">Horario de cierre</label>
+                    <input type="time" name="horario_cierre" id="horario_cierre" class="block w-full mt-1 border-gray-300 rounded-md shadow-sm" required>
                 </div>
+
             </div>
 
             <div class="accion-row justify-center">

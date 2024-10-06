@@ -15,13 +15,10 @@
                     {{ __('Bienvenido al Dashboard de Comida') }}
                 </h1>
                 <p class="mt-2 text-gray-600 text-center">
-<<<<<<< HEAD
                     {{ __("Aquí puedes ver tus configuraciones y ver las estadísticas.") }}
-=======
-                    {{ __("configuraciones y ver las estadísticas.") }}
->>>>>>> ec93b4689dc7e5de0ab761b3bbbee9ceeda7b7e4
                 </p>
 
+                <!-- Contenido adicional del Dashboard -->
                 <!-- Contenido adicional del Dashboard -->
                 <div class="mt-4">
                     <div class="row">

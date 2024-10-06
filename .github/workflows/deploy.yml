@@ -24,7 +24,7 @@ jobs:
         host: ${{ secrets.HOSTINGER_HOST }}
         username: ${{ secrets.HOSTINGER_USER }}
         key: ${{ secrets.HOSTINGER_SSH_KEY }}
-        passphrase: ${{ secrets.HOSTINGER_PASSPHRASE }}
+        port: 65002
         script: |
           cd /domains/soudevyummy.com
           git pull

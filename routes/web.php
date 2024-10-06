@@ -13,14 +13,14 @@ use App\Http\Controllers\LegalController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SolicitudController;
 use App\Http\Controllers\MenuItemController;
+use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\CategoryController;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/notificacion', [SolicitudController::class, 'index'])->name('solicitudRestaurante.notificacion');
-Route::get('/restaurantes/pay-fee', [RestauranteController::class, 'pay_fee'])->name('restaurantes.pay-fee');
-Route::get('/notificacion', [SolicitudController::class, 'index'])->name('solicitudRestaurante.notificacion');
 
 // Ruta para mostrar el formulario de registro de solicitud
 Route::get('/registrosolicitud', [SolicitudController::class, 'create'])->name('Registrosolicitud');
@@ -34,18 +34,35 @@ Route::put('/restaurant/{id}/update-status', [RestauranteController::class, 'upd
 
 
 
-Route::get('/admin/dashboard', function () {
-    return view('admin.dashboard');
-})->middleware(['auth', 'verified'])->name('adminDash');
+
 
 Route::group(['middleware' => ['auth', 'check.restaurant.active']], function () {
     // Rutas accesibles solo para restaurantes activos
         // Ruta general del dashboard
+        Route::get('/admin/dashboard', function () {
+            return view('admin.dashboard');
+        })->middleware(['auth', 'verified'])->name('adminDash');
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->middleware(['auth', 'verified'])->name('dashboard');
+
+    // Te amo Cielo
     //Rutas para el pedidos
     Route::get('/pedidos', [PedidoController::class, 'index'])->name('pedidos.index');
+
+    // Ruta para obtener el número de notificaciones
+    Route::get('/api/notificaciones', [PedidoController::class, 'getNotificaciones']);
+
+    // Ruta para cambiar el estado del pedido
+    Route::put('/api/pedidos/{id}/cambiar-estado', [PedidoController::class, 'cambiarEstado']);
+
+
+
+
+
+
+
+
     // Ruta para almacenar los menus
     Route::get('/menu', [MenuItemController::class, 'index'])->name('menu.index');
     route::get('/nuevoplato', [MenuItemController::class, 'create'])->name('menu.nuevoplato');
@@ -62,6 +79,14 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+    Route::get('/restaurantes/pay-fee', [RestauranteController::class, 'pay_fee'])->name('restaurantes.pay-fee');
+    Route::post('/restaurantes/handlePayment', [PaymentController::class, 'handlePayment'])->name('handle.payment');
+    Route::post('/checkout', [CheckoutController::class, 'createCheckoutSession'])->name('checkout.create');
+    Route::get('/success', [CheckoutController::class, 'success'])->name('checkout.success');
+    Route::get('/cancel', [CheckoutController::class, 'cancel'])->name('checkout.cancel');
+
+    Route::post('/categorias', [CategoryController::class, 'store'])->name('categorias.store');
+
     
     
     // Rutas para Pedidos
@@ -76,6 +101,10 @@ Route::middleware('auth')->group(function () {
     //Rutas para editar restaurantes
     Route::get('/restaurantes/{id}/edit', [RestauranteController::class, 'edit'])->name('restaurantes.edit');
     Route::put('/restaurantes/{id}', [RestauranteController::class, 'update'])->name('restaurantes.update');
+
+    // Ruta para mostrar los comentarios de un restaurante
+    Route::get('/restaurantes/{id}/comentarios', [RestauranteController::class, 'showComentarios'])->name('restaurantes.comentarios');
+
 });
 
 //Rutas para aviso de privacidad y términos y condiciones

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Restaurante;
+use App\Models\Categoria;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Auth;
 
@@ -12,10 +13,23 @@ class RestauranteController extends Controller
     public function index()
     {
         // Obtener todos los restaurantes independientemente de su estado
-        $restaurants = Restaurante::all();
+        $restaurants = Restaurante::with('categoria')->get();
     
         // Retorna la vista para los restaurantes y pasa los datos
         return view('restaurantes.index', compact('restaurants'));
+    }
+
+    //para mostrar comentarios
+    public function showComentarios($id)
+    {
+        // Encontrar el restaurante por su ID
+        $restaurante = Restaurante::findOrFail($id);
+    
+        // Obtener los comentarios del restaurante con los datos del cliente
+        $comentarios = $restaurante->comentarios()->with('cliente')->get();
+    
+        // Retornar la vista con los comentarios
+        return view('restaurantes.comentarios', compact('restaurante', 'comentarios'));
     }
     
     public function updateStatus(Request $request, $id)
@@ -76,34 +90,60 @@ class RestauranteController extends Controller
     {
         // Obtener el restaurante por su ID
         $restaurante = Restaurante::findOrFail($id);
+        $categorias = Categoria::all();
 
         // Retornar la vista de edición con los datos del restaurante
-        return view('restaurantes.edit', compact('restaurante'));
+        return view('restaurantes.edit', compact('restaurante', 'categorias'));
     }
 
     public function update(Request $request, $id)
     {
-        try {
-            // Validar los datos del formulario
-            $request->validate([
-                'nombre' => 'required|string|max:255',
-                'direccion' => 'required|string|max:255',
-                'telefono' => 'required|string|max:20',
-                'horario' => 'required|string|max:255',
-                'categoria' => 'required|string|max:255',
-                'estado' => 'required|string|max:50',
-            ]);
+        // Validar los campos de entrada
+        $request->validate([
+            'nombre' => 'required|string|max:255|regex:/^[\p{L}\s]+$/u',
+            'direccion' => 'required|string|min:15|max:255|regex:/^[\p{L}0-9\s#,.]+$/u',
+            'telefono' => 'required|numeric|digits_between:10,10',
+            'horario_apertura' => 'required|date_format:H:i',
+            'horario_cierre' => 'required|date_format:H:i|after:horario_apertura',
+            'categoria_id' => 'required|exists:categorias,id',
+            'estado' => 'required|string|max:50',
+        ], [
+            'nombre.required' => 'El nombre del restaurante es obligatorio.',
+            'nombre.regex' => 'Coloca solo letras y espacios',
+            'direccion.regex' => 'Coloca solo letras, espacios y números',
+            'direccion.min' => 'Coloca al menos 15 caracteres',
+            'horario_apertura.date_format' => 'Seleccione horarios válidos',
+            'horario_cierre.after' => 'El cierre del horario debe ser a la apertura del horario.',
+            'telefono.numeric' => 'El teléfono debe ser un número válido.',
+            'telefono.digits_between' => 'El teléfono debe contener únicamente 10 dígitos.',
+            'categoria_id.required' => 'La categoría es obligatoria.',
+            'categoria_id.exists' => 'La categoría seleccionada no es válida.',
+        ]);
     
-            // Obtener el restaurante y actualizar sus datos
-            $restaurante = Restaurante::findOrFail($id);
-            $restaurante->update($request->all());
+        // Obtener el restaurante
+        $restaurante = Restaurante::findOrFail($id);
     
-            // Redirigir con un mensaje de éxito
-            return redirect()->route('restaurantes.index')->with('success', 'Restaurante actualizado correctamente.');
-    
-        } catch (\Exception $e) {
-            // Redirigir con un mensaje de error
-            return redirect()->route('restaurantes.index')->with('error', 'Ocurrió un error al actualizar el restaurante.');
-        }
+        // Actualizar los datos del restaurante
+        $restaurante->nombre = $request->input('nombre');
+        $restaurante->direccion = $request->input('direccion');
+        $restaurante->telefono = $request->input('telefono');
+        
+        // Concatenar horario de apertura y cierre en la columna 'horario'
+        $horario_apertura = $request->input('horario_apertura');
+        $horario_cierre = $request->input('horario_cierre');
+        $restaurante->horario = $horario_apertura . ' - ' . $horario_cierre;
+        
+        $restaurante->estado = $request->input('estado');
+        
+        // Actualizar la relación con la categoría
+        $restaurante->categoria_id = $request->input('categoria_id');
+        
+        // Guardar los cambios en la base de datos
+        $restaurante->save();
+        
+        // Actualizar el restaurante con los datos validados
+        // $restaurante->update($request->all());
+        return redirect()->route('restaurantes.index')->with('success', 'Restaurante actualizado correctamente.');
     }
+    
 }

@@ -55,8 +55,10 @@ class AuthenticatedSessionController extends Controller
             if ($restaurant) {
                 // Usa \DateTime para referenciar la clase DateTime de PHP
                 $fecha_activo = new \DateTime($restaurant->active_at);
+                $fecha_pagado = new \DateTime($restaurant->paid_at);
                 $hoy = new \DateTime(); // Crear un objeto DateTime para la fecha actual
                 $dias = $fecha_activo->diff($hoy)->days; // Calcular la diferencia en días
+                $dias_sin_pagar = $fecha_pagado->diff($hoy)->days;
 
                 // Verificar si el restaurante está en estado pendiente
                 if ($restaurant->estado != 'Activo') {
@@ -70,10 +72,22 @@ class AuthenticatedSessionController extends Controller
                         'estado' => 'Su restaurante no está activo en el sistema. Por favor, contacte al administrador.',
                     ]);
                 } else if ($dias >= 15) {
-                    // Redirigir a la ruta de pago si han pasado más de 15 días
-                    return redirect()->route('pay-fee')->withErrors([
-                        'estado' => 'Han pasado más de 15 días desde que su restaurante estuvo activo. Debe realizar un pago.',
-                    ]);
+                    if($dias_sin_pagar >= 30){
+                        $restaurant->update([
+                            'estado_membresia' => 'N'
+                        ]);
+                        // Redirigir a la ruta de pago si han pasado más de 15 días
+                        return redirect()->route('restaurantes.pay-fee')->withErrors([
+                            'estado' => 'Han pasado más de 15 días desde que su restaurante estuvo activo. Debe realizar un pago.',
+                        ]);
+                    }
+                    else if($restaurant->estado_membresia === 'N'){
+                        // Redirigir a la ruta de pago si han pasado más de 15 días
+                        return redirect()->route('restaurantes.pay-fee')->withErrors([
+                            'estado' => 'Han pasado más de 15 días desde que su restaurante estuvo activo. Debe realizar un pago.',
+                        ]);
+                    } else {
+                    }
                 }
             } else {
                 // Manejar el caso donde no hay un restaurante asociado al usuario
@@ -118,5 +132,19 @@ class AuthenticatedSessionController extends Controller
         $request->session()->regenerateToken();
 
         return redirect('/');
+    }
+
+    public function destroy_get(Request $request): RedirectResponse
+    {
+        // Cerrar sesión del usuario
+        Auth::guard('web')->logout();
+
+        // Invalidar la sesión
+        $request->session()->invalidate();
+
+        // Regenerar el token de sesión
+        $request->session()->regenerateToken();
+
+        return redirect()->route('login');
     }
 }

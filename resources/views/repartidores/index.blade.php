@@ -52,6 +52,15 @@
                             @endforeach
                         </tbody>
                     </table>
+
+                    <p>
+                        Mostrando {{ $repartidores->firstItem() }} a {{ $repartidores->lastItem() }} de {{ $repartidores->total() }} resultados
+                    </p>
+
+                    <!-- Agrega los botones de paginación -->
+                    <div class="mt-4">
+                        {{ $repartidores->links() }}
+                    </div>
                 </div>
             </div>
         </div>

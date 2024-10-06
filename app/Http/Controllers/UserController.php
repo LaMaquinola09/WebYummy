@@ -15,8 +15,7 @@ class UserController extends Controller
     public function index()
     {
         // Obtener todos los usuarios desde la base de datos
-        $usuarios = \App\Models\User::where('tipo', 'usuario')->get();
-
+        $usuarios = \App\Models\User::where('tipo', 'usuario')->paginate(5);
         // Pasar los usuarios a la vista
         return view('usuarios.index', compact('usuarios'));
         //

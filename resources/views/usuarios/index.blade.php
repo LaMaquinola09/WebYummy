@@ -72,6 +72,11 @@
                             @endforeach   
                         </tbody>
                     </table>
+
+                    <!-- Agrega los botones de paginación -->
+                    <div class="mt-4">
+                        {{ $usuarios->links() }}
+                    </div>
                 </div>
             </div>
         </div>

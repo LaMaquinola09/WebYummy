@@ -22,9 +22,10 @@ jobs:
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.HOSTINGER_HOST }}
-        username: ${{ secrets.HOSTINGER_USER }}
+        username: ${{ secrets.HOSTINGER_USERNAME }}
         key: ${{ secrets.HOSTINGER_SSH_KEY }}
-        passphrase: ${{ secrets.HOSTINGER_PASSPHRASE }}
+        port: 65002
         script: |
-          cd /domains/soudevyummy.com
+          pwd
+          cd /home/u691064313/domains/soudevteam.com
           git pull

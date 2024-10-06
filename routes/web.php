@@ -13,6 +13,7 @@ use App\Http\Controllers\LegalController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SolicitudController;
 use App\Http\Controllers\MenuItemController;
+use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\CategoryController;
@@ -36,6 +37,9 @@ Route::put('/restaurant/{id}/update-status', [RestauranteController::class, 'upd
 
 
 
+
+
+
 Route::group(['middleware' => ['auth', 'check.restaurant.active']], function () {
     // Rutas accesibles solo para restaurantes activos
         // Ruta general del dashboard
@@ -51,12 +55,37 @@ Route::group(['middleware' => ['auth', 'check.restaurant.active']], function () 
     //Rutas para el pedidos
     Route::get('/pedidos', [PedidoController::class, 'index'])->name('pedidos.index');
 
+
+    // Ruta para obtener los pedidos
+    Route::get('/api/pedidos', [PedidoController::class, 'listarPedidos']);
+
+
+ 
+
+    Route::get('/reporteventas', [ReporteController::class, 'index'])->name('reportes.index');
+    Route::get('/reporteestadisticas', [ReporteController::class, 'generarReporteEstadistica'])
+    ->name('pedidos.estadistica');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     // Ruta para obtener el número de notificaciones
     Route::get('/api/notificaciones', [PedidoController::class, 'getNotificaciones']);
-
     // Ruta para cambiar el estado del pedido
     Route::put('/api/pedidos/{id}/cambiar-estado', [PedidoController::class, 'cambiarEstado']);
-
+    Route::get('/pedidos/actualizar', [PedidoController::class, 'obtenerPedidos']);
 
 
 

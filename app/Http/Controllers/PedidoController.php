@@ -8,15 +8,49 @@ use Illuminate\Http\Request;
 
 class PedidoController extends Controller
 {
+
+
     public function index()
     {
-    
+        // Puedes mantener este método si quieres cargar la vista inicial con todos los pedidos
+       
         return view('pedidos.index');
     }
+    
+    public function listarPedidos()
+    {
+        $listapedido = Pedido::all(); // Todos los pedidos
+        $pedidosPendiente = Pedido::where('estado', 'pendiente')->get(); // Filtrar por estado
+        $pedidosEnCamino = Pedido::where('estado', 'en_camino')->get(); // Filtrar por estado
+        $pedidosEntregado = Pedido::where('estado', 'entregado')->get(); // Filtrar por estado
+    
+        return response()->json([
+            'listapedido' => $listapedido,
+            'pedidosPendiente' => $pedidosPendiente,
+            'pedidosEnCamino' => $pedidosEnCamino,
+            'pedidosEntregado' => $pedidosEntregado,
+        ]);
+    }
+    
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
 
     // setInterval()
-
-
     public function store(Request $request)
     {
         // Crea el pedido en la base de datos

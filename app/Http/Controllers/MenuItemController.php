@@ -62,42 +62,103 @@ class MenuItemController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    // public function store(Request $request)
+    // {
+    //     $request->validate([
+    //         'nombre_producto' => 'required|string|max:255',
+    //         'descripcion' => 'required|string|max:255',
+    //         'precio' => 'required|numeric',
+    //         'imagen' => 'nullable|image|max:2048', // Validar que sea una imagen
+    //     ]);
+
+    //     $imagenUrl = null;
+    //     if ($request->hasFile('imagen')) {
+    //         // Obtener el archivo de la imagen
+    //         $imagen = $request->file('imagen');
+    //         // Definir la ruta donde se almacenará la imagen
+    //         $rutaImagen = public_path('imagenes');
+
+    //         // Generar un nombre único para la imagen
+    //         $nombreImagen = time() . '_' . $imagen->getClientOriginalName();
+
+    //         // Mover la imagen a la carpeta deseada
+    //         $imagen->move($rutaImagen, $nombreImagen);
+
+    //         // Guardar la ruta de la imagen en la base de datos
+    //         $imagenUrl = 'imagenes/' . $nombreImagen;
+    //     }
+
+    //     MenuItem::create([
+    //         'restaurante_id' => Auth::user()->restaurante->id, // Obtener el ID del restaurante
+    //         'nombre_producto' => $request->nombre_producto,
+    //         'descripcion' => $request->descripcion,
+    //         'precio' => $request->precio,
+    //         'imagen_url' => $imagenUrl,
+    //     ]);
+
+    //     return redirect()->route('menu.index')->with('success', 'Plato registrado exitosamente.');
+    // }
+
+
     public function store(Request $request)
-    {
-        $request->validate([
-            'nombre_producto' => 'required|string|max:255',
-            'descripcion' => 'required|string',
-            'precio' => 'required|numeric',
-            'imagen' => 'nullable|image|max:2048', // Validar que sea una imagen
-        ]);
+{
+    // Validación de datos de entrada con mensajes personalizados
+    $request->validate([
+        'nombre_producto' => 'required|string|max:255|regex:/^[a-zA-Z0-9\s]+$/', // Permitir solo letras, números y espacios
+        'descripcion' => 'required|string|max:255|regex:/^[a-zA-Z0-9\s]+$/', // Permitir solo letras, números y espacios
+        'precio' => 'required|numeric',
+        'imagen' => 'nullable|image|max:2048', // Validar que sea una imagen
+    ], [
+        'nombre_producto.required' => 'El nombre del producto es obligatorio.',
+        'nombre_producto.string' => 'El nombre del producto debe ser una cadena de texto.',
+        'nombre_producto.max' => 'El nombre del producto no puede exceder 255 caracteres.',
+        'nombre_producto.regex' => 'El nombre del producto solo puede contener letras, números y espacios.', // Mensaje para regex
+        'descripcion.required' => 'La descripción es obligatoria.',
+        'descripcion.string' => 'La descripción debe ser una cadena de texto.',
+        'descripcion.max' => 'La descripción no puede exceder 255 caracteres.',
+        'descripcion.regex' => 'La descripción solo puede contener letras, números y espacios.', // Mensaje para regex
+        'precio.required' => 'El precio es obligatorio.',
+        'precio.numeric' => 'El precio debe ser un número.',
+        'imagen.image' => 'El archivo debe ser una imagen.',
+        'imagen.max' => 'La imagen no puede exceder 2 MB.',
+    ]);
 
-        $imagenUrl = null;
-        if ($request->hasFile('imagen')) {
-            // Obtener el archivo de la imagen
-            $imagen = $request->file('imagen');
-            // Definir la ruta donde se almacenará la imagen
-            $rutaImagen = public_path('imagenes');
+    $imagenUrl = null;
+    if ($request->hasFile('imagen')) {
+        // Obtener el archivo de la imagen
+        $imagen = $request->file('imagen');
+        // Definir la ruta donde se almacenará la imagen
+        $rutaImagen = public_path('imagenes');
 
-            // Generar un nombre único para la imagen
-            $nombreImagen = time() . '_' . $imagen->getClientOriginalName();
+        // Generar un nombre único para la imagen
+        $nombreImagen = time() . '_' . $imagen->getClientOriginalName();
 
-            // Mover la imagen a la carpeta deseada
-            $imagen->move($rutaImagen, $nombreImagen);
+        // Mover la imagen a la carpeta deseada
+        $imagen->move($rutaImagen, $nombreImagen);
 
-            // Guardar la ruta de la imagen en la base de datos
-            $imagenUrl = 'imagenes/' . $nombreImagen;
-        }
-
-        MenuItem::create([
-            'restaurante_id' => Auth::user()->restaurante->id, // Obtener el ID del restaurante
-            'nombre_producto' => $request->nombre_producto,
-            'descripcion' => $request->descripcion,
-            'precio' => $request->precio,
-            'imagen_url' => $imagenUrl,
-        ]);
-
-        return redirect()->route('menu.index')->with('success', 'Plato registrado exitosamente.');
+        // Guardar la ruta de la imagen en la base de datos
+        $imagenUrl = 'imagenes/' . $nombreImagen;
     }
+
+    MenuItem::create([
+        'restaurante_id' => Auth::user()->restaurante->id, // Obtener el ID del restaurante
+        'nombre_producto' => $request->nombre_producto,
+        'descripcion' => $request->descripcion,
+        'precio' => $request->precio,
+        'imagen_url' => $imagenUrl,
+    ]);
+
+    return redirect()->route('menu.index')->with('success', 'Plato registrado exitosamente.');
+}
+
+
+
+
+
+
+
+
+
 
     /**
      * Display the specified resource.

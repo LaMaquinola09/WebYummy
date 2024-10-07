@@ -1,19 +1,22 @@
 <!-- Enlace a Bootstrap CSS -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <!-- Enlace a Bootstrap Icons CSS -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css"
+    rel="stylesheet">
 <!-- Enlace a Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 <header class="header d-flex justify-content-between align-items-center p-2 text-white" id="idheader">
     <div class="logo-container d-none d-md-flex">
         <img src="{{ asset(auth()->user()->restaurante->imagen) }}" alt="Logo" class="logo-img">
-        <a href="#" class="logo-text">{{ auth()->user()->restaurante ? auth()->user()->restaurante->nombre : __('RESTAURANTE MENÚ') }}</a>
+        <a href="#"
+            class="logo-text">{{ auth()->user()->restaurante ? auth()->user()->restaurante->nombre : __('RESTAURANTE MENÚ') }}</a>
     </div>
 
     <div class="d-flex justify-content-end align-items-center flex-nowrap">
         <div class="notification ms-3 position-relative">
-            <button class="btn btn-notification p-0" title="Nuevas Notificaciones" data-bs-toggle="modal" data-bs-target="#notificationModal">
+            <button class="btn btn-notification p-0" title="Nuevas Notificaciones" data-bs-toggle="modal"
+                data-bs-target="#notificationModal">
                 <i class="bi bi-bell-fill text-white fs-4"></i>
                 <span class="badge bg-danger position-absolute top-0 start-100 translate-middle p-1 rounded-circle">
                     {{ $notificaciones ?? 0 }}
@@ -24,7 +27,8 @@
         <nav class="auth-links d-flex flex-nowrap overflow-auto">
             <a href="{{ route('menu.index') }}" class="auth-link">{{ __('Mi Menú') }}</a>
             <a href="{{ route('pedidos.index') }}" class="auth-link">{{ __('Pedidos') }}</a>
-            <a href="{{ route('restaurantes.comentarios', ['id' => auth()->user()->restaurante->id]) }}" class="auth-link">{{ __('Comentarios') }}</a>
+            <a href="{{ route('restaurantes.comentarios', ['id' => auth()->user()->restaurante->id]) }}"
+                class="auth-link">{{ __('Comentarios') }}</a>
         </nav>
 
         <div class="dropdown ms-3">
@@ -32,15 +36,16 @@
                 Reportes
             </button>
             <ul class="dropdown-menu">
-                <li><button class="dropdown-item" type="button">Pedidos</button></li>
-                <li><button class="dropdown-item" type="button">Ventas</button></li>
+                <li><a class="dropdown-item" href="{{ route('reportes.index') }}" target="_blank">Pedidos</a></li>
+                <li><a class="dropdown-item" href="/ventas">Ventas</a></li>
             </ul>
         </div>
     </div>
 </header>
 
 <!-- Modal de notificaciones -->
-<div class="modal fade" id="notificationModal" tabindex="-1" aria-labelledby="notificationModalLabel" aria-hidden="true">
+<div class="modal fade" id="notificationModal" tabindex="-1" aria-labelledby="notificationModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -50,18 +55,22 @@
             <div class="modal-body">
                 <ul class="list-group" id="lista-pedidos">
                     @foreach($pedidos as $pedido)
-                        @if($pedido->estado == 'pendiente')
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <div>
-                                    <strong>Pedido #{{ $pedido->id }}</strong> - {{ $pedido->descripcion ?? 'Sin descripción' }}
-                                    <p class="mb-0 text-muted">{{ $pedido->fecha_pedido ? $pedido->fecha_pedido->format('d M Y, H:i') : 'Fecha no disponible' }}</p>
-                                </div>
-                                <div>
-                                    <button class="btn btn-success btn-sm me-2" onclick="cambiarEstadoPedido({{ $pedido->id }})">Confirmar Pedido</button>
-                                    <button class="btn btn-danger btn-sm" onclick="rechazarPedido({{ $pedido->id }})">Producto Agotado</button>
-                                </div>
-                            </li>
-                        @endif
+                    @if($pedido->estado == 'pendiente')
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <strong>Pedido #{{ $pedido->id }}</strong> - {{ $pedido->descripcion ?? 'Sin descripción' }}
+                            <p class="mb-0 text-muted">
+                                {{ $pedido->fecha_pedido ? $pedido->fecha_pedido->format('d M Y, H:i') : 'Fecha no disponible' }}
+                            </p>
+                        </div>
+                        <div>
+                            <button class="btn btn-success btn-sm me-2"
+                                onclick="cambiarEstadoPedido({{ $pedido->id }})">Confirmar Pedido</button>
+                            <button class="btn btn-danger btn-sm" onclick="rechazarPedido({{ $pedido->id }})">Producto
+                                Agotado</button>
+                        </div>
+                    </li>
+                    @endif
                     @endforeach
                 </ul>
             </div>
@@ -112,7 +121,11 @@ function cambiarEstadoPedido(id) {
         .catch(error => console.error('Error al cambiar el estado del pedido:', error));
 }
 
-let notificacionesCount = {{ $notificaciones ?? 0 }}; // Inicializa el contador de notificaciones
+let notificacionesCount = {
+    {
+        $notificaciones ?? 0
+    }
+}; // Inicializa el contador de notificaciones
 
 // Verificar y actualizar el contador de notificaciones
 function verificarNotificaciones() {

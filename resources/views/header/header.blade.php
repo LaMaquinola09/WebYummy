@@ -37,7 +37,9 @@
             </button>
             <ul class="dropdown-menu">
                 <li><a class="dropdown-item" href="{{ route('reportes.index') }}" target="_blank">Pedidos</a></li>
-                <li><a class="dropdown-item" href="/ventas">Ventas</a></li>
+       
+                <li><a href="{{ route('reportes.ventas') }}" class="dropdown-item" target="_blank">Ver Reporte de Ventas</a></li>
+
             </ul>
         </div>
     </div>

@@ -61,6 +61,8 @@ Route::group(['middleware' => ['auth', 'check.restaurant.active']], function () 
  
 
     Route::get('/reportes', [ReporteController::class, 'index'])->name('reportes.index');
+    Route::get('/reportes/ventas', [ReporteController::class, 'mostrarReporte'])->name('reportes.ventas');
+    
 
     Route::get('/reporteestadisticas', [ReporteController::class, 'generarReporteEstadistica'])->name('pedidos.estadistica');
 

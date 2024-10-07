@@ -60,13 +60,9 @@ Route::group(['middleware' => ['auth', 'check.restaurant.active']], function () 
 
  
 
-    Route::get('/reporteventas', [ReporteController::class, 'index'])->name('reportes.index');
-    Route::get('/reporteestadisticas', [ReporteController::class, 'generarReporteEstadistica'])
-    ->name('pedidos.estadistica');
+    Route::get('/reportes', [ReporteController::class, 'index'])->name('reportes.index');
 
-
-
-
+    Route::get('/reporteestadisticas', [ReporteController::class, 'generarReporteEstadistica'])->name('pedidos.estadistica');
 
 
 
@@ -74,7 +70,8 @@ Route::group(['middleware' => ['auth', 'check.restaurant.active']], function () 
 
 
     // Ruta para obtener el número de notificaciones
-    Route::get('/api/notificaciones', [PedidoController::class, 'getNotificaciones']);
+    Route::get('/notificaciones', [PedidoController::class, 'getNotificaciones'])->middleware('auth:api');
+
     // Ruta para cambiar el estado del pedido
     Route::put('/api/pedidos/{id}/cambiar-estado', [PedidoController::class, 'cambiarEstado']);
 

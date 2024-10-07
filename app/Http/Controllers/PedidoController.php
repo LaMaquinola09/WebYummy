@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Events\PedidoRecibido;
 use App\Models\Pedido;
+use Illuminate\Support\Facades\Auth; // Importar la clase Auth
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class PedidoController extends Controller
@@ -15,26 +17,31 @@ class PedidoController extends Controller
         return view('pedidos.index'); // Vista inicial
     }
     
-    public function listarPedidos()
+
+
+    public function listarPedidos(): JsonResponse
     {
-        // Cargar todos los pedidos
-        $listapedido = Pedido::all();
-        
-        // Filtrar por estado
-        $pedidosPendiente = Pedido::where('estado', 'pendiente')->get();
-        $pedidosEnCamino = Pedido::where('estado', 'en_camino')->get();
-        $pedidosEntregado = Pedido::where('estado', 'entregado')->get();
-        
-        return response()->json([
-            'pedidosAceptados' => $listapedido,
-            'pedidosPendiente' => $pedidosPendiente,
-            'pedidosEnCamino' => $pedidosEnCamino,
-            'pedidosEntregado' => $pedidosEntregado,
-        ]);
+        // Obtener el usuario autenticado
+        $user = Auth::user();
+    
+        // Verificar si el usuario tiene un restaurante asociado
+        if ($user && $user->restaurante) {
+            // Obtener el ID del restaurante asociado al usuario
+            $restauranteId = $user->restaurante->id;
+    
+            // Obtener los pedidos del restaurante asociado al usuario autenticado
+            $listapedido = Pedido::where('restaurante_id', $restauranteId)->get();
+    
+            return response()->json([
+                'pedidosAceptados' => $listapedido,
+            ]);
+        } else {
+            return response()->json([
+                'message' => 'Usuario no tiene un restaurante asociado o no está autenticado.',
+            ], 404);
+        }
     }
     
-
-
 
 
 

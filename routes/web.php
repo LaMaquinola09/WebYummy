@@ -54,8 +54,6 @@ Route::group(['middleware' => ['auth', 'check.restaurant.active']], function () 
     // Atte Fernando
     //Rutas para el pedidos
     Route::get('/pedidos', [PedidoController::class, 'index'])->name('pedidos.index');
-
-
     // Ruta para obtener los pedidos
     Route::get('/api/pedidos', [PedidoController::class, 'listarPedidos']);
 
@@ -85,6 +83,10 @@ Route::group(['middleware' => ['auth', 'check.restaurant.active']], function () 
     Route::get('/api/notificaciones', [PedidoController::class, 'getNotificaciones']);
     // Ruta para cambiar el estado del pedido
     Route::put('/api/pedidos/{id}/cambiar-estado', [PedidoController::class, 'cambiarEstado']);
+
+
+
+    
     Route::get('/pedidos/actualizar', [PedidoController::class, 'obtenerPedidos']);
 
 

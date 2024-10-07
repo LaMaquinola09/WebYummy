@@ -12,20 +12,21 @@ class PedidoController extends Controller
 
     public function index()
     {
-        // Puedes mantener este método si quieres cargar la vista inicial con todos los pedidos
-       
-        return view('pedidos.index');
+        return view('pedidos.index'); // Vista inicial
     }
     
     public function listarPedidos()
     {
-        $listapedido = Pedido::all(); // Todos los pedidos
-        $pedidosPendiente = Pedido::where('estado', 'pendiente')->get(); // Filtrar por estado
-        $pedidosEnCamino = Pedido::where('estado', 'en_camino')->get(); // Filtrar por estado
-        $pedidosEntregado = Pedido::where('estado', 'entregado')->get(); // Filtrar por estado
-    
+        // Cargar todos los pedidos
+        $listapedido = Pedido::all();
+        
+        // Filtrar por estado
+        $pedidosPendiente = Pedido::where('estado', 'pendiente')->get();
+        $pedidosEnCamino = Pedido::where('estado', 'en_camino')->get();
+        $pedidosEntregado = Pedido::where('estado', 'entregado')->get();
+        
         return response()->json([
-            'listapedido' => $listapedido,
+            'pedidosAceptados' => $listapedido,
             'pedidosPendiente' => $pedidosPendiente,
             'pedidosEnCamino' => $pedidosEnCamino,
             'pedidosEntregado' => $pedidosEntregado,

@@ -29,3 +29,5 @@ jobs:
           pwd
           cd /home/u691064313/domains/soudevteam.com
           git pull
+          cp -r /home/u691064313/domains/soudevteam.com/public/ /home/u691064313/domains/soudevteam.com/public_html/
+          pwd

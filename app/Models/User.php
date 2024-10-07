@@ -28,8 +28,14 @@ class User extends Authenticatable
 
     public function restaurante()
     {
-        return $this->hasOne(Restaurante::class);
+        return $this->hasOne(Restaurante::class, 'user_id'); // 'user_id' es la clave foránea en la tabla restaurantes
     }
+    
+
+
+
+
+
 
     public function scopeRepartidores($query)
     {

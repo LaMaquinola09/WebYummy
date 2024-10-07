@@ -1,0 +1,147 @@
+:root {
+    --azul: #FC924A;
+    --azulOscuro: #F98231;
+    --azulTexto: #303F9F;
+    --grisClaro: #f4f7f6;
+    --grisOscuro: #6c757d;
+    --azulBoton: #007bff;
+    --azulBotonHover: #0056b3;
+    --tabActivo: #ffd700;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--grisClaro);
+    margin: 0;
+    color: #333;
+}
+
+h2 {
+    text-align: center;
+    color: var(--grisOscuro);
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+.reportes-de-ventas-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    background-color: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.reportes-tabs {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    background-color: var(--azulTexto);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-top: 25px;
+}
+
+.tab {
+    background-color: var(--azul);
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    cursor: pointer;
+    margin: 0;
+    flex: 1;
+    text-align: center;
+    border-right: 1px solid var(--azulTexto);
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.tab:last-child {
+    border-right: none;
+}
+
+.tab:hover {
+    background-color: var(--azulOscuro);
+}
+
+.tab.active {
+    background-color: var(--tabActivo);
+    font-weight: bold;
+}
+
+.sales-report-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 30px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.sales-report-table th {
+    background-color: var(--azulTexto);
+    color: white;
+    font-weight: bold;
+    padding: 15px;
+    text-align: center;
+}
+
+.sales-report-table td {
+    border: 1px solid #dee2e6;
+    padding: 15px;
+    text-align: center;
+    font-size: 16px;
+    color: #555;
+    background-color: #fff;
+    transition: background-color 0.3s ease;
+}
+
+.sales-report-table tr:nth-child(even) {
+    background-color: #f8f9fa;
+}
+
+.sales-report-table tr:hover {
+    background-color: #f1f3f5;
+}
+
+.totals {
+    text-align: right;
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 10px;
+    color: var(--grisOscuro);
+}
+
+.actions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.btn-exportar,
+.btn-imprimir,
+.btn-buscar {
+    background-color: var(--azul);
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    cursor: pointer;
+    margin-left: 15px;
+    border-radius: 25px;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-exportar:hover,
+.btn-imprimir:hover {
+    background-color: var(--azulOscuro);
+}
+
+.btn-buscar {
+    background-color: var(--azulBoton);
+    border-radius: 8px;
+    margin-top: 25px;
+}
+
+.btn-buscar:hover {
+    background-color: var(--azulBotonHover);
+}

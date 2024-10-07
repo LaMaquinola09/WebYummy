@@ -113,9 +113,9 @@ class RestauranteController extends Controller
             'direccion.regex' => 'Coloca solo letras, espacios y números',
             'direccion.min' => 'Coloca al menos 15 caracteres',
             'horario_apertura.date_format' => 'Seleccione horarios válidos',
-            'horario_cierre.after' => 'El cierre del horario debe ser una hora posterior a la apertura del horario.',
+            'horario_cierre.after' => 'El cierre del horario debe ser a la apertura del horario.',
             'telefono.numeric' => 'El teléfono debe ser un número válido.',
-            'telefono.digits_between' => 'El teléfono debe tener 10 dígitos.',
+            'telefono.digits_between' => 'El teléfono debe contener únicamente 10 dígitos.',
             'categoria_id.required' => 'La categoría es obligatoria.',
             'categoria_id.exists' => 'La categoría seleccionada no es válida.',
         ]);

@@ -25,7 +25,7 @@
             <a href="{{ route('menu.index') }}" class="auth-link">{{ __('Mi Menú') }}</a>
             <a href="{{ route('pedidos.index') }}" class="auth-link">{{ __('Pedidos') }}</a>
             <a href="{{ route('restaurantes.comentarios', ['id' => auth()->user()->restaurante->id]) }}" class="auth-link">{{ __('Comentarios') }}</a>
-            </nav>
+        </nav>
 
         <div class="dropdown ms-3">
             <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -47,28 +47,24 @@
                 <h5 class="modal-title" id="notificationModalLabel">Nuevos Pedidos</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
             </div>
-
             <div class="modal-body">
                 <ul class="list-group" id="lista-pedidos">
                     @foreach($pedidos as $pedido)
-                    @if($pedido->estado == 'pendiente')
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        <div>
-                            <strong>Pedido #{{ $pedido->id }}</strong> - {{ $pedido->descripcion ?? 'Sin descripción' }}
-                            <p class="mb-0 text-muted">
-                                {{ $pedido->fecha_pedido ? $pedido->fecha_pedido->format('d M Y, H:i') : 'Fecha no disponible' }}
-                            </p>
-                        </div>
-                        <div>
-                            <button class="btn btn-success btn-sm me-2" onclick="cambiarEstadoPedido({{ $pedido->id }})">Confirmar Pedido</button>
-                            <button class="btn btn-danger btn-sm" onclick="rechazarPedido({{ $pedido->id }})">Producto Agotado</button>
-                        </div>
-                    </li>
-                    @endif
+                        @if($pedido->estado == 'pendiente')
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <div>
+                                    <strong>Pedido #{{ $pedido->id }}</strong> - {{ $pedido->descripcion ?? 'Sin descripción' }}
+                                    <p class="mb-0 text-muted">{{ $pedido->fecha_pedido ? $pedido->fecha_pedido->format('d M Y, H:i') : 'Fecha no disponible' }}</p>
+                                </div>
+                                <div>
+                                    <button class="btn btn-success btn-sm me-2" onclick="cambiarEstadoPedido({{ $pedido->id }})">Confirmar Pedido</button>
+                                    <button class="btn btn-danger btn-sm" onclick="rechazarPedido({{ $pedido->id }})">Producto Agotado</button>
+                                </div>
+                            </li>
+                        @endif
                     @endforeach
                 </ul>
             </div>
-
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
             </div>
@@ -101,20 +97,19 @@ function mostrarNotificacion(mensaje) {
 // Cambiar el estado del pedido
 function cambiarEstadoPedido(id) {
     fetch(`/api/pedidos/${id}/cambiar-estado`, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.mensaje) {
-            alert(data.mensaje);
-            mostrarNotificacion('¡Su pedido fue aceptado!');
-            verificarNotificaciones(); 
-        }
-    })
-    .catch(error => console.error('Error al cambiar el estado del pedido:', error));
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.mensaje) {
+                mostrarNotificacion('¡Su pedido fue aceptado!');
+                verificarNotificaciones();
+            }
+        })
+        .catch(error => console.error('Error al cambiar el estado del pedido:', error));
 }
 
 let notificacionesCount = {{ $notificaciones ?? 0 }}; // Inicializa el contador de notificaciones
@@ -128,28 +123,22 @@ function verificarNotificaciones() {
                 let notisOld = document.querySelector('.badge.bg-danger').innerText;
                 notificacionesCount = data.notificaciones;
                 document.querySelector('.badge.bg-danger').innerText = notificacionesCount;
-                if(notisOld < notificacionesCount) {
+                if (notisOld < notificacionesCount) {
                     mostrarNotificacion('¡Has recibido un nuevo pedido!');
-                } else {
-                    
                 }
             }
         })
         .catch(error => console.error('Error al verificar notificaciones:', error));
 }
 
-// Iniciar la verificación de notificaciones cada 5 segundos
+// Iniciar la verificación de notificaciones cada segundo
 document.addEventListener('DOMContentLoaded', function() {
-    setInterval(verificarNotificaciones, 5000);
+    setInterval(verificarNotificaciones, 1000);
 });
 </script>
 
 <style>
 .header {
-    background-color: #f69143;
-}
-
-#idheader {
     background-color: #F87013;
     opacity: 90%;
 }
@@ -214,7 +203,7 @@ document.addEventListener('DOMContentLoaded', function() {
 }
 
 .dropdown-item:hover {
-    background-color: #F87013;
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
 .notification {

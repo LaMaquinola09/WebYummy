@@ -95,20 +95,76 @@ class PedidoController extends Controller
 
 
         // Obtener la cantidad de notificaciones (pedidos pendientes)
-        public function obtenerPedidosPendientes()
-        {
-            $notificaciones = Pedido::where('estado', 'pendiente')->count(); // Ejemplo básico
-            return response()->json(['notificaciones' => $notificaciones]);
-        }
+        // public function obtenerPedidosPendientes()
+        // {
+        //     $notificaciones = Pedido::where('estado', 'pendiente')->count(); // Ejemplo básico
+        //     return response()->json(['notificaciones' => $notificaciones]);
+        // }
         
+
+        // public function getNotificaciones()
+        // {
+        //     // Obtiene el número de pedidos con estado 'pendiente'
+        //     $notificaciones = Pedido::where('estado', 'pendiente')->count();
+        //     return response()->json(['notificaciones' => $notificaciones]);
+        // }
+
+
+        // public function getNotificaciones()
+        // {
+        //     // Obtiene el ID del restaurante del usuario autenticado
+        //     $restauranteId = auth()->user()->restaurante->id;
+
+        //     // Obtiene el número de pedidos con estado 'pendiente' para el restaurante del usuario
+        //     $notificaciones = Pedido::where('estado', 'pendiente')
+        //         ->where('restaurante_id', $restauranteId)
+        //         ->count();
+
+        //     return response()->json(['notificaciones' => $notificaciones]);
+        // }
+
+
+
+
+        // public function getNotificaciones()
+        // {
+        //     // Asegúrate de que el usuario tenga un restaurante asociado
+        //     if (auth()->user()->restaurante) {
+        //         // Obtiene el ID del restaurante del usuario autenticado
+        //         $restauranteId = auth()->user()->restaurante->id;
+
+        //         // Obtiene el número de pedidos con estado 'pendiente' para el restaurante del usuario
+        //         $notificaciones = Pedido::where('estado', 'pendiente')
+        //             ->where('restaurante_id', $restauranteId)
+        //             ->count();
+
+        //         return response()->json(['notificaciones' => $notificaciones]);
+        //     } else {
+        //         // Si el usuario no tiene un restaurante asociado, no mostrar notificaciones
+        //         return response()->json(['notificaciones' => 0]);
+        //     }
+        // }
+
+
 
         public function getNotificaciones()
         {
-            // Obtiene el número de pedidos con estado 'pendiente'
-            $notificaciones = Pedido::where('estado', 'pendiente')->count();
-            return response()->json(['notificaciones' => $notificaciones]);
+            // Verificar si el usuario tiene un restaurante asociado
+            if (auth()->user()->restaurante) {
+                $restauranteId = auth()->user()->restaurante->id;
+    
+                // Obtener el número de pedidos pendientes para el restaurante del usuario
+                $notificaciones = Pedido::where('estado', 'pendiente')
+                    ->where('restaurante_id', $restauranteId)
+                    ->count();
+    
+                // Retornar la cantidad de notificaciones en formato JSON
+                return response()->json(['notificaciones' => $notificaciones]);
+            } else {
+                // Si el usuario no tiene un restaurante asociado, retornar 0 notificaciones
+                return response()->json(['notificaciones' => 0]);
+            }
         }
-
 
 
     

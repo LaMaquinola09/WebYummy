@@ -186,22 +186,22 @@
                 <div class="solicitud-col-6">
                     <label for="solicitud-nombre" class="solicitud-label">Nombre</label>
                     <input type="text" placeholder="Ingresa tu nombre" name="nombre" id="solicitud-nombre"
-                        class="solicitud-input" required>
+                        class="solicitud-input" value="{{ old('nombre') }}" required>
                 </div>
                 <div class="solicitud-col-6">
                     <label for="solicitud-email" class="solicitud-label">Email</label>
                     <input type="email" placeholder="Ingresa tu Email" name="email" id="solicitud-email"
-                        class="solicitud-input" required>
+                        class="solicitud-input" value="{{ old('email') }}"  required>
                 </div>
             </div>
 
             <label for="solicitud-direccion" class="solicitud-label">Dirección</label>
             <input type="text" placeholder="Ingresa tu dirección" name="direccion" id="solicitud-direccion"
-                class="solicitud-input" required>
+                class="solicitud-input" value="{{ old('direccion') }}"  required>
 
             <label for="solicitud-telefono" class="solicitud-label">Teléfono</label>
             <input type="tel" placeholder="Ingresa tu número de teléfono" name="telefono" id="solicitud-telefono"
-                class="solicitud-input" required>
+                class="solicitud-input" value="{{ old('telefono') }}"  required>
 
             <div class="solicitud-row">
                 <div class="solicitud-col-6">
@@ -221,7 +221,7 @@
 
             <label for="solicitud-nombre-negocio" class="solicitud-label">Nombre del negocio</label>
             <input type="text" placeholder="Nombre del negocio" name="nombre_negocio" id="solicitud-nombre-negocio"
-                class="solicitud-input" required>
+                class="solicitud-input" value="{{ old('nombre_negocio') }}"  required>
 
             <label for="solicitud-categoria" class="solicitud-label">Categoría de su negocio</label>
             <select name="categoria_id" id="solicitud-categoria" class="solicitud-select" required>

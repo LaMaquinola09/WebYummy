@@ -73,12 +73,6 @@ Route::group(['middleware' => ['auth', 'check.restaurant.active']], function () 
 
 
 
-
-
-
-
-
-
     // Ruta para obtener el número de notificaciones
     Route::get('/api/notificaciones', [PedidoController::class, 'getNotificaciones']);
     // Ruta para cambiar el estado del pedido
@@ -86,7 +80,14 @@ Route::group(['middleware' => ['auth', 'check.restaurant.active']], function () 
 
 
 
+
+
+
     
+
+
+
+
     Route::get('/pedidos/actualizar', [PedidoController::class, 'obtenerPedidos']);
 
 

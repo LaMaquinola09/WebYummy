@@ -17,6 +17,7 @@ use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\MobileAuthController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -139,6 +140,7 @@ Route::middleware('auth')->group(function () {
 
 });
 
+Route::post('/api/auth/login', [MobileAuthController::class, 'login']);
 //Rutas para aviso de privacidad y términos y condiciones
 Route::get('/terminos', [LegalController::class, 'terminos'])->name('terminos');
 Route::get('/aviso-privacidad', [LegalController::class, 'avisoPrivacidad'])->name('aviso_privacidad');

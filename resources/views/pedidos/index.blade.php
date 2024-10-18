@@ -7,725 +7,199 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Reportes de Pedidos - Yummy</title>
-
-        <style>
-        :root {
-            --azul: #FC924A;
-            --azulOscuro: #F98231;
-            --azulTexto: #303F9F;
-            --grisClaro: #f4f7f6;
-            --grisOscuro: #6c757d;
-            --azulBoton: #007bff;
-            --azulBotonHover: #0056b3;
-            --tabActivo: #ffd700;
-            /* Color para la pestaña activa */
-        }
-
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: var(--grisClaro);
-            margin: 0;
-            color: #333;
-        }
-
-        h2 {
-            text-align: center;
-            color: var(--grisOscuro);
-            font-size: 2em;
-            margin-bottom: 20px;
-        }
-
-        .reportes-de-ventas-page {
-            max-width: 1200px;
-            margin: 0 auto;
-            background-color: white;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-        }
-
-        .reportes-tabs {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 20px;
-            background-color: var(--azulTexto);
-            border-radius: 8px;
-            overflow: hidden;
-            margin-top: 25px;
-        }
-
-        .tab {
-            background-color: var(--azul);
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            cursor: pointer;
-            margin: 0;
-            flex: 1;
-            text-align: center;
-            border-right: 1px solid var(--azulTexto);
-            font-size: 16px;
-            transition: background-color 0.3s ease;
-        }
-
-        .tab:last-child {
-            border-right: none;
-        }
-
-        .tab:hover {
-            background-color: var(--azulOscuro);
-        }
-
-        .tab.active {
-            background-color: var(--tabActivo);
-            font-weight: bold;
-        }
-
-        .sales-report-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 30px;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .sales-report-table th {
-            background-color: var(--azulTexto);
-            color: white;
-            font-weight: bold;
-            padding: 15px;
-            text-align: center;
-        }
-
-        .sales-report-table td {
-            border: 1px solid #dee2e6;
-            padding: 15px;
-            text-align: center;
-            font-size: 16px;
-            color: #555;
-            background-color: #fff;
-            transition: background-color 0.3s ease;
-        }
-
-        .sales-report-table tr:nth-child(even) {
-            background-color: #f8f9fa;
-        }
-
-        .sales-report-table tr:hover {
-            background-color: #f1f3f5;
-        }
-
-        .totals {
-            text-align: right;
-            font-size: 18px;
-            font-weight: bold;
-            margin-top: 10px;
-            color: var(--grisOscuro);
-        }
-
-        .actions {
-            display: flex;
-            justify-content: flex-end;
-        }
-
-        .btn-exportar,
-        .btn-imprimir,
-        .btn-buscar {
-            background-color: var(--azul);
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            cursor: pointer;
-            margin-left: 15px;
-            border-radius: 25px;
-            font-size: 16px;
-            transition: background-color 0.3s ease;
-        }
-
-        .btn-exportar:hover,
-        .btn-imprimir:hover {
-            background-color: var(--azulOscuro);
-        }
-
-        .btn-buscar {
-            background-color: var(--azulBoton);
-            border-radius: 8px;
-            margin-top: 25px;
-        }
-
-        .btn-buscar:hover {
-            background-color: var(--azulBotonHover);
-        }
-        </style>
+        <title>Lista de Pedidos - Yummy</title>
+        <link rel="stylesheet" href="{{ asset('css/pedidos.css') }}">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     </head>
 
-    <div class="flex flex-col min-h-screen">
-        <main class="flex-grow p-6 flex justify-center bg-gray-100">
-            <div class="bg-white rounded-lg shadow-lg p-4 w-full mb-20">
-                <h3 class="text-3xl font-bold text-gray-800 text-center">
-                    {{ __('Reportes de Pedidos') }}
-                </h3>
+    <body>
+        <div class="flex flex-col min-h-screen">
+            <main class="flex-grow p-6 flex justify-center bg-gray-100">
+                <div class="bg-white rounded-lg shadow-lg p-4 w-full mb-20">
+                    <h3 class="text-3xl font-bold text-gray-800 text-center">
+                        {{ __('Lista de Pedidos') }}
+                    </h3>
 
-                <div class="reportes-tabs">
-                    <button class="tab active" id="pedidos-aceptados">Pedidos Aceptados</button>
-                    <button class="tab" id="pedidos-en-preparacion">En Preparación</button>
-                    <button class="tab" id="pedidos-en-camino">En Camino</button>
-                    <button class="tab" id="pedidos-entregados">Pedidos Entregados</button>
-                </div>
+                    <!-- Indicador de pestaña activa -->
+                    <div id="pestana-activa" class="text-center mb-4">Pestaña Activa: Pedidos Aceptados</div>
 
-                <div id="reportes-container">
-                    <!-- Contenedor para notificaciones -->
-                    <div id="notifications" class="alert alert-info" style="display: none;"></div>
-                    <table class="sales-report-table">
-                        <thead>
-                            <tr>
-                                <th>Número de Pedido</th>
-                                <th>Cliente</th>
-                                <th>Producto</th>
-                                <th>Fecha</th>
-                                <th>Estado</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>#12347</td>
-                                <td>Carlos López</td>
-                                <td>Sushi Variado</td>
-                                <td>02/09/2024</td>
-                                <td>Aceptado</td>
-                                <td>
-                                    <button class="btn-buscar"
-                                        onclick="cambiarEstado('#12347', 'en-preparacion')">Marcar como En
-                                        Preparación</button>
-                                    <button class="btn-buscar" onclick="rechazarPedido('#12347')">Rechazar</button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                    <div class="totals">
-                        <strong>Total Pedidos Aceptados:</strong> 1
+                    <!-- Tabs para filtrar los pedidos -->
+                    <div class="reportes-tabs mb-4">
+                        <button class="tab active" id="listapedidos">Pedidos Aceptados</button>
+                        <button class="tab" id="pendiente">En Preparación</button>
+                        <button class="tab" id="en_camino">En Camino</button>
+                        <button class="tab" id="entregado">Pedidos Entregados</button>
                     </div>
-                </div>
 
-                <div class="actions">
-                    <button class="btn-exportar">Exportar</button>
-                    <button class="btn-imprimir">Imprimir</button>
-                </div>
+                    <!-- Contenedor de reportes de pedidos -->
+                    <div id="reportes-container">
+                        <table class="sales-report-table w-full">
+                            <thead>
+                                <tr>
+                                    <th>Número de Pedido</th>
+                                    <th>Cliente</th>
+                                    <th>Producto</th>
+                                    <th>Fecha</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="pedidos-body">
+                                <!-- Aquí se llenará dinámicamente con jQuery -->
+                            </tbody>
+                        </table>
 
-                <script>
-                document.addEventListener("DOMContentLoaded", function() {
-                    const tabs = document.querySelectorAll(".tab");
-                    const reportesContainer = document.getElementById("reportes-container");
+                        <div class="totals mt-4">
+                            <strong>Total Pedidos Aceptados:</strong> <span id="total-pedidos-aceptados">0</span><br>
+                            <strong>Total Pedidos En Preparación:</strong> <span id="total-pedidos-en-preparacion">0</span><br>
+                            <strong>Total Pedidos En Camino:</strong> <span id="total-pedidos-en-camino">0</span><br>
+                            <strong>Total Pedidos Entregados:</strong> <span id="total-pedidos-entregados">0</span>
+                        </div>
+                    </div>
 
-                    function updateTable(view) {
-                        let tableContent = "";
+                    <!-- Acciones adicionales -->
+                    <div class="actions mt-4">
+                        <button class="btn-exportar">Exportar</button>
+                        <button class="btn-imprimir">Imprimir</button>
+                    </div>
 
-                        switch (view) {
-                            case "pedidos-aceptados":
-                                tableContent = `
-                                    <table class="sales-report-table">
-                                        <thead>
-                                            <tr>
-                                                <th>Número de Pedido</th>
-                                                <th>Cliente</th>
-                                                <th>Producto</th>
-                                                <th>Fecha</th>
-                                                <th>Estado</th>
-                                                <th>Acciones</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>#12347</td>
-                                                <td>Carlos López</td>
-                                                <td>Sushi Variado</td>
-                                                <td>02/09/2024</td>
-                                                <td>Aceptado</td>
-                                                <td>
-                                                    <button class="btn-buscar" onclick="cambiarEstado('#12347', 'en-preparacion')">Marcar como En Preparación</button>
-                                                    <button class="btn-buscar" onclick="rechazarPedido('#12347')">Rechazar</button>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>`;
-                                break;
+                    <script>
+                    document.addEventListener("DOMContentLoaded", function() {
+                        const tabs = document.querySelectorAll(".tab");
+                        const pedidosBody = document.getElementById("pedidos-body");
+                        const totalPedidosAceptados = document.getElementById("total-pedidos-aceptados");
+                        const totalPedidosEnPreparacion = document.getElementById("total-pedidos-en-preparacion");
+                        const totalPedidosEnCamino = document.getElementById("total-pedidos-en-camino");
+                        const totalPedidosEntregados = document.getElementById("total-pedidos-entregados");
+                        const pestanaActiva = document.getElementById("pestana-activa");
 
-                            case "pedidos-en-preparacion":
-                                tableContent = `
-                                    <table class="sales-report-table">
-                                        <thead>
-                                            <tr>
-                                                <th>Número de Pedido</th>
-                                                <th>Cliente</th>
-                                                <th>Producto</th>
-                                                <th>Fecha</th>
-                                                <th>Estado</th>
-                                                <th>Acciones</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>#12351</td>
-                                                <td>María Gómez</td>
-                                                <td>Pizza Margarita</td>
-                                                <td>02/09/2024</td>
-                                                <td>En Preparación</td>
-                                                <td>
-                                                    <button class="btn-buscar" onclick="cambiarEstado('#12351', 'en-camino')">Marcar como En Camino</button>
-                                                    <button class="btn-buscar" onclick="rechazarPedido('#12351')">Rechazar</button>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>`;
-                                break;
+                        // Variable para almacenar el estado activo
+                        let estadoActivo = "listapedidos";
 
-                            case "pedidos-en-camino":
-                                tableContent = `
-                                    <table class="sales-report-table">
-                                        <thead>
-                                            <tr>
-                                                <th>Número de Pedido</th>
-                                                <th>Cliente</th>
-                                                <th>Producto</th>
-                                                <th>Fecha</th>
-                                                <th>Estado</th>
-                                                <th>Acciones</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>#12352</td>
-                                                <td>Juan Pérez</td>
-                                                <td>Hamburguesa</td>
-                                                <td>02/09/2024</td>
-                                                <td>En Camino</td>
-                                                <td>
-                                                    <button class="btn-buscar" onclick="cambiarEstado('#12352', 'entregado')">Marcar como Entregado</button>
-                                                    <button class="btn-buscar" onclick="rechazarPedido('#12352')">Rechazar</button>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>`;
-                                break;
+                        // Función para cargar pedidos desde el servidor
+                        function cargarPedidos(estado = null) {
+                            $.get('/api/pedidos', function(data) {
+                                console.log(data); // Verifica la respuesta
 
-                            case "pedidos-entregados":
-                                tableContent = `
-                                    <table class="sales-report-table">
-                                        <thead>
-                                            <tr>
-                                                <th>Número de Pedido</th>
-                                                <th>Cliente</th>
-                                                <th>Producto</th>
-                                                <th>Fecha</th>
-                                                <th>Estado</th>
-                                                <th>Acciones</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>#12353</td>
-                                                <td>Lucía Martínez</td>
-                                                <td>Ensalada Caesar</td>
-                                                <td>02/09/2024</td>
-                                                <td>Entregado</td>
-                                                <td>
-                                                    <button class="btn-buscar" onclick="verDetalles('#12353')">Ver Detalles</button>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>`;
-                                break;
+                                // Limpiar el cuerpo de la tabla
+                                pedidosBody.innerHTML = "";
+
+                                let pedidos = [];
+
+                                // Determina qué lista de pedidos usar según el estado
+                                if (estado) {
+                                    switch (estado) {
+                                        case "Pendiente":
+                                            pedidos = data.pedidosPendiente || [];
+                                            break;
+                                        case "En_camino":
+                                            pedidos = data.pedidosEnCamino || [];
+                                            break;
+                                        case "Entregado":
+                                            pedidos = data.pedidosEntregado || [];
+                                            break;
+                                        case "Aceptados":
+                                        default:
+                                            pedidos = data.pedidosAceptados || [];
+                                            break;
+                                    }
+                                } else {
+                                    pedidos = data.pedidosAceptados; // Por defecto, obtener pedidos aceptados
+                                }
+
+                                // Llenar la tabla con pedidos filtrados
+                                pedidos.forEach(function(pedido) {
+                                    const clienteNombre = pedido.cliente_id ?
+                                        `Cliente ${pedido.cliente_id}` :
+                                        'Cliente no disponible';
+                                    const row = `<tr>
+                                            <td>${pedido.id}</td>
+                                            <td>${clienteNombre}</td>
+                                            <td>${pedido.producto || 'Producto no disponible'}</td>
+                                            <td>${new Date(pedido.fecha_pedido).toLocaleDateString()}</td>
+                                            <td>${pedido.estado}</td>
+                                            <td>
+                                                <button class="btn-buscar" onclick="cambiarEstado('${pedido.id}', 'en_preparacion')">Marcar como En Preparación</button>
+                                                <button class="btn-buscar" onclick="rechazarPedido('${pedido.id}')">Rechazar</button>
+                                            </td>
+                                        </tr>`;
+                                    pedidosBody.innerHTML += row;
+                                });
+
+                                // Actualizar totales
+                                totalPedidosAceptados.textContent = data.pedidosAceptados.length;
+                                totalPedidosEnPreparacion.textContent = data.pedidosPendiente.length;
+                                totalPedidosEnCamino.textContent = data.pedidosEnCamino.length;
+                                totalPedidosEntregados.textContent = data.pedidosEntregado.length;
+
+                                // Volver a establecer la pestaña activa
+                                tabs.forEach(tab => tab.classList.remove("active"));
+                                document.getElementById(estadoActivo).classList.add("active");
+                                pestanaActiva.textContent = `Pestaña Activa: ${document.getElementById(estadoActivo).textContent}`;
+                            });
                         }
 
-                        reportesContainer.innerHTML = tableContent +
-                            '<div class="totals"><strong>Total Pedidos ' + view.replace(/-/g, ' ').replace(
-                                /(\w)/, (c) => c.toUpperCase()) + ':</strong> 1</div>';
-                    }
+                        // Cargar pedidos al inicio
+                        cargarPedidos();
 
-                    tabs.forEach(tab => {
-                        tab.addEventListener("click", () => {
-                            tabs.forEach(t => t.classList.remove(
-                                "active")); // Elimina la clase activa de todas las pestañas
-                            tab.classList.add(
-                                "active"); // Agrega la clase activa a la pestaña actual
-                            updateTable(tab.id);
+                        // Actualizar pedidos cada 30 segundos
+                        setInterval(() => {
+                            cargarPedidos(estadoActivo === "listapedidos" ? null : estadoActivo);
+                        }, 20000); // 30 segundos
+
+                        // Manejar el cambio de pestaña
+                        tabs.forEach(tab => {
+                            tab.addEventListener("click", () => {
+                                // Cambiar la pestaña activa
+                                tabs.forEach(t => t.classList.remove("active"));
+                                tab.classList.add("active");
+
+                                estadoActivo = tab.id; // Almacenar el estado activo
+
+                                const estado = estadoActivo === "listapedidos" ? "Aceptados" : estadoActivo
+                                    .charAt(0).toUpperCase() + estadoActivo.slice(1);
+
+                                // Actualizar el indicador de pestaña activa
+                                pestanaActiva.textContent = `Pestaña Activa: ${tab.textContent}`;
+
+                                // Cargar pedidos según la pestaña
+                                cargarPedidos(estado === "Aceptados" ? null : estado);
+                            });
                         });
                     });
 
-                    // Inicializa la tabla con la vista por defecto
-                    updateTable(tabs[0].id);
-                });
-                </script>
-            </div>
-        </main>
-    </div>
-</x-app-layout>
-
-
-<x-app-layout>
-    @include('header.header')
-    <!doctype html>
-    <html lang="es">
-
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Reportes de Pedidos - Yummy</title>
-
-        <style>
-        :root {
-            --azul: #FC924A;
-            --azulOscuro: #F98231;
-            --azulTexto: #303F9F;
-            --grisClaro: #f4f7f6;
-            --grisOscuro: #6c757d;
-            --azulBoton: #007bff;
-            --azulBotonHover: #0056b3;
-            --tabActivo: #ffd700;
-            /* Color para la pestaña activa */
-        }
-
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: var(--grisClaro);
-            margin: 0;
-            color: #333;
-        }
-
-        h2 {
-            text-align: center;
-            color: var(--grisOscuro);
-            font-size: 2em;
-            margin-bottom: 20px;
-        }
-
-        .reportes-de-ventas-page {
-            max-width: 1200px;
-            margin: 0 auto;
-            background-color: white;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-        }
-
-        .reportes-tabs {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 20px;
-            background-color: var(--azulTexto);
-            border-radius: 8px;
-            overflow: hidden;
-            margin-top: 25px;
-        }
-
-        .tab {
-            background-color: var(--azul);
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            cursor: pointer;
-            margin: 0;
-            flex: 1;
-            text-align: center;
-            border-right: 1px solid var(--azulTexto);
-            font-size: 16px;
-            transition: background-color 0.3s ease;
-        }
-
-        .tab:last-child {
-            border-right: none;
-        }
-
-        .tab:hover {
-            background-color: var(--azulOscuro);
-        }
-
-        .tab.active {
-            background-color: var(--tabActivo);
-            font-weight: bold;
-        }
-
-        .sales-report-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 30px;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .sales-report-table th {
-            background-color: var(--azulTexto);
-            color: white;
-            font-weight: bold;
-            padding: 15px;
-            text-align: center;
-        }
-
-        .sales-report-table td {
-            border: 1px solid #dee2e6;
-            padding: 15px;
-            text-align: center;
-            font-size: 16px;
-            color: #555;
-            background-color: #fff;
-            transition: background-color 0.3s ease;
-        }
-
-        .sales-report-table tr:nth-child(even) {
-            background-color: #f8f9fa;
-        }
-
-        .sales-report-table tr:hover {
-            background-color: #f1f3f5;
-        }
-
-        .totals {
-            text-align: right;
-            font-size: 18px;
-            font-weight: bold;
-            margin-top: 10px;
-            color: var(--grisOscuro);
-        }
-
-        .actions {
-            display: flex;
-            justify-content: flex-end;
-        }
-
-        .btn-exportar,
-        .btn-imprimir,
-        .btn-buscar {
-            background-color: var(--azul);
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            cursor: pointer;
-            margin-left: 15px;
-            border-radius: 25px;
-            font-size: 16px;
-            transition: background-color 0.3s ease;
-        }
-
-        .btn-exportar:hover,
-        .btn-imprimir:hover {
-            background-color: var(--azulOscuro);
-        }
-
-        .btn-buscar {
-            background-color: var(--azulBoton);
-            border-radius: 8px;
-            margin-top: 25px;
-        }
-
-        .btn-buscar:hover {
-            background-color: var(--azulBotonHover);
-        }
-        </style>
-    </head>
-
-    <div class="flex flex-col min-h-screen">
-        <main class="flex-grow p-6 flex justify-center bg-gray-100">
-            <div class="bg-white rounded-lg shadow-lg p-4 w-full mb-20">
-                <h3 class="text-3xl font-bold text-gray-800 text-center">
-                    {{ __('Reportes de Pedidos') }}
-                </h3>
-
-                <div class="reportes-tabs">
-                    <button class="tab active" id="pedidos-aceptados">Pedidos Aceptados</button>
-                    <button class="tab" id="pedidos-en-preparacion">En Preparación</button>
-                    <button class="tab" id="pedidos-en-camino">En Camino</button>
-                    <button class="tab" id="pedidos-entregados">Pedidos Entregados</button>
-                </div>
-
-                <div id="reportes-container">
-                    <table class="sales-report-table">
-                        <thead>
-                            <tr>
-                                <th>Número de Pedido</th>
-                                <th>Cliente</th>
-                                <th>Producto</th>
-                                <th>Fecha</th>
-                                <th>Estado</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>#12347</td>
-                                <td>Carlos López</td>
-                                <td>Sushi Variado</td>
-                                <td>02/09/2024</td>
-                                <td>Aceptado</td>
-                                <td>
-                                    <button class="btn-buscar"
-                                        onclick="cambiarEstado('#12347', 'en-preparacion')">Marcar como En
-                                        Preparación</button>
-                                    <button class="btn-buscar" onclick="rechazarPedido('#12347')">Rechazar</button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                    <div class="totals">
-                        <strong>Total Pedidos Aceptados:</strong> 1
-                    </div>
-                </div>
-
-                <div class="actions">
-                    <button class="btn-exportar">Exportar</button>
-                    <button class="btn-imprimir">Imprimir</button>
-                </div>
-
-                <script>
-                document.addEventListener("DOMContentLoaded", function() {
-                    const tabs = document.querySelectorAll(".tab");
-                    const reportesContainer = document.getElementById("reportes-container");
-
-                    function updateTable(view) {
-                        let tableContent = "";
-
-                        switch (view) {
-                            case "pedidos-aceptados":
-                                tableContent = `
-                                    <table class="sales-report-table">
-                                        <thead>
-                                            <tr>
-                                                <th>Número de Pedido</th>
-                                                <th>Cliente</th>
-                                                <th>Producto</th>
-                                                <th>Fecha</th>
-                                                <th>Estado</th>
-                                                <th>Acciones</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>#12347</td>
-                                                <td>Carlos López</td>
-                                                <td>Sushi Variado</td>
-                                                <td>02/09/2024</td>
-                                                <td>Aceptado</td>
-                                                <td>
-                                                    <button class="btn-buscar" onclick="cambiarEstado('#12347', 'en-preparacion')">Marcar como En Preparación</button>
-                                                    <button class="btn-buscar" onclick="rechazarPedido('#12347')">Rechazar</button>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>`;
-                                break;
-
-                            case "pedidos-en-preparacion":
-                                tableContent = `
-                                    <table class="sales-report-table">
-                                        <thead>
-                                            <tr>
-                                                <th>Número de Pedido</th>
-                                                <th>Cliente</th>
-                                                <th>Producto</th>
-                                                <th>Fecha</th>
-                                                <th>Estado</th>
-                                                <th>Acciones</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>#12351</td>
-                                                <td>María Gómez</td>
-                                                <td>Pizza Margarita</td>
-                                                <td>02/09/2024</td>
-                                                <td>En Preparación</td>
-                                                <td>
-                                                    <button class="btn-buscar" onclick="cambiarEstado('#12351', 'en-camino')">Marcar como En Camino</button>
-                                                    <button class="btn-buscar" onclick="rechazarPedido('#12351')">Rechazar</button>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>`;
-                                break;
-
-                            case "pedidos-en-camino":
-                                tableContent = `
-                                    <table class="sales-report-table">
-                                        <thead>
-                                            <tr>
-                                                <th>Número de Pedido</th>
-                                                <th>Cliente</th>
-                                                <th>Producto</th>
-                                                <th>Fecha</th>
-                                                <th>Estado</th>
-                                                <th>Acciones</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>#12352</td>
-                                                <td>Juan Pérez</td>
-                                                <td>Hamburguesa</td>
-                                                <td>02/09/2024</td>
-                                                <td>En Camino</td>
-                                                <td>
-                                                    <button class="btn-buscar" onclick="cambiarEstado('#12352', 'entregado')">Marcar como Entregado</button>
-                                                    <button class="btn-buscar" onclick="rechazarPedido('#12352')">Rechazar</button>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>`;
-                                break;
-
-                            case "pedidos-entregados":
-                                tableContent = `
-                                    <table class="sales-report-table">
-                                        <thead>
-                                            <tr>
-                                                <th>Número de Pedido</th>
-                                                <th>Cliente</th>
-                                                <th>Producto</th>
-                                                <th>Fecha</th>
-                                                <th>Estado</th>
-                                                <th>Acciones</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>#12353</td>
-                                                <td>Lucía Martínez</td>
-                                                <td>Ensalada Caesar</td>
-                                                <td>02/09/2024</td>
-                                                <td>Entregado</td>
-                                                <td>
-                                                    <button class="btn-buscar" onclick="verDetalles('#12353')">Ver Detalles</button>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>`;
-                                break;
-                        }
-
-                        reportesContainer.innerHTML = tableContent +
-                            '<div class="totals"><strong>Total Pedidos ' + view.replace(/-/g, ' ').replace(
-                                /(\w)/, (c) => c.toUpperCase()) + ':</strong> 1</div>';
+                    // Función para cambiar el estado de un pedido
+                    function cambiarEstado(pedidoId, nuevoEstado) {
+                        $.ajax({
+                            url: `/api/pedidos/${pedidoId}/cambiar-estado`,
+                            type: 'PUT',
+                            data: {
+                                estado: nuevoEstado
+                            },
+                            success: function(response) {
+                                alert(`Pedido ${pedidoId} marcado como ${nuevoEstado}.`);
+                                // Recargar pedidos después de cambiar el estado
+                                cargarPedidos(estadoActivo); // Recargar según la pestaña activa
+                            },
+                            error: function(error) {
+                                alert(
+                                    `Error al cambiar el estado del pedido: ${error.responseJSON.mensaje}`
+                                );
+                            }
+                        });
                     }
 
-                    tabs.forEach(tab => {
-                        tab.addEventListener("click", () => {
-                            tabs.forEach(t => t.classList.remove(
-                                "active")); // Elimina la clase activa de todas las pestañas
-                            tab.classList.add(
-                                "active"); // Agrega la clase activa a la pestaña actual
-                            updateTable(tab.id);
-                        });
-                    });
+                    // Función para rechazar un pedido
+                    function rechazarPedido(pedidoId) {
+                        alert(`Pedido ${pedidoId} ha sido rechazado.`);
+                        // Aquí puedes agregar lógica para eliminar el pedido o cambiar su estado
+                    }
+                    </script>
 
-                    // Inicializa la tabla con la vista por defecto
-                    updateTable(tabs[0].id);
-                });
-                </script>
-            </div>
-        </main>
-    </div>
+                </div>
+            </main>
+        </div>
+    </body>
+
+    </html>
 </x-app-layout>

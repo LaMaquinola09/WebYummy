@@ -13,6 +13,7 @@ use App\Http\Controllers\LegalController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SolicitudController;
 use App\Http\Controllers\MenuItemController;
+use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\CategoryController;
@@ -36,6 +37,9 @@ Route::put('/restaurant/{id}/update-status', [RestauranteController::class, 'upd
 
 
 
+
+
+
 Route::group(['middleware' => ['auth', 'check.restaurant.active']], function () {
     // Rutas accesibles solo para restaurantes activos
         // Ruta general del dashboard
@@ -45,8 +49,52 @@ Route::group(['middleware' => ['auth', 'check.restaurant.active']], function () 
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->middleware(['auth', 'verified'])->name('dashboard');
+
+    // Te amo Cielo
+    // Atte Fernando
     //Rutas para el pedidos
     Route::get('/pedidos', [PedidoController::class, 'index'])->name('pedidos.index');
+    // Ruta para obtener los pedidos
+    Route::get('/api/pedidos', [PedidoController::class, 'listarPedidos']);
+
+
+ 
+
+    Route::get('/reportes', [ReporteController::class, 'index'])->name('reportes.index');
+    Route::get('/reportes/ventas', [ReporteController::class, 'mostrarReporte'])->name('reportes.ventas');
+    
+
+    Route::get('/reporteestadisticas', [ReporteController::class, 'generarReporteEstadistica'])->name('pedidos.estadistica');
+
+
+
+
+
+
+    // Ruta para obtener el número de notificaciones
+    Route::get('/notificaciones', [PedidoController::class, 'getNotificaciones'])->middleware('auth:api');
+
+    // Ruta para cambiar el estado del pedido
+    Route::put('/api/pedidos/{id}/cambiar-estado', [PedidoController::class, 'cambiarEstado']);
+
+
+
+
+
+
+    
+
+
+
+
+    Route::get('/pedidos/actualizar', [PedidoController::class, 'obtenerPedidos']);
+
+
+
+
+
+
+
     // Ruta para almacenar los menus
     Route::get('/menu', [MenuItemController::class, 'index'])->name('menu.index');
     route::get('/nuevoplato', [MenuItemController::class, 'create'])->name('menu.nuevoplato');

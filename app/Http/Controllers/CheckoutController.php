@@ -11,32 +11,33 @@ class CheckoutController extends Controller
 {
     public function createCheckoutSession(Request $request)
     {
-        // Establecer la clave secreta de Stripe
-        Stripe::setApiKey(env('STRIPE_SECRET'));
-
-        // Obtener el usuario autenticado
-        $user = Auth::user();
-
-        // Crear una sesión de pago en Stripe
-        $checkoutSession = Session::create([
-            'payment_method_types' => ['card'],
-            'line_items' => [[
-                'price_data' => [
-                    'currency' => 'mxn',
-                    'product_data' => [
-                        'name' => 'Tarifa del Restaurante',
+        try {
+            Stripe::setApiKey(env('STRIPE_SECRET'));
+        
+            $checkoutSession = Session::create([
+                'payment_method_types' => ['card'],
+                'line_items' => [[
+                    'price_data' => [
+                        'currency' => 'mxn',
+                        'product_data' => [
+                            'name' => 'Tarifa del Restaurante',
+                        ],
+                        'unit_amount' => $request->amount * 100, // Convertir a centavos
                     ],
-                    'unit_amount' => $request->amount * 100, // Convertir a centavos
-                ],
-                'quantity' => 1,
-            ]],
-            'mode' => 'payment',
-            'success_url' => route('checkout.success') . '?session_id={CHECKOUT_SESSION_ID}',
-            'cancel_url' => route('checkout.cancel'),
-        ]);
-
-        // Redirigir al usuario a la página de pago de Stripe
-        return response()->json(['id' => $checkoutSession->id]);
+                    'quantity' => 1,
+                ]],
+                'mode' => 'payment',
+                'success_url' => route('checkout.success') . '?session_id={CHECKOUT_SESSION_ID}',
+                'cancel_url' => route('checkout.cancel'),
+            ]);
+        
+            return response()->json(['id' => $checkoutSession->id]);
+        
+        } catch (\Exception $e) {
+            // Registrar el error completo para inspección
+            \Log::error('Error al crear la sesión de Stripe: ' . $e->getMessage());
+            return response()->json(['error' => 'Hubo un problema al crear la sesión de pago.'], 500);
+        }
     }
 
     public function success(Request $request)
@@ -68,7 +69,7 @@ class CheckoutController extends Controller
         }
 
         // Si algo falla, mostrar un error
-        return view('restaurantes.error', ['error' => 'Error al procesar el pago.']);
+        return view('restaurantes.cancel', ['error' => 'Error al procesar el pago.']);
     }
 
     public function cancel()

@@ -12,6 +12,8 @@ use App\Models\Categoria;
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    protected $table = 'restaurantes';
+
     /**
      * Los atributos que se pueden asignar de forma masiva.
      *
@@ -26,6 +28,7 @@ use App\Models\Categoria;
         'estado',
         'categoria_id',
         'estado_membresia',
+        'imagen',
     ];
 
 
@@ -35,19 +38,24 @@ use App\Models\Categoria;
     }
 
 
-    public function menuItems()
-{
-    return $this->hasMany(MenuItem::class);
-}
-
-public function categoria()
+        public function menuItems()
     {
-        return $this->belongsTo(Categoria::class);
+        return $this->hasMany(MenuItem::class);
     }
+
+    public function categoria()
+        {
+            return $this->belongsTo(Categoria::class);
+        }
     
     public function comentarios()
     {
         return $this->hasMany(Comentario::class, 'restaurante_id');
+    }
+
+    public function pedidos()
+    {
+        return $this->hasMany(Pedido::class);
     }
 
 

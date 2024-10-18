@@ -59,6 +59,18 @@ class Pedido extends Model
 
 
 
+       public function producto()
+       {
+           return $this->belongsTo(Producto::class);
+       }
+
+
+
+           // Relación con el modelo Restaurante
+    public function restaurantes()
+    {
+        return $this->belongsTo(Restaurante::class, 'restaurante_id');
+    }
 
 
 

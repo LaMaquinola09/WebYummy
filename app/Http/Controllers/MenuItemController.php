@@ -9,27 +9,41 @@ use Illuminate\Support\Facades\Auth;
 class MenuItemController extends Controller
 {
     /**
+     * Obtener datos comunes para las vistas.
+     *
+     * @return array
+     */
+    private function getCommonData()
+    {
+        // Obtener el usuario autenticado
+        $user = Auth::user();
+
+        // Obtener el restaurante asociado al usuario
+        $restaurante = $user->restaurante;
+
+        if (!$restaurante) {
+            return [
+                'totalPlatos' => 0, // Si no hay restaurante, retornar 0
+                'menuItems' => [],
+            ];
+        }
+
+        // Obtener todos los platos del menú para el restaurante
+        $menuItems = $restaurante->menuItems; // Asegúrate de que la relación esté definida en el modelo Restaurante
+        $totalPlatos = $menuItems->count();
+
+        return compact('menuItems', 'totalPlatos');
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        // Obtener el usuario autenticado
-        $user = Auth::user();
-    
-        // Obtener el restaurante asociado al usuario
-        $restaurante = $user->restaurante;
-    
-        if (!$restaurante) {
-            return redirect()->back()->withErrors(['error' => 'No tienes un restaurante asociado.']);
-        }
-    
-        // Obtener todos los platos del menú para el restaurante
-        $menuItems = $restaurante->menuItems; // Asegúrate de que la relación esté definida en el modelo Restaurante
-    
-        // Pasar los elementos del menú a la vista
-        return view('menu.index', compact('menuItems'));
+        $data = $this->getCommonData(); // Obtener datos comunes
+        return view('menu.index', $data); // Pasar datos a la vista
     }
 
     /**
@@ -48,44 +62,98 @@ class MenuItemController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    // public function store(Request $request)
+    // {
+    //     $request->validate([
+    //         'nombre_producto' => 'required|string|max:255',
+    //         'descripcion' => 'required|string|max:255',
+    //         'precio' => 'required|numeric',
+    //         'imagen' => 'nullable|image|max:2048', // Validar que sea una imagen
+    //     ]);
 
-     public function store(Request $request)
-     {
-         $request->validate([
-             'nombre_producto' => 'required|string|max:255',
-             'descripcion' => 'required|string',
-             'precio' => 'required|numeric',
-             'imagen' => 'nullable|image|max:2048', // Validar que sea una imagen
-         ]);
-     
-         $imagenUrl = null;
-         if ($request->hasFile('imagen')) {
-             // Obtener el archivo de la imagen
-             $imagen = $request->file('imagen');
-             // Definir la ruta donde se almacenará la imagen
-             $rutaImagen = public_path('imagenes');
-     
-             // Generar un nombre único para la imagen
-             $nombreImagen = time() . '_' . $imagen->getClientOriginalName();
-     
-             // Mover la imagen a la carpeta deseada
-             $imagen->move($rutaImagen, $nombreImagen);
-     
-             // Guardar la ruta de la imagen en la base de datos
-             $imagenUrl = 'imagenes/' . $nombreImagen;
-         }
-     
-         MenuItem::create([
-             'restaurante_id' => Auth::user()->restaurante->id, // Obtener el ID del restaurante
-             'nombre_producto' => $request->nombre_producto,
-             'descripcion' => $request->descripcion,
-             'precio' => $request->precio,
-             'imagen_url' => $imagenUrl,
-         ]);
-     
-         return redirect()->route('menu.index')->with('success', 'Plato registrado exitosamente.');
-     }
-     
+    //     $imagenUrl = null;
+    //     if ($request->hasFile('imagen')) {
+    //         // Obtener el archivo de la imagen
+    //         $imagen = $request->file('imagen');
+    //         // Definir la ruta donde se almacenará la imagen
+    //         $rutaImagen = public_path('imagenes');
+
+    //         // Generar un nombre único para la imagen
+    //         $nombreImagen = time() . '_' . $imagen->getClientOriginalName();
+
+    //         // Mover la imagen a la carpeta deseada
+    //         $imagen->move($rutaImagen, $nombreImagen);
+
+    //         // Guardar la ruta de la imagen en la base de datos
+    //         $imagenUrl = 'imagenes/' . $nombreImagen;
+    //     }
+
+    //     MenuItem::create([
+    //         'restaurante_id' => Auth::user()->restaurante->id, // Obtener el ID del restaurante
+    //         'nombre_producto' => $request->nombre_producto,
+    //         'descripcion' => $request->descripcion,
+    //         'precio' => $request->precio,
+    //         'imagen_url' => $imagenUrl,
+    //     ]);
+
+    //     return redirect()->route('menu.index')->with('success', 'Plato registrado exitosamente.');
+    // }
+
+
+    public function store(Request $request)
+{
+    // Validación de datos de entrada con mensajes personalizados
+    $request->validate([
+        'nombre_producto' => 'required|string|max:255|regex:/^[a-zA-Z0-9\s]+$/', // Permitir solo letras, números y espacios
+        'descripcion' => 'required|string|max:255|regex:/^[a-zA-Z0-9\s]+$/', // Permitir solo letras, números y espacios
+        'precio' => 'required|numeric',
+        'imagen' => 'nullable|image|max:2048', // Validar que sea una imagen
+    ], [
+        'nombre_producto.required' => 'El nombre del producto es obligatorio.',
+        'nombre_producto.string' => 'El nombre del producto debe ser una cadena de texto.',
+        'nombre_producto.max' => 'El nombre del producto no puede exceder 255 caracteres.',
+        'nombre_producto.regex' => 'El nombre del producto solo puede contener letras, números y espacios.', // Mensaje para regex
+        'descripcion.required' => 'La descripción es obligatoria.',
+        'descripcion.string' => 'La descripción debe ser una cadena de texto.',
+        'descripcion.max' => 'La descripción no puede exceder 255 caracteres.',
+        'descripcion.regex' => 'La descripción solo puede contener letras, números y espacios.', // Mensaje para regex
+        'precio.required' => 'El precio es obligatorio.',
+        'precio.numeric' => 'El precio debe ser un número.',
+        'imagen.image' => 'El archivo debe ser una imagen.',
+        'imagen.max' => 'La imagen no puede exceder 2 MB.',
+    ]);
+
+    $imagenUrl = null;
+    if ($request->hasFile('imagen')) {
+        // Obtener el archivo de la imagen
+        $imagen = $request->file('imagen');
+        // Definir la ruta donde se almacenará la imagen
+        $rutaImagen = public_path('imagenes');
+
+        // Generar un nombre único para la imagen
+        $nombreImagen = time() . '_' . $imagen->getClientOriginalName();
+
+        // Mover la imagen a la carpeta deseada
+        $imagen->move($rutaImagen, $nombreImagen);
+
+        // Guardar la ruta de la imagen en la base de datos
+        $imagenUrl = 'imagenes/' . $nombreImagen;
+    }
+
+    MenuItem::create([
+        'restaurante_id' => Auth::user()->restaurante->id, // Obtener el ID del restaurante
+        'nombre_producto' => $request->nombre_producto,
+        'descripcion' => $request->descripcion,
+        'precio' => $request->precio,
+        'imagen_url' => $imagenUrl,
+    ]);
+
+    return redirect()->route('menu.index')->with('success', 'Plato registrado exitosamente.');
+}
+
+
+
+
 
 
 
@@ -98,26 +166,23 @@ class MenuItemController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    public function show($id)
+    {
+        $menuItem = MenuItem::findOrFail($id);
+        return view('menu.show', compact('menuItem'));
+    }
 
-     public function show($id)
-        {
-            $menuItem = MenuItem::findOrFail($id);
-            return view('menu.show', compact('menuItem'));
-        }
     /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-
-     public function edit($id)
-        {
-            $menuItem = MenuItem::findOrFail($id);
-            return view('menu.edit', compact('menuItem'));
-        }
-
-
+    public function edit($id)
+    {
+        $menuItem = MenuItem::findOrFail($id);
+        return view('menu.edit', compact('menuItem'));
+    }
 
     /**
      * Update the specified resource in storage.
@@ -126,62 +191,44 @@ class MenuItemController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'nombre_producto' => 'required|string|max:255',
+            'descripcion' => 'required|string',
+            'precio' => 'required|numeric',
+            'imagen' => 'nullable|image|max:2048', // Validar que sea una imagen
+        ]);
 
+        $menuItem = MenuItem::findOrFail($id);
+        $imagenUrl = $menuItem->imagen_url; // Mantener la imagen anterior por defecto
 
-     public function update(Request $request, $id)
-{
-    $request->validate([
-        'nombre_producto' => 'required|string|max:255',
-        'descripcion' => 'required|string',
-        'precio' => 'required|numeric',
-        'imagen' => 'nullable|image|max:2048', // Validar que sea una imagen
-    ]);
+        if ($request->hasFile('imagen')) {
+            // Obtener el archivo de la nueva imagen
+            $imagen = $request->file('imagen');
+            // Definir la ruta donde se almacenará la imagen
+            $rutaImagen = public_path('imagenes');
 
-    $menuItem = MenuItem::findOrFail($id);
-    $imagenUrl = $menuItem->imagen_url; // Mantener la imagen anterior por defecto
+            // Generar un nombre único para la nueva imagen
+            $nombreImagen = time() . '_' . $imagen->getClientOriginalName();
 
-    if ($request->hasFile('imagen')) {
-        // Obtener el archivo de la nueva imagen
-        $imagen = $request->file('imagen');
-        // Definir la ruta donde se almacenará la imagen
-        $rutaImagen = public_path('imagenes');
+            // Mover la nueva imagen a la carpeta deseada
+            $imagen->move($rutaImagen, $nombreImagen);
 
-        // Generar un nombre único para la nueva imagen
-        $nombreImagen = time() . '_' . $imagen->getClientOriginalName();
+            // Actualizar la URL de la imagen
+            $imagenUrl = 'imagenes/' . $nombreImagen;
+        }
 
-        // Mover la nueva imagen a la carpeta deseada
-        $imagen->move($rutaImagen, $nombreImagen);
+        // Actualizar los datos del plato
+        $menuItem->update([
+            'nombre_producto' => $request->nombre_producto,
+            'descripcion' => $request->descripcion,
+            'precio' => $request->precio,
+            'imagen_url' => $imagenUrl,
+        ]);
 
-        // Actualizar la URL de la imagen
-        $imagenUrl = 'imagenes/' . $nombreImagen;
+        return redirect()->route('menu.index')->with('success', 'Plato actualizado exitosamente.');
     }
-
-    // Actualizar los datos del plato
-    $menuItem->update([
-        'nombre_producto' => $request->nombre_producto,
-        'descripcion' => $request->descripcion,
-        'precio' => $request->precio,
-        'imagen_url' => $imagenUrl,
-    ]);
-
-    return redirect()->route('menu.index')->with('success', 'Plato actualizado exitosamente.');
-}
-
-
-     
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     /**
      * Remove the specified resource from storage.
@@ -193,7 +240,18 @@ class MenuItemController extends Controller
     {
         $menuItem = MenuItem::findOrFail($id);
         $menuItem->delete();
-    
+
         return redirect()->route('menu.index')->with('success', 'Plato eliminado correctamente.');
+    }
+
+    /**
+     * Muestra el dashboard con el total de menús.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function dashboard()
+    {
+        $data = $this->getCommonData(); // Obtener datos comunes
+        return view('dashboard', $data); // Pasar datos a la vista
     }
 }

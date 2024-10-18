@@ -27,12 +27,8 @@ class PedidoRecibido implements ShouldBroadcast
         return new Channel('pedidos');
     }
 
-    public function broadcastWith()
+    public function broadcastAs()
     {
-        return [
-            'id' => $this->pedido->id,
-            'cliente_id' => $this->pedido->cliente_id,
-            'estado' => $this->pedido->estado,
-        ];
+        return 'nuevo.pedido';
     }
 }

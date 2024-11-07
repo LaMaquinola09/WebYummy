@@ -51,7 +51,7 @@ Route::group(['middleware' => ['auth', 'check.restaurant.active']], function () 
         return view('dashboard');
     })->middleware(['auth', 'verified'])->name('dashboard');
 
-    //Rutas para los pedidos
+    //Rutas para el pedidos
     Route::get('/pedidos', [PedidoController::class, 'index'])->name('pedidos.index');
     // Ruta para obtener los pedidos
     Route::get('/api/pedidos', [PedidoController::class, 'listarPedidos']);

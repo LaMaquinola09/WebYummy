@@ -4,11 +4,11 @@ on:
   push:
     branches:
       - main
-      - 1-inicio-de-sesion
+      - 4-registro-de-usuario
 
 jobs:
   create-pull-request:
-    if: github.ref == 'refs/heads/1-inicio-de-sesion'
+    if: github.ref == 'refs/heads/4-registro-de-usuario'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -17,10 +17,10 @@ jobs:
       - name: Create Pull Request to main
         uses: repo-sync/pull-request@v2
         with:
-          source_branch: '1-inicio-de-sesion'
+          source_branch: '4-registro-de-usuario'
           destination_branch: 'main'
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          pr_title: 'Auto merge 1-inicio-de-sesion into main'
+          pr_title: 'Auto merge 4-registro-de-usuario into main'
           pr_body: 'This pull request was created automatically by GitHub Actions.'
 
       - name: Merge Pull Request
@@ -32,7 +32,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               state: 'open',
-              head: '1-inicio-de-sesion'
+              head: '4-registro-de-usuario'
             });
 
             if (pull_request.data.length > 0) {
@@ -53,7 +53,7 @@ jobs:
             await github.rest.git.deleteRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              ref: 'heads/1-inicio-de-sesion'
+              ref: 'heads/4-registro-de-usuario'
             });
 
   deploy:
